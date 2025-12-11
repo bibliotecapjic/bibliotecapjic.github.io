@@ -1,54 +1,1005 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mi sitio - bibliotecapjic</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapas de Biblioteca</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; color: #333; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        /* Header */
+        .header { 
+            background: linear-gradient(135deg, #2c3e50, #4a6491); 
+            color: white; padding: 25px; border-radius: 10px; 
+            margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 { font-size: 28px; display: flex; align-items: center; gap: 12px; }
+        .subtitle { font-size: 16px; opacity: 0.9; margin-top: 5px; }
+        
+        /* Main Content */
+        .main-content { display: grid; grid-template-columns: 1fr 2fr; gap: 25px; }
+        @media (max-width: 900px) { .main-content { grid-template-columns: 1fr; } }
+        
+        /* Controls Panel */
+        .controls-panel { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .section { margin-bottom: 30px; }
+        .section-title { 
+            font-size: 18px; color: #2c3e50; margin-bottom: 15px; padding-bottom: 10px; 
+            border-bottom: 2px solid #eee; display: flex; align-items: center; gap: 10px;
+        }
+        
+        /* Library Buttons */
+        .library-buttons { display: flex; flex-direction: column; gap: 12px; }
+        .library-btn { 
+            padding: 16px; background: white; border: 2px solid #ddd; border-radius: 8px; 
+            font-size: 16px; font-weight: 500; color: #555; cursor: pointer; transition: all 0.3s;
+            text-align: left; display: flex; align-items: center; gap: 12px;
+        }
+        .library-btn:hover { border-color: #3498db; background: #f0f8ff; }
+        .library-btn.selected { border-color: #3498db; background: #e3f2fd; color: #2c3e50; }
+        .library-icon { font-size: 22px; width: 30px; }
+        
+        /* Material Buttons */
+        .material-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .material-btn { 
+            padding: 14px 10px; background: white; border: 2px solid #ddd; border-radius: 6px; 
+            font-size: 14px; font-weight: 500; color: #555; cursor: pointer; transition: all 0.3s;
+        }
+        .material-btn:hover { border-color: #f39c12; background: #fff9e6; }
+        .material-btn.selected { border-color: #f39c12; background: #fff3cd; color: #856404; }
+        
+        /* Signature Input */
+        .signature-box { margin-top: 10px; }
+        .signature-label { display: block; margin-bottom: 8px; font-weight: 500; color: #555; }
+        .signature-input { 
+            width: 100%; padding: 16px; border: 2px solid #ddd; border-radius: 8px; 
+            font-size: 16px; font-family: monospace; transition: all 0.3s;
+        }
+        .signature-input:required {
+            border-left: 4px solid #3498db;
+        }
+        .signature-input:focus { outline: none; border-color: #3498db; box-shadow: 0 0 0 3px rgba(52,152,219,0.2); }
+        .signature-input:disabled { 
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+            opacity: 0.6;
+            border-left-color: #ddd;
+        }
+        .help-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        /* Required field indicator */
+        .required-field::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        /* Map Panel */
+        .map-panel { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; }
+        
+        /* Compact Selection Info */
+        .selection-info { 
+            background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; 
+            border-left: 4px solid #3498db;
+        }
+        .selection-info h3 { 
+            font-size: 16px; margin-bottom: 10px; color: #2c3e50; 
+            display: flex; align-items: center; gap: 8px;
+        }
+        .selection-details { 
+            display: flex; 
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .detail-item { 
+            flex: 1;
+            min-width: 150px;
+        }
+        .detail-label { 
+            font-size: 12px; 
+            color: #666; 
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .detail-value { 
+            font-size: 14px; 
+            font-weight: 600; 
+            color: #2c3e50;
+            word-break: break-word;
+        }
+        
+        /* Location Info Panel */
+        .location-info-panel {
+            background: #e8f6ef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            border-left: 4px solid #27ae60;
+        }
+        .location-info-panel.active {
+            display: block;
+        }
+        .location-info-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .location-info-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        /* Map Container */
+        .map-container { 
+            flex: 1; position: relative; background: #f8f9fa; border-radius: 8px; 
+            overflow: hidden; border: 1px solid #e0e0e0; min-height: 500px;
+            margin-bottom: 20px;
+        }
+        .initial-state { 
+            display: flex; align-items: center; justify-content: center; height: 100%; 
+            color: #999; font-size: 18px; text-align: center; padding: 40px;
+        }
+        .initial-state i { font-size: 48px; margin-bottom: 20px; opacity: 0.5; }
+        
+        /* Loading State */
+        .loading-state {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: #f8f9fa;
+            color: #6c757d;
+            font-size: 18px;
+            text-align: center;
+            padding: 40px;
+        }
+        .loading-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Legend Panel */
+        .legend-panel {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 6px;
+            display: none;
+            border: 1px solid #e0e0e0;
+        }
+        .legend-panel.active {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            background: rgba(255, 215, 0, 0.7);
+            border: 2px solid #e67e22;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+        .legend-text {
+            font-size: 14px;
+            color: #555;
+        }
+        
+        /* No Map Available State */
+        .no-map-state {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            color: #6c757d;
+            font-size: 18px;
+            text-align: center;
+            padding: 40px;
+        }
+        .no-map-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+            color: #adb5bd;
+        }
+        .no-map-state h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #495057;
+        }
+        .no-map-state p {
+            font-size: 14px;
+            opacity: 0.8;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        /* Message styles */
+        .message { padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; }
+        .message-error { background: #fdecea; border-left: 4px solid #e74c3c; color: #c0392b; }
+        .message-warning { background: #fff3cd; border-left: 4px solid #f39c12; color: #856404; }
+        .message-success { background: #e8f6ef; border-left: 4px solid #27ae60; color: #27ae60; }
+        
+        /* For screen readers only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
 </head>
 <body>
-  <header class="site-header">
     <div class="container">
-      <h1>bibliotecapjic</h1>
-      <button id="nav-toggle" aria-label="Abrir menú">☰</button>
-      <nav id="main-nav" class="nav">
-        <a href="#inicio">Inicio</a>
-        <a href="#proyectos">Proyectos</a>
-        <a href="#contacto">Contacto</a>
-      </nav>
+        <div class="header">
+            <h1><span aria-hidden="true">🗺️</span> Sistema de Mapas de Biblioteca</h1>
+            <div class="subtitle">Seleccione biblioteca, tipo de material e ingrese la signatura (solo para libros)</div>
+        </div>
+        
+        <div class="main-content">
+            <!-- Controls Panel -->
+            <div class="controls-panel">
+                <div class="section">
+                    <h2 class="section-title"><span aria-hidden="true">🏛️</span> Biblioteca</h2>
+                    <div class="library-buttons">
+                        <button class="library-btn" id="btn-medellin" onclick="selectLibrary('medellin')"
+                                aria-label="Seleccionar biblioteca de Medellín">
+                            <span class="library-icon" aria-hidden="true">📚</span> Medellín
+                        </button>
+                        <button class="library-btn" id="btn-oriente" onclick="selectLibrary('oriente')"
+                                aria-label="Seleccionar Centro Regional Oriente">
+                            <span class="library-icon" aria-hidden="true">🏛️</span> Centro Regional Oriente
+                        </button>
+                        <button class="library-btn" id="btn-uraba" onclick="selectLibrary('uraba')"
+                                aria-label="Seleccionar Centro Regional Urabá">
+                            <span class="library-icon" aria-hidden="true">📚</span> Centro Regional Urabá
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title"><span aria-hidden="true">📑</span> Tipo de Material</h2>
+                    <div class="material-buttons">
+                        <button class="material-btn" id="btn-libro" onclick="selectMaterial('libro')" aria-label="Buscar libro">LIBRO</button>
+                        <button class="material-btn" id="btn-tesis" onclick="selectMaterial('tesis')" aria-label="Buscar trabajo de grado">TRABAJO DE GRADO</button>
+                        <button class="material-btn" id="btn-cd" onclick="selectMaterial('cd')" aria-label="Buscar CD">CD</button>
+                        <button class="material-btn" id="btn-revista" onclick="selectMaterial('revista')" aria-label="Buscar revista">REVISTA</button>
+                        <button class="material-btn" id="btn-folleto" onclick="selectMaterial('folleto')" aria-label="Buscar folleto">FOLLETO</button>
+                        <button class="material-btn" id="btn-norma" onclick="selectMaterial('norma')" aria-label="Buscar norma">NORMA</button>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title"><span aria-hidden="true">🔢</span> <span class="required-field">Signatura</span></h2>
+                    <div class="signature-box">
+                        <label class="signature-label" for="signature">Ingrese la signatura del material (requerido solo para libros):</label>
+                        <input type="text" class="signature-input" id="signature" 
+                               placeholder="Ejemplo: 658.403, 005.1, 900.2" 
+                               disabled
+                               aria-describedby="signature-help"
+                               required>
+                        <div id="signature-help" class="help-text">
+                            Ejemplos de signatura válida: 658.403, 005.1, 900.2.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Map Panel -->
+            <div class="map-panel">
+                <!-- Messages -->
+                <div class="message message-error" id="message-error" role="alert"></div>
+                <div class="message message-warning" id="message-warning" role="alert"></div>
+                <div class="message message-success" id="message-success" role="alert"></div>
+                
+                <!-- Compact Selection Info -->
+                <div class="selection-info" id="selection-info" style="display: none;">
+                    <h3><span aria-hidden="true">📋</span> Selección Actual</h3>
+                    <div class="selection-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Biblioteca:</div>
+                            <div class="detail-value" id="current-library">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Tipo de material:</div>
+                            <div class="detail-value" id="current-material">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Signatura:</div>
+                            <div class="detail-value" id="current-signature">-</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Location Info Panel -->
+                <div class="location-info-panel" id="location-info-panel">
+                    <div class="location-info-title"><span aria-hidden="true">📍</span> Información de Ubicación</div>
+                    <div class="location-info-text" id="location-info-text">Seleccione una biblioteca y tipo de material para ver la ubicación</div>
+                </div>
+                
+                <!-- Map Container -->
+                <div class="map-container" id="map-container">
+                    <div class="initial-state" id="initial-state">
+                        <div>
+                            <span aria-hidden="true">🗺️</span>
+                            <p>Seleccione biblioteca y tipo de material para ver su ubicación en el mapa</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Legend Panel -->
+                <div class="legend-panel" id="legend-panel">
+                    <div class="legend-color"></div>
+                    <div class="legend-text">Ubicación aproximada del material</div>
+                </div>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <main class="container">
-    <section id="inicio" class="hero">
-      <h2>Bienvenido</h2>
-      <p>Este es un sitio de ejemplo creado para desplegar en GitHub Pages. Edita este contenido con tu HTML/CSS/JS.</p>
-      <a class="btn" href="#proyectos">Ver proyectos</a>
-    </section>
+    <script>
+        // Variables de estado
+        let selectedLibrary = null;
+        let selectedMaterial = null;
+        let currentLibraryData = null;
+        let searchTimeout = null;
+        
+        // Configuración de mapas - AQUÍ AGREGA LAS URLS DE TUS MAPAS
+        const mapData = {
+            "MEDELLÍN": {
+                name: "Biblioteca Medellín",
+                // URLs de mapas para Medellín
+                floors: {
+                    1: {
+                        // Reemplaza con la URL real de tu mapa del piso 1 de Medellín
+                        img: "https://ejemplo.com/mapas/medellin-piso-1.png",
+                        // O si es local: "img/mapas/medellin-piso-1.png"
+                        staticLocations: {
+                            "REVISTA": {
+                                x: 0.0815, y: 0.8564, width: 0.1046, height: 0.0799,
+                                message: "Colección de Revistas - Hemeroteca",
+                            },
+                            "FOLLETO": {
+                                x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
+                                message: "Colección de Folletos. Consultar en Circulación y Préstamo",
+                            },
+                            "TRABAJO DE GRADO": [
+                                {
+                                    x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
+                                    message: "Colección de trabajos de grado (TDG). Tener presente que los TDG en formato físico se encuentran en el piso 2 de la Biblioteca. Los TDG en CDs se encuentran en el primer piso - Circulación y préstamo",
+                                },
+                                {
+                                    x: 0.8167, y: 0.4356, width: 0.1694, height: 0.2643,
+                                    message: "DVDs y material audiovisual",
+                                }
+                            ],
+                            "NORMAS": {
+                                x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
+                                message: "Colección de Normas Técnicas. Consultar en Circulación y Préstamo",
+                            },
+                            "MULTIMEDIA": {
+                                x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
+                                message: "Colección Multimedia - CDs, DVDs. Consultar en Circulación y Préstamo",
+                            }
+                        },
+                        stacks: [
+                            { id: "1.1A1.Izquierdo", start: "000.0", end: "005.1", x: 0.6222, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.1A2.Izquierdo", start: "005.101", end: "036.0", x: 0.6222, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.1B2.Derecho", start: "036.01", end: "302.0", x: 0.5944, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.1B1.Derecho", start: "302.01", end: "330.01", x: 0.5944, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.2A1.Izquierdo", start: "330.011", end: "338.5", x: 0.5602, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.2A2.Izquierdo", start: "338.501", end: "373.2", x: 0.5602, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.2B2.Derecho", start: "373.201", end: "512.1", x: 0.5324, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.2B1.Derecho", start: "512.101", end: "515.3", x: 0.5324, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.3A1.Izquierdo", start: "515.301", end: "519.5", x: 0.4963, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.3A2.Izquierdo", start: "519.501", end: "537.0", x: 0.4936, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.3B2.Derecho", start: "537.01", end: "574.5", x: 0.4685, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.3B1.Derecho", start: "574.501", end: "591.0", x: 0.4685, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.4A1.Izquierdo", start: "591.01", end: "612.76", x: 0.4324, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.4A2.Izquierdo", start: "612.7601", end: "612.27", x: 0.4333, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.4B2.Derecho", start: "612.2701", end: "621.4", x: 0.4065, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.4B1.Derecho", start: "621.401", end: "624.18", x: 0.4065, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.5A1.Izquierdo", start: "624.1801", end: "629.8", x: 0.3713, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.5A2.Izquierdo", start: "629.801", end: "634.0", x: 0.3704, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.5B2.Derecho", start: "634.01", end: "657.0", x: 0.3435, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.5B1.Derecho", start: "657.01", end: "657.8", x: 0.3435, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.6A1.Izquierdo", start: "657.801", end: "658.3", x: 0.3074, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.6A2.Izquierdo", start: "658.301", end: "658.5", x: 0.3074, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.6B2.Derecho", start: "658.501", end: "658.85", x: 0.2806, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.6B1.Derecho", start: "658.8501", end: "690.2", x: 0.2806, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.7A1.Izquierdo", start: "690.201", end: "790.2", x: 0.2444, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.7A2.Izquierdo", start: "790.201", end: "799.1", x: 0.2444, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.7B2.Derecho", start: "799.101", end: "899.9", x: 0.2185, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.7B1.Derecho", start: "900", end: "999.9", x: 0.2185, y: 0.6770, height: 0.1109, width: 0.0269 }
+                        ],
+                    },
+                    2: {
+                        // Reemplaza con la URL real de tu mapa del piso 2 de Medellín
+                        img: "https://ejemplo.com/mapas/medellin-piso-2.png",
+                        staticLocations: {
+                            "COLECCION ESTATICA": {
+                                x:0.0, y:0.0, width:0.0, height:0.0,
+                                message: "Colección - Piso 2",
+                            }
+                        },
+                        stacks: [],
+                    },
+                },
+            },
+            "CENTRO REGIONAL ORIENTE": {
+                name: "Biblioteca Centro Regional Oriente",
+                floors: {
+                    1: {
+                        // Reemplaza con la URL real de tu mapa del Centro Regional Oriente
+                        img: "https://ejemplo.com/mapas/oriente-piso-1.png",
+                        staticLocations: {
+                            "REVISTA": {
+                                x: 0.2, y: 0.3, width: 0.1, height: 0.1,
+                                message: "Colección de Revistas - Oriente",
+                            },
+                            "TRABAJO DE GRADO": {
+                                x: 0.4, y: 0.5, width: 0.1, height: 0.1,
+                                message: "Colección de Tesis - Oriente",
+                            }
+                        },
+                        stacks: [],
+                    }
+                },
+            },
+            "CENTRO REGIONAL URABÁ": {
+                name: "Biblioteca Centro Regional Urabá",
+                floors: {
+                    1: {
+                        // Reemplaza con la URL real de tu mapa del Centro Regional Urabá
+                        img: "https://ejemplo.com/mapas/uraba-piso-1.png",
+                        staticLocations: {
+                            "REVISTA": {
+                                x: 0.2, y: 0.3, width: 0.1, height: 0.1,
+                                message: "Colección de Revistas - Urabá",
+                            }
+                        },
+                        stacks: [],
+                    }
+                },
+            }
+        };
 
-    <section id="proyectos" class="cards">
-      <article class="card">
-        <h3>Proyecto 1</h3>
-        <p>Breve descripción del proyecto.</p>
-      </article>
-      <article class="card">
-        <h3>Proyecto 2</h3>
-        <p>Breve descripción del proyecto.</p>
-      </article>
-    </section>
+        // Mapeo de selecciones a valores del sistema
+        const libraryMap = {
+            'medellin': 'MEDELLÍN',
+            'oriente': 'CENTRO REGIONAL ORIENTE',
+            'uraba': 'CENTRO REGIONAL URABÁ'
+        };
+        
+        const materialMap = {
+            'libro': 'COLECCIÓN GENERAL',
+            'tesis': 'TRABAJO DE GRADO',
+            'cd': 'MULTIMEDIA',
+            'revista': 'REVISTA',
+            'folleto': 'FOLLETO',
+            'norma': 'NORMAS'
+        };
+        
+        const materialDisplayNames = {
+            'libro': 'LIBRO',
+            'tesis': 'TRABAJO DE GRADO',
+            'cd': 'CD',
+            'revista': 'REVISTA',
+            'folleto': 'FOLLETO',
+            'norma': 'NORMA'
+        };
 
-    <section id="contacto" class="contact">
-      <h3>Contacto</h3>
-      <p>Puedes dejar aquí tus datos de contacto o enlaces a redes.</p>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <small>© <span id="year"></span> bibliotecapjic</small>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
+        // Funciones del sistema original (mejoradas)
+        function normalizeDewey(callNumber) {
+            if (!callNumber) return null;
+            
+            try {
+                // Eliminar espacios y caracteres extraños
+                let cleanCall = callNumber.toString().trim()
+                    .replace(/^[A-Z]+\s*/, '')  // Prefijos alfabéticos
+                    .replace(/\s+/g, ' ')       // Múltiples espacios
+                    .replace(/[^\d\.,]/g, '');  // Solo números, punto y coma
+                
+                // Manejar diferentes formatos
+                let deweyMatch = cleanCall.match(/(\d+(?:[.,]\d+)?)/);
+                if (!deweyMatch) return null;
+                
+                // Convertir a número flotante (reemplazar coma por punto)
+                let numericStr = deweyMatch[1].replace(',', '.');
+                let numericPart = parseFloat(numericStr);
+                
+                return {
+                    original: callNumber,
+                    numericPart: numericPart,
+                    fullMatch: deweyMatch[0],
+                    normalized: numericStr
+                };
+            } catch (e) {
+                console.error("❌ Error normalizando Dewey:", e, callNumber);
+                return null;
+            }
+        }
+        
+        function validateSignature(signature) {
+            // Evitar inyección de código o caracteres maliciosos
+            const safePattern = /^[0-9.,\sA-Za-z-]+$/;
+            if (!safePattern.test(signature)) {
+                showMessage('error', 'Signatura contiene caracteres no válidos');
+                return false;
+            }
+            
+            // Longitud máxima razonable
+            if (signature.length > 50) {
+                showMessage('error', 'Signatura demasiado larga');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        function searchInStacks(libraryMapData, callNumber) {
+            if (!callNumber) return null;
+            
+            let callNumNormalized = normalizeDewey(callNumber);
+            
+            if (callNumNormalized && !isNaN(callNumNormalized.numericPart)) {
+                for (let floorNum in libraryMapData.floors) {
+                    let floor = libraryMapData.floors[floorNum];
+                    if (floor.stacks && floor.stacks.length > 0) {
+                        for (let j = 0; j < floor.stacks.length; j++) {
+                            let stack = floor.stacks[j];
+                            try {
+                                let startNormalized = normalizeDewey(stack.start);
+                                let endNormalized = normalizeDewey(stack.end);
+                                
+                                if (startNormalized && endNormalized) {
+                                    if (callNumNormalized.numericPart >= startNormalized.numericPart && 
+                                        callNumNormalized.numericPart <= endNormalized.numericPart) {
+                                        
+                                        return {
+                                            floor: floorNum,
+                                            x: stack.x,
+                                            y: stack.y,
+                                            width: stack.width,
+                                            height: stack.height,
+                                            stackInfo: stack.id
+                                        };
+                                    }
+                                }
+                            } catch (e) {
+                                console.error("❌ Error en comparación Dewey:", e);
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+        
+        function searchInStaticLocations(libraryMapData, locationType) {
+            for (let floorNum in libraryMapData.floors) {
+                let floor = libraryMapData.floors[floorNum];
+                if (floor.staticLocations && floor.staticLocations[locationType]) {
+                    let staticLoc = floor.staticLocations[locationType];
+                    
+                    if (Array.isArray(staticLoc)) {
+                        return {
+                            floor: floorNum,
+                            locations: staticLoc,
+                            isMultiple: true
+                        };
+                    } else if (typeof staticLoc === 'object') {
+                        return {
+                            floor: floorNum,
+                            x: staticLoc.x,
+                            y: staticLoc.y,
+                            width: staticLoc.width,
+                            height: staticLoc.height,
+                            message: staticLoc.message,
+                            isMultiple: false
+                        };
+                    }
+                }
+            }
+            return null;
+        }
+        
+        // Función para cargar el mapa base de una biblioteca
+        function loadMapBase(libraryKey) {
+            const libraryData = mapData[libraryKey];
+            if (!libraryData) {
+                showNoMapAvailable();
+                return false;
+            }
+            
+            currentLibraryData = libraryData;
+            
+            const mapContainer = document.getElementById('map-container');
+            const initialState = document.getElementById('initial-state');
+            
+            // Ocultar estado inicial
+            initialState.style.display = 'none';
+            
+            // Limpiar mapa anterior
+            mapContainer.innerHTML = '';
+            
+            // Mostrar estado de carga
+            mapContainer.innerHTML = `
+                <div class="loading-state" id="loading-state">
+                    <div>
+                        <div class="loading-spinner"></div>
+                        <p>Cargando mapa...</p>
+                    </div>
+                </div>
+            `;
+            
+            // Cargar mapa del piso 1
+            const floorData = libraryData.floors[1];
+            const imgPath = floorData.img;
+            
+            // Verificar si la imagen existe
+            const mapImg = new Image();
+            let imgTimeout = setTimeout(() => {
+                mapImg.onload = null; // Cancelar onload si se dispara después del timeout
+                mapImg.onerror = null;
+                showNoMapAvailable();
+            }, 10000); // Timeout de 10 segundos
+            
+            mapImg.onload = function() {
+                clearTimeout(imgTimeout);
+                // La imagen existe, mostrarla
+                mapContainer.innerHTML = '';
+                const imgElement = document.createElement('img');
+                imgElement.id = 'map-image';
+                imgElement.src = imgPath;
+                imgElement.alt = `Mapa de ${libraryData.name}`;
+                imgElement.style.width = '100%';
+                imgElement.style.height = '100%';
+                imgElement.style.objectFit = 'contain';
+                mapContainer.appendChild(imgElement);
+                
+                // Limpiar marcadores anteriores
+                clearMapMarkers();
+            };
+            
+            mapImg.onerror = function() {
+                clearTimeout(imgTimeout);
+                // La imagen no existe, mostrar estado de no disponible
+                console.error(`No se pudo cargar la imagen: ${imgPath}`);
+                showNoMapAvailable();
+                return false;
+            };
+            
+            mapImg.src = imgPath;
+            
+            return true;
+        }
+        
+        // Función para mostrar estado "mapa no disponible"
+        function showNoMapAvailable() {
+            const mapContainer = document.getElementById('map-container');
+            const initialState = document.getElementById('initial-state');
+            
+            // Ocultar estado inicial
+            initialState.style.display = 'none';
+            
+            // Mostrar estado de mapa no disponible
+            mapContainer.innerHTML = `
+                <div class="no-map-state">
+                    <div>
+                        <span aria-hidden="true">🚫</span>
+                        <h3>Mapa no disponible</h3>
+                        <p>El mapa para esta selección no está disponible en el sistema.</p>
+                        <p style="margin-top: 10px; font-size: 12px; color: #6c757d;">
+                            Seleccione otra biblioteca o consulte con el personal de la biblioteca.
+                        </p>
+                        <button onclick="reportMissingMap()" style="margin-top: 15px; padding: 8px 16px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            Reportar mapa faltante
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Limpiar marcadores
+            clearMapMarkers();
+        }
+        
+        function reportMissingMap() {
+            const libraryName = selectedLibrary ? libraryMap[selectedLibrary] : 'Desconocida';
+            alert(`Se ha registrado la solicitud de mapa para: ${libraryName}\n\nEl personal de sistemas será notificado.`);
+        }
+        
+        // Función para mostrar información de ubicación
+        function showLocationInfo(locationMessage, signature = '') {
+            const locationInfoPanel = document.getElementById('location-info-panel');
+            const locationInfoText = document.getElementById('location-info-text');
+            
+            // Actualizar texto de ubicación
+            locationInfoText.textContent = locationMessage;
+            
+            // Mostrar el panel de información
+            locationInfoPanel.classList.add('active');
+            
+            // Mostrar la leyenda cuando hay información de ubicación
+            document.getElementById('legend-panel').classList.add('active');
+        }
+        
+        // Función para dibujar ubicación en el mapa
+        function drawLocation(locationResult) {
+            const mapContainer = document.getElementById('map-container');
+            
+            // Limpiar marcadores anteriores
+            clearMapMarkers();
+            
+            // Agregar marcadores si hay ubicación específica
+            if (locationResult) {
+                if (locationResult.isMultiple && locationResult.locations) {
+                    // Múltiples ubicaciones
+                    locationResult.locations.forEach((loc, index) => {
+                        const marker = createMarker(loc.x, loc.y, loc.width, loc.height, index);
+                        mapContainer.appendChild(marker);
+                    });
+                } else if (!locationResult.isMultiple && locationResult.x !== undefined) {
+                    // Ubicación única
+                    const marker = createMarker(locationResult.x, locationResult.y, locationResult.width, locationResult.height);
+                    mapContainer.appendChild(marker);
+                }
+            }
+        }
+        
+        // Función para limpiar marcadores del mapa
+        function clearMapMarkers() {
+            const mapContainer = document.getElementById('map-container');
+            const markers = mapContainer.querySelectorAll('.map-marker');
+            markers.forEach(marker => marker.remove());
+        }
+        
+        // Función para crear marcador
+        function createMarker(x, y, width, height, index = 0) {
+            const marker = document.createElement('div');
+            marker.className = 'map-marker';
+            marker.style.position = 'absolute';
+            marker.style.left = `${x * 100}%`;
+            marker.style.top = `${y * 100}%`;
+            marker.style.width = `${width * 100}%`;
+            marker.style.height = `${height * 100}%`;
+            marker.style.background = 'rgba(255, 215, 0, 0.7)';
+            marker.style.border = '2px solid #e67e22';
+            marker.style.pointerEvents = 'none';
+            marker.style.boxSizing = 'border-box';
+            marker.style.borderRadius = '4px';
+            marker.style.boxShadow = '0 0 15px rgba(230, 126, 34, 0.8)';
+            marker.style.zIndex = '10';
+            
+            const markerIcon = document.createElement('div');
+            markerIcon.style.color = '#2c3e50';
+            markerIcon.style.fontWeight = 'bold';
+            markerIcon.style.textAlign = 'center';
+            markerIcon.style.position = 'absolute';
+            markerIcon.style.top = '50%';
+            markerIcon.style.left = '50%';
+            markerIcon.style.transform = 'translate(-50%, -50%)';
+            markerIcon.style.fontSize = index > 0 ? '20px' : '24px';
+            markerIcon.style.textShadow = '2px 2px 4px rgba(0,0,0,0.3)';
+            markerIcon.style.zIndex = '11';
+            markerIcon.textContent = '📍';
+            markerIcon.setAttribute('aria-hidden', 'true');
+            
+            marker.appendChild(markerIcon);
+            
+            return marker;
+        }
+        
+        // Función unificada para encontrar y mostrar ubicación
+        function findAndDisplayLocation() {
+            if (!selectedLibrary || !selectedMaterial) return;
+            
+            const libraryKey = libraryMap[selectedLibrary];
+            const locationType = materialMap[selectedMaterial];
+            const libraryData = mapData[libraryKey];
+            
+            if (!libraryData) {
+                showMessage('error', 'Biblioteca no encontrada en el sistema');
+                return;
+            }
+            
+            let locationResult, locationMessage;
+            
+            if (selectedMaterial === 'libro') {
+                const signature = document.getElementById('signature').value.trim();
+                if (!signature) {
+                    // No hay signatura, no buscar
+                    return;
+                }
+                
+                // Validar signatura
+                if (!validateSignature(signature)) {
+                    return;
+                }
+                
+                locationResult = searchInStacks(libraryData, signature);
+                if (locationResult) {
+                    const parts = locationResult.stackInfo.split('.');
+                    locationMessage = `Este material puede encontrarse en el piso ${locationResult.floor} de la ${libraryData.name}, estante ${parts[1]} lado ${parts[2]}. Esta es una referencia aproximada.`;
+                } else {
+                    locationMessage = `Material disponible en ${libraryData.name} (Colección General). Consulte con el personal para ubicación exacta.`;
+                }
+            } else {
+                locationResult = searchInStaticLocations(libraryData, locationType);
+                if (locationResult) {
+                    if (locationResult.isMultiple) {
+                        locationMessage = locationResult.locations[0].message;
+                    } else {
+                        locationMessage = locationResult.message;
+                    }
+                } else {
+                    locationMessage = `Material disponible en ${libraryData.name} (${materialDisplayNames[selectedMaterial]}). Consulte con el personal para ubicación exacta.`;
+                }
+            }
+            
+            // Dibujar y mostrar resultado
+            if (locationResult) {
+                drawLocation(locationResult);
+                showLocationInfo(locationMessage);
+                showMessage('success', 'Ubicación encontrada');
+            } else {
+                clearMapMarkers();
+                showLocationInfo(locationMessage);
+                showMessage('warning', locationMessage);
+            }
+        }
+        
+        // Funciones de la interfaz
+        function selectLibrary(libraryId) {
+            if (selectedLibrary) {
+                document.getElementById(`btn-${selectedLibrary}`).classList.remove('selected');
+            }
+            selectedLibrary = libraryId;
+            document.getElementById(`btn-${libraryId}`).classList.add('selected');
+            
+            // Cargar automáticamente el mapa base de la biblioteca
+            const libraryKey = libraryMap[libraryId];
+            if (loadMapBase(libraryKey)) {
+                hideAllMessages();
+            }
+            
+            updateUI();
+            
+            // Ocultar panel de información hasta que se seleccione material
+            const locationInfoPanel = document.getElementById('location-info-panel');
+            locationInfoPanel.classList.remove('active');
+            document.getElementById('legend-panel').classList.remove('active');
+            
+            // Si ya hay un material seleccionado (que no sea libro), mostrar ubicación automáticamente
+            if (selectedMaterial && selectedMaterial !== 'libro') {
+                findAndDisplayLocation();
+            }
+        }
+        
+        function selectMaterial(materialId) {
+            if (selectedMaterial) {
+                document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
+            }
+            selectedMaterial = materialId;
+            document.getElementById(`btn-${materialId}`).classList.add('selected');
+            
+            updateUI();
+            hideAllMessages();
+            
+            // Si hay biblioteca seleccionada
+            if (selectedLibrary) {
+                if (selectedMaterial !== 'libro') {
+                    // Para materiales que no son libros, mostrar ubicación automáticamente
+                    findAndDisplayLocation();
+                } else {
+                    // Para libros, limpiar marcadores y ocultar paneles
+                    clearMapMarkers();
+                    const locationInfoPanel = document.getElementById('location-info-panel');
+                    locationInfoPanel.classList.remove('active');
+                    document.getElementById('legend-panel').classList.remove('active');
+                }
+            }
+        }
+        
+        function updateUI() {
+            const signature = document.getElementById('signature');
+            const signatureValue = signature.value.trim();
+            
+            // Habilitar/deshabilitar campo de signatura según el material seleccionado
+            if (selectedMaterial === 'libro') {
+                signature.disabled = false;
+                signature.setAttribute('required', 'required');
+            } else {
+                signature.disabled = true;
+                signature.removeAttribute('required');
+                signature.value = '';
+            }
+            
+            // Mostrar/ocultar información de selección
+            if (selectedLibrary || selectedMaterial || signatureValue) {
+                document.getElementById('selection-info').style.display = 'block';
+                document.getElementById('current-library').textContent = selectedLibrary ? 
+                    libraryMap[selectedLibrary] : '-';
+                document.getElementById('current-material').textContent = selectedMaterial ? 
+                    materialDisplayNames[selectedMaterial] : '-';
+                document.getElementById('current-signature').textContent = signatureValue || '-';
+            } else {
+                document.getElementById('selection-info').style.display = 'none';
+            }
+        }
+        
+        function showMessage(type, text) {
+            hideAllMessages();
+            const element = document.getElementById(`message-${type}`);
+            element.textContent = text;
+            element.style.display = 'block';
+            
+            // Ocultar mensaje después de 5 segundos (excepto errores)
+            if (type !== 'error') {
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        function hideAllMessages() {
+            ['error', 'warning', 'success'].forEach(type => {
+                document.getElementById(`message-${type}`).style.display = 'none';
+            });
+        }
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            const signatureInput = document.getElementById('signature');
+            
+            // Cuando se escribe en el campo de signatura, buscar automáticamente
+            signatureInput.addEventListener('input', function() {
+                updateUI();
+                
+                // Si es un libro, buscar automáticamente después de un breve delay
+                if (selectedMaterial === 'libro') {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        findAndDisplayLocation();
+                    }, 500);
+                }
+            });
+            
+            // Permitir búsqueda con Enter
+            signatureInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && selectedMaterial === 'libro') {
+                    e.preventDefault();
+                    clearTimeout(searchTimeout);
+                    findAndDisplayLocation();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
