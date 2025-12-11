@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mi sitio - bibliotecapjic</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>bibliotecapjic</h1>
+      <button id="nav-toggle" aria-label="Abrir menú">☰</button>
+      <nav id="main-nav" class="nav">
+        <a href="#inicio">Inicio</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="inicio" class="hero">
+      <h2>Bienvenido</h2>
+      <p>Este es un sitio de ejemplo creado para desplegar en GitHub Pages. Edita este contenido con tu HTML/CSS/JS.</p>
+      <a class="btn" href="#proyectos">Ver proyectos</a>
+    </section>
+
+    <section id="proyectos" class="cards">
+      <article class="card">
+        <h3>Proyecto 1</h3>
+        <p>Breve descripción del proyecto.</p>
+      </article>
+      <article class="card">
+        <h3>Proyecto 2</h3>
+        <p>Breve descripción del proyecto.</p>
+      </article>
+    </section>
+
+    <section id="contacto" class="contact">
+      <h3>Contacto</h3>
+      <p>Puedes dejar aquí tus datos de contacto o enlaces a redes.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© <span id="year"></span> bibliotecapjic</small>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
