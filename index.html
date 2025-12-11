@@ -550,13 +550,11 @@
             // Evitar inyección de código o caracteres maliciosos
             const safePattern = /^[0-9.,\sA-Za-z-]+$/;
             if (!safePattern.test(signature)) {
-                // No mostrar mensaje emergente, solo devolver false
                 return false;
             }
             
             // Longitud máxima razonable
             if (signature.length > 50) {
-                // No mostrar mensaje emergente, solo devolver false
                 return false;
             }
             
@@ -682,6 +680,35 @@
                 imgElement.style.width = '100%';
                 imgElement.style.height = '100%';
                 imgElement.style.objectFit = 'contain';
+                
+                // Agregar event listener para cuando la imagen se cargue completamente
+                imgElement.addEventListener('load', function() {
+                    // Si hay marcadores que mostrar, ajustar su posición
+                    if (selectedLibrary && selectedMaterial) {
+                        setTimeout(() => {
+                            if (selectedMaterial !== 'libro' || document.getElementById('signature').value.trim()) {
+                                // Recalcular la ubicación para ajustar marcadores
+                                const libraryKey = libraryMap[selectedLibrary];
+                                const locationType = materialMap[selectedMaterial];
+                                const libraryData = mapData[libraryKey];
+                                
+                                let locationResult;
+                                if (selectedMaterial === 'libro') {
+                                    const signature = document.getElementById('signature').value.trim();
+                                    locationResult = searchInStacks(libraryData, signature);
+                                } else {
+                                    locationResult = searchInStaticLocations(libraryData, locationType);
+                                }
+                                
+                                if (locationResult) {
+                                    drawLocation(locationResult);
+                                    setTimeout(adjustMarkersPosition, 50);
+                                }
+                            }
+                        }, 100);
+                    }
+                });
+                
                 mapContainer.appendChild(imgElement);
                 
                 // Limpiar marcadores anteriores
@@ -770,25 +797,21 @@
                     const marker = createMarker(locationResult.x, locationResult.y, locationResult.width, locationResult.height);
                     mapContainer.appendChild(marker);
                 }
+                
+                // Ajustar posicionamiento después de que la imagen se cargue
+                setTimeout(adjustMarkersPosition, 100);
             }
-        }
-        
-        // Función para limpiar marcadores del mapa
-        function clearMapMarkers() {
-            const mapContainer = document.getElementById('map-container');
-            const markers = mapContainer.querySelectorAll('.map-marker');
-            markers.forEach(marker => marker.remove());
         }
         
         // Función para crear marcador
         function createMarker(x, y, width, height, index = 0) {
             const marker = document.createElement('div');
             marker.className = 'map-marker';
+            marker.setAttribute('data-relative-x', x);
+            marker.setAttribute('data-relative-y', y);
+            marker.setAttribute('data-relative-width', width);
+            marker.setAttribute('data-relative-height', height);
             marker.style.position = 'absolute';
-            marker.style.left = `${x * 100}%`;
-            marker.style.top = `${y * 100}%`;
-            marker.style.width = `${width * 100}%`;
-            marker.style.height = `${height * 100}%`;
             marker.style.background = 'rgba(255, 215, 0, 0.7)';
             marker.style.border = '2px solid #e67e22';
             marker.style.pointerEvents = 'none';
@@ -796,6 +819,7 @@
             marker.style.borderRadius = '4px';
             marker.style.boxShadow = '0 0 15px rgba(230, 126, 34, 0.8)';
             marker.style.zIndex = '10';
+            marker.style.display = 'none'; // Ocultar inicialmente hasta ajustar posición
             
             const markerIcon = document.createElement('div');
             markerIcon.style.color = '#2c3e50';
@@ -816,6 +840,57 @@
             return marker;
         }
         
+        // Función para ajustar la posición de los marcadores según la imagen del mapa
+        function adjustMarkersPosition() {
+            const mapContainer = document.getElementById('map-container');
+            const mapImage = mapContainer.querySelector('img#map-image');
+            const markers = mapContainer.querySelectorAll('.map-marker');
+            
+            if (!mapImage || markers.length === 0) return;
+            
+            // Obtener dimensiones del contenedor y la imagen
+            const containerRect = mapContainer.getBoundingClientRect();
+            const imgRect = mapImage.getBoundingClientRect();
+            
+            // Calcular escala y desplazamiento de la imagen dentro del contenedor
+            const containerWidth = containerRect.width;
+            const containerHeight = containerRect.height;
+            const imgWidth = imgRect.width;
+            const imgHeight = imgRect.height;
+            
+            // Calcular márgenes (si la imagen está centrada con object-fit: contain)
+            const marginLeft = (containerWidth - imgWidth) / 2;
+            const marginTop = (containerHeight - imgHeight) / 2;
+            
+            markers.forEach(marker => {
+                // Obtener coordenadas relativas almacenadas en data attributes
+                const relX = parseFloat(marker.getAttribute('data-relative-x'));
+                const relY = parseFloat(marker.getAttribute('data-relative-y'));
+                const relWidth = parseFloat(marker.getAttribute('data-relative-width'));
+                const relHeight = parseFloat(marker.getAttribute('data-relative-height'));
+                
+                // Calcular posición y tamaño absolutos en píxeles
+                const markerLeft = marginLeft + (relX * imgWidth);
+                const markerTop = marginTop + (relY * imgHeight);
+                const markerWidth = relWidth * imgWidth;
+                const markerHeight = relHeight * imgHeight;
+                
+                // Aplicar estilos en píxeles
+                marker.style.left = `${markerLeft}px`;
+                marker.style.top = `${markerTop}px`;
+                marker.style.width = `${markerWidth}px`;
+                marker.style.height = `${markerHeight}px`;
+                marker.style.display = 'block';
+            });
+        }
+        
+        // Función para limpiar marcadores del mapa
+        function clearMapMarkers() {
+            const mapContainer = document.getElementById('map-container');
+            const markers = mapContainer.querySelectorAll('.map-marker');
+            markers.forEach(marker => marker.remove());
+        }
+        
         // Función unificada para encontrar y mostrar ubicación
         function findAndDisplayLocation() {
             if (!selectedLibrary || !selectedMaterial) return;
@@ -825,7 +900,6 @@
             const libraryData = mapData[libraryKey];
             
             if (!libraryData) {
-                // No mostrar mensaje emergente
                 return;
             }
             
@@ -867,11 +941,9 @@
             if (locationResult) {
                 drawLocation(locationResult);
                 showLocationInfo(locationMessage);
-                // NO mostrar mensaje emergente de éxito
             } else {
                 clearMapMarkers();
                 showLocationInfo(locationMessage);
-                // NO mostrar mensaje emergente de advertencia
             }
         }
         
@@ -955,8 +1027,6 @@
         }
         
         function showMessage(type, text) {
-            // Esta función se mantiene pero no se llama desde ninguna otra parte
-            // Solo se deja por si es necesaria para otros propósitos futuros
             hideAllMessages();
             const element = document.getElementById(`message-${type}`);
             element.textContent = text;
@@ -968,6 +1038,13 @@
                 document.getElementById(`message-${type}`).style.display = 'none';
             });
         }
+        
+        // Agregar event listener para redimensionamiento de ventana
+        window.addEventListener('resize', function() {
+            if (selectedLibrary && selectedMaterial) {
+                setTimeout(adjustMarkersPosition, 100);
+            }
+        });
         
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
