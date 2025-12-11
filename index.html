@@ -301,12 +301,12 @@
                     <div class="signature-box">
                         <label class="signature-label" for="signature">Ingrese la signatura del material (requerido solo para libros):</label>
                         <input type="text" class="signature-input" id="signature" 
-                               placeholder="Ejemplo: 658.403, 005.1, 900.2" 
+                               placeholder="Ejemplo: 658.403, 005.1, 900.2, A412, 312 A123" 
                                disabled
                                aria-describedby="signature-help"
                                required>
                         <div id="signature-help" class="help-text">
-                            Ejemplos de signatura válida: 658.403, 005.1, 900.2.
+                            Ejemplos de signatura válida: 658.403, 005.1, 900.2, A412, 312 A123.
                         </div>
                     </div>
                 </div>
@@ -369,17 +369,16 @@
         let selectedMaterial = null;
         let currentLibraryData = null;
         let searchTimeout = null;
+        let currentImageLoadTimeout = null;
+        let isMapLoading = false; // Nueva variable para evitar bucles
         
-        // Configuración de mapas - AQUÍ AGREGA LAS URLS DE TUS MAPAS
+        // Configuración de mapas
         const mapData = {
             "MEDELLÍN": {
                 name: "Biblioteca Medellín",
-                // URLs de mapas para Medellín
                 floors: {
                     1: {
-                        // Reemplaza con la URL real de tu mapa del piso 1 de Medellín
                         img: "images/mapa-medellin-piso-1.png",
-                        // O si es local: "img/mapas/medellin-piso-1.png"
                         staticLocations: {
                             "REVISTA": {
                                 x: 0.0815, y: 0.8564, width: 0.1046, height: 0.0799,
@@ -440,7 +439,6 @@
                         ],
                     },
                     2: {
-                        // Reemplaza con la URL real de tu mapa del piso 2 de Medellín
                         img: "images/mapa-medellin-piso-2.png",
                         staticLocations: {
                             "COLECCION ESTATICA": {
@@ -456,8 +454,7 @@
                 name: "Biblioteca Centro Regional Oriente",
                 floors: {
                     1: {
-                        // Reemplaza con la URL real de tu mapa del Centro Regional Oriente
-                        img: "images/mapa-oriente-piso-1.png",
+                        img: "https://bibliotecapjic.github.io/images/mapa-oriente-piso-1.png",
                         staticLocations: {
                             "REVISTA": {
                                 x: 0.2, y: 0.3, width: 0.1, height: 0.1,
@@ -476,8 +473,7 @@
                 name: "Biblioteca Centro Regional Urabá",
                 floors: {
                     1: {
-                        // Reemplaza con la URL real de tu mapa del Centro Regional Urabá
-                        img: "images/mapa-uraba-piso-1.png",
+                        img: "https://bibliotecapjic.github.io/images/mapa-uraba-piso-1.png",
                         staticLocations: {
                             "REVISTA": {
                                 x: 0.2, y: 0.3, width: 0.1, height: 0.1,
@@ -515,30 +511,46 @@
             'norma': 'NORMA'
         };
 
-        // Funciones del sistema original (mejoradas)
+        // FUNCIÓN MEJORADA: Normalizar números Dewey
         function normalizeDewey(callNumber) {
             if (!callNumber) return null;
             
             try {
-                // Eliminar espacios y caracteres extraños
-                let cleanCall = callNumber.toString().trim()
-                    .replace(/^[A-Z]+\s*/, '')  // Prefijos alfabéticos
-                    .replace(/\s+/g, ' ')       // Múltiples espacios
-                    .replace(/[^\d\.,]/g, '');  // Solo números, punto y coma
+                // Mantener la signatura original para depuración
+                const original = callNumber.toString().trim();
+                console.log(`🔍 Normalizando signatura: "${original}"`);
                 
-                // Manejar diferentes formatos
-                let deweyMatch = cleanCall.match(/(\d+(?:[.,]\d+)?)/);
-                if (!deweyMatch) return null;
+                // Extraer la parte numérica principal (antes del primer espacio o letra)
+                // Ejemplos:
+                // "A412" → "412"
+                // "312 A123" → "312"
+                // "658.403" → "658.403"
+                // "005.1" → "005.1"
                 
-                // Convertir a número flotante (reemplazar coma por punto)
-                let numericStr = deweyMatch[1].replace(',', '.');
-                let numericPart = parseFloat(numericStr);
+                // Primero, buscar números con o sin decimales
+                // Permitir números con puntos decimales y que puedan tener letras después
+                let match = original.match(/^[A-Z]*(\d+(?:\.\d+)?)/);
+                
+                if (!match) {
+                    // Intentar otro patrón: números seguidos de espacio y letras
+                    match = original.match(/^(\d+(?:\.\d+)?)/);
+                }
+                
+                if (!match) {
+                    console.log(`❌ No se pudo extraer parte numérica de: "${original}"`);
+                    return null;
+                }
+                
+                const numericPart = match[1];
+                const numericValue = parseFloat(numericPart);
+                
+                console.log(`✅ Signatura "${original}" → Parte numérica: "${numericPart}" → Valor: ${numericValue}`);
                 
                 return {
-                    original: callNumber,
-                    numericPart: numericPart,
-                    fullMatch: deweyMatch[0],
-                    normalized: numericStr
+                    original: original,
+                    numericPart: numericValue,
+                    fullMatch: match[0],
+                    normalized: numericPart
                 };
             } catch (e) {
                 console.error("❌ Error normalizando Dewey:", e, callNumber);
@@ -547,29 +559,40 @@
         }
         
         function validateSignature(signature) {
-            // Evitar inyección de código o caracteres maliciosos
-            const safePattern = /^[0-9.,\sA-Za-z-]+$/;
+            // Patrón más flexible para signaturas
+            const safePattern = /^[0-9A-Za-z.,\s-]+$/;
             if (!safePattern.test(signature)) {
+                console.log(`❌ Signatura no válida (patrón): "${signature}"`);
                 return false;
             }
             
             // Longitud máxima razonable
             if (signature.length > 50) {
+                console.log(`❌ Signatura demasiado larga: "${signature}"`);
                 return false;
             }
             
+            console.log(`✅ Signatura válida: "${signature}"`);
             return true;
         }
         
         function searchInStacks(libraryMapData, callNumber) {
-            if (!callNumber) return null;
+            if (!callNumber) {
+                console.log("⚠️ No hay signatura para buscar");
+                return null;
+            }
             
+            console.log(`🔍 Buscando en estantes: "${callNumber}"`);
             let callNumNormalized = normalizeDewey(callNumber);
             
             if (callNumNormalized && !isNaN(callNumNormalized.numericPart)) {
+                console.log(`📊 Valor numérico para búsqueda: ${callNumNormalized.numericPart}`);
+                
                 for (let floorNum in libraryMapData.floors) {
                     let floor = libraryMapData.floors[floorNum];
                     if (floor.stacks && floor.stacks.length > 0) {
+                        console.log(`📚 Revisando piso ${floorNum} con ${floor.stacks.length} estantes`);
+                        
                         for (let j = 0; j < floor.stacks.length; j++) {
                             let stack = floor.stacks[j];
                             try {
@@ -577,8 +600,12 @@
                                 let endNormalized = normalizeDewey(stack.end);
                                 
                                 if (startNormalized && endNormalized) {
+                                    console.log(`📖 Estante ${stack.id}: ${startNormalized.numericPart} - ${endNormalized.numericPart}`);
+                                    
                                     if (callNumNormalized.numericPart >= startNormalized.numericPart && 
                                         callNumNormalized.numericPart <= endNormalized.numericPart) {
+                                        
+                                        console.log(`✅ ENCONTRADO en estante: ${stack.id}`);
                                         
                                         return {
                                             floor: floorNum,
@@ -596,15 +623,23 @@
                         }
                     }
                 }
+            } else {
+                console.log(`❌ No se pudo normalizar o valor no numérico: "${callNumber}"`);
             }
+            
+            console.log(`❌ No encontrado en estantes: "${callNumber}"`);
             return null;
         }
         
         function searchInStaticLocations(libraryMapData, locationType) {
+            console.log(`🔍 Buscando ubicación estática: "${locationType}"`);
+            
             for (let floorNum in libraryMapData.floors) {
                 let floor = libraryMapData.floors[floorNum];
                 if (floor.staticLocations && floor.staticLocations[locationType]) {
                     let staticLoc = floor.staticLocations[locationType];
+                    
+                    console.log(`✅ Encontrada ubicación estática en piso ${floorNum}`);
                     
                     if (Array.isArray(staticLoc)) {
                         return {
@@ -625,54 +660,83 @@
                     }
                 }
             }
+            
+            console.log(`❌ No encontrada ubicación estática: "${locationType}"`);
             return null;
         }
-        
-        // Función para cargar el mapa base de una biblioteca
-        function loadMapBase(libraryKey) {
+
+        // FUNCIÓN CORREGIDA: Cargar mapa de biblioteca (EVITA BUCLE)
+        function loadLibraryMap(libraryKey) {
+            console.log(`🔄 CARGANDO MAPA para: ${libraryKey}`);
+            
+            // Si ya está cargando, no hacer nada
+            if (isMapLoading) {
+                console.log(`⏳ Ya se está cargando un mapa, esperando...`);
+                return false;
+            }
+            
+            isMapLoading = true;
+            
+            // Limpiar timeout anterior si existe
+            if (currentImageLoadTimeout) {
+                clearTimeout(currentImageLoadTimeout);
+                currentImageLoadTimeout = null;
+            }
+            
             const libraryData = mapData[libraryKey];
             if (!libraryData) {
-                showNoMapAvailable();
+                console.error(`❌ No hay datos para: ${libraryKey}`);
+                showNoMapAvailable("No se encontraron datos para esta biblioteca");
+                isMapLoading = false;
                 return false;
             }
             
             currentLibraryData = libraryData;
             
             const mapContainer = document.getElementById('map-container');
-            const initialState = document.getElementById('initial-state');
             
-            // Ocultar estado inicial
-            initialState.style.display = 'none';
-            
-            // Limpiar mapa anterior
+            // 1. Limpiar el contenedor
             mapContainer.innerHTML = '';
             
-            // Mostrar estado de carga
+            // 2. Mostrar estado de carga
             mapContainer.innerHTML = `
-                <div class="loading-state" id="loading-state">
+                <div class="loading-state" id="current-loading-state">
                     <div>
                         <div class="loading-spinner"></div>
-                        <p>Cargando mapa...</p>
+                        <p>Cargando mapa de ${libraryData.name}...</p>
                     </div>
                 </div>
             `;
             
-            // Cargar mapa del piso 1
+            // 3. Cargar la imagen
             const floorData = libraryData.floors[1];
             const imgPath = floorData.img;
             
-            // Verificar si la imagen existe
-            const mapImg = new Image();
-            let imgTimeout = setTimeout(() => {
-                mapImg.onload = null; // Cancelar onload si se dispara después del timeout
-                mapImg.onerror = null;
-                showNoMapAvailable();
-            }, 10000); // Timeout de 10 segundos
+            console.log(`📁 Intentando cargar imagen: ${imgPath}`);
             
-            mapImg.onload = function() {
-                clearTimeout(imgTimeout);
-                // La imagen existe, mostrarla
-                mapContainer.innerHTML = '';
+            const img = new Image();
+            
+            // Configurar timeout
+            currentImageLoadTimeout = setTimeout(() => {
+                console.log(`⏰ Timeout: La imagen ${imgPath} está tardando demasiado`);
+                if (img && !img.complete) {
+                    img.onload = null;
+                    img.onerror = null;
+                    showNoMapAvailable(`El mapa no se pudo cargar. Tiempo de espera agotado.`);
+                }
+                currentImageLoadTimeout = null;
+                isMapLoading = false;
+            }, 5000);
+            
+            img.onload = function() {
+                console.log(`✅ Imagen cargada exitosamente: ${imgPath}`);
+                
+                if (currentImageLoadTimeout) {
+                    clearTimeout(currentImageLoadTimeout);
+                    currentImageLoadTimeout = null;
+                }
+                
+                // Crear elemento de imagen
                 const imgElement = document.createElement('img');
                 imgElement.id = 'map-image';
                 imgElement.src = imgPath;
@@ -681,129 +745,283 @@
                 imgElement.style.height = '100%';
                 imgElement.style.objectFit = 'contain';
                 
-                // Agregar event listener para cuando la imagen se cargue completamente
-                imgElement.addEventListener('load', function() {
-                    // Si hay marcadores que mostrar, ajustar su posición
-                    if (selectedLibrary && selectedMaterial) {
+                // Limpiar y agregar imagen
+                mapContainer.innerHTML = '';
+                mapContainer.appendChild(imgElement);
+                clearMapMarkers();
+                
+                imgElement.onload = function() {
+                    console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
+                    isMapLoading = false;
+                    
+                    // Solo buscar ubicación si hay material seleccionado
+                    if (selectedMaterial && selectedMaterial !== 'libro') {
                         setTimeout(() => {
-                            if (selectedMaterial !== 'libro' || document.getElementById('signature').value.trim()) {
-                                // Recalcular la ubicación para ajustar marcadores
-                                const libraryKey = libraryMap[selectedLibrary];
-                                const locationType = materialMap[selectedMaterial];
-                                const libraryData = mapData[libraryKey];
-                                
-                                let locationResult;
-                                if (selectedMaterial === 'libro') {
-                                    const signature = document.getElementById('signature').value.trim();
-                                    locationResult = searchInStacks(libraryData, signature);
-                                } else {
-                                    locationResult = searchInStaticLocations(libraryData, locationType);
-                                }
-                                
-                                if (locationResult) {
-                                    drawLocation(locationResult);
-                                    setTimeout(adjustMarkersPosition, 50);
-                                }
-                            }
+                            findAndDisplayLocation();
                         }, 100);
                     }
-                });
+                };
                 
-                mapContainer.appendChild(imgElement);
-                
-                // Limpiar marcadores anteriores
-                clearMapMarkers();
+                imgElement.onerror = function() {
+                    console.error(`❌ Error renderizando imagen en DOM: ${imgPath}`);
+                    showNoMapAvailable(`Error al mostrar el mapa de ${libraryData.name}`);
+                    isMapLoading = false;
+                };
             };
             
-            mapImg.onerror = function() {
-                clearTimeout(imgTimeout);
-                // La imagen no existe, mostrar estado de no disponible
-                console.error(`No se pudo cargar la imagen: ${imgPath}`);
-                showNoMapAvailable();
+            img.onerror = function() {
+                console.error(`❌ Error cargando imagen: ${imgPath}`);
+                
+                if (currentImageLoadTimeout) {
+                    clearTimeout(currentImageLoadTimeout);
+                    currentImageLoadTimeout = null;
+                }
+                
+                // Mostrar error y NO intentar cargar de nuevo
+                showNoMapAvailable(`No se pudo cargar el mapa de ${libraryData.name}.`);
+                isMapLoading = false;
                 return false;
             };
             
-            mapImg.src = imgPath;
+            img.src = imgPath;
             
             return true;
         }
-        
-        // Función para mostrar estado "mapa no disponible"
-        function showNoMapAvailable() {
+
+        // FUNCIÓN MEJORADA: Mostrar estado "mapa no disponible"
+        function showNoMapAvailable(message = "El mapa para esta selección no está disponible en el sistema.") {
             const mapContainer = document.getElementById('map-container');
-            const initialState = document.getElementById('initial-state');
             
-            // Ocultar estado inicial
-            initialState.style.display = 'none';
+            // Limpiar cualquier timeout pendiente
+            if (currentImageLoadTimeout) {
+                clearTimeout(currentImageLoadTimeout);
+                currentImageLoadTimeout = null;
+            }
             
-            // Mostrar estado de mapa no disponible
+            // Mostrar estado de error
             mapContainer.innerHTML = `
                 <div class="no-map-state">
                     <div>
                         <span aria-hidden="true">🚫</span>
                         <h3>Mapa no disponible</h3>
-                        <p>El mapa para esta selección no está disponible en el sistema.</p>
+                        <p>${message}</p>
                         <p style="margin-top: 10px; font-size: 12px; color: #6c757d;">
                             Seleccione otra biblioteca o consulte con el personal de la biblioteca.
                         </p>
-                        <button onclick="reportMissingMap()" style="margin-top: 15px; padding: 8px 16px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                            Reportar mapa faltante
-                        </button>
                     </div>
                 </div>
             `;
             
-            // Limpiar marcadores
             clearMapMarkers();
+            document.getElementById('location-info-panel').classList.remove('active');
+            document.getElementById('legend-panel').classList.remove('active');
+        }
+
+        // FUNCIÓN CORREGIDA: Buscar y mostrar ubicación (EVITA BUCLE)
+        function findAndDisplayLocation() {
+            if (!selectedLibrary || !selectedMaterial) {
+                console.log("❌ Faltan selecciones para buscar ubicación");
+                return;
+            }
+            
+            const libraryKey = libraryMap[selectedLibrary];
+            const locationType = materialMap[selectedMaterial];
+            const libraryData = mapData[libraryKey];
+            
+            if (!libraryData) {
+                console.error("❌ No hay datos para la biblioteca:", libraryKey);
+                return;
+            }
+            
+            // Verificar que el mapa esté cargado
+            const mapContainer = document.getElementById('map-container');
+            const mapImage = mapContainer.querySelector('img#map-image');
+            const noMapState = mapContainer.querySelector('.no-map-state');
+            
+            // Si ya hay un estado de "no mapa disponible", NO intentar cargar de nuevo
+            if (noMapState) {
+                console.log("⏹️ Ya se mostró que no hay mapa disponible, deteniendo búsqueda");
+                return;
+            }
+            
+            // Si no hay imagen de mapa, NO intentar cargarla automáticamente
+            // (esto evita el bucle infinito)
+            if (!mapImage) {
+                console.log("⚠️ El mapa no está cargado. Mostrando mensaje informativo.");
+                
+                // Mostrar mensaje informativo en lugar de intentar cargar
+                const locationInfoPanel = document.getElementById('location-info-panel');
+                const locationInfoText = document.getElementById('location-info-text');
+                
+                if (selectedMaterial === 'libro') {
+                    const signature = document.getElementById('signature').value.trim();
+                    if (signature) {
+                        locationInfoText.textContent = `Material disponible en ${libraryData.name}. Seleccione primero una biblioteca para ver el mapa.`;
+                    } else {
+                        locationInfoText.textContent = `Ingrese una signatura para buscar en ${libraryData.name}.`;
+                    }
+                } else {
+                    locationInfoText.textContent = `${materialDisplayNames[selectedMaterial]} disponible en ${libraryData.name}. Seleccione primero una biblioteca para ver el mapa.`;
+                }
+                
+                locationInfoPanel.classList.add('active');
+                return;
+            }
+            
+            console.log(`🔍 Buscando ubicación en ${libraryData.name} para: ${locationType}`);
+            
+            let locationResult, locationMessage;
+            
+            if (selectedMaterial === 'libro') {
+                const signature = document.getElementById('signature').value.trim();
+                if (!signature) {
+                    console.log("⚠️ No hay signatura para buscar");
+                    return;
+                }
+                
+                if (!validateSignature(signature)) {
+                    console.log("❌ Signatura no válida");
+                    return;
+                }
+                
+                locationResult = searchInStacks(libraryData, signature);
+                if (locationResult) {
+                    const parts = locationResult.stackInfo.split('.');
+                    locationMessage = `Este material puede encontrarse en el piso ${locationResult.floor} de la ${libraryData.name}, estante ${parts[1]} lado ${parts[2]}. Esta es una referencia aproximada.`;
+                    console.log(`✅ Ubicación encontrada: ${locationMessage}`);
+                } else {
+                    locationMessage = `Material disponible en ${libraryData.name} (Colección General). Consulte con el personal para ubicación exacta.`;
+                    console.log(`ℹ️ Ubicación general: ${locationMessage}`);
+                }
+            } else {
+                locationResult = searchInStaticLocations(libraryData, locationType);
+                if (locationResult) {
+                    if (locationResult.isMultiple) {
+                        locationMessage = locationResult.locations[0].message;
+                    } else {
+                        locationMessage = locationResult.message;
+                    }
+                    console.log(`✅ Ubicación estática encontrada: ${locationMessage}`);
+                } else {
+                    locationMessage = `Material disponible en ${libraryData.name} (${materialDisplayNames[selectedMaterial]}). Consulte con el personal para ubicación exacta.`;
+                    console.log(`ℹ️ Ubicación general: ${locationMessage}`);
+                }
+            }
+            
+            if (locationResult) {
+                drawLocation(locationResult);
+                showLocationInfo(locationMessage);
+            } else {
+                clearMapMarkers();
+                showLocationInfo(locationMessage);
+            }
         }
         
-        function reportMissingMap() {
-            const libraryName = selectedLibrary ? libraryMap[selectedLibrary] : 'Desconocida';
-            alert(`Se ha registrado la solicitud de mapa para: ${libraryName}\n\nEl personal de sistemas será notificado.`);
+        function selectLibrary(libraryId) {
+            console.log(`🎯 SELECT LIBRARY llamado con: ${libraryId}`);
+            
+            if (selectedLibrary === libraryId) {
+                console.log(`📌 Ya está seleccionada: ${libraryId}`);
+                return;
+            }
+            
+            if (selectedLibrary) {
+                document.getElementById(`btn-${selectedLibrary}`).classList.remove('selected');
+            }
+            
+            selectedLibrary = libraryId;
+            document.getElementById(`btn-${libraryId}`).classList.add('selected');
+            
+            // Resetear estado de carga
+            isMapLoading = false;
+            
+            // Cargar el mapa
+            const libraryKey = libraryMap[libraryId];
+            console.log(`🗺️ Cargando mapa para clave: ${libraryKey}`);
+            
+            if (libraryKey) {
+                loadLibraryMap(libraryKey);
+            }
+            
+            updateUI();
         }
         
-        // Función para mostrar información de ubicación
-        function showLocationInfo(locationMessage, signature = '') {
+        function selectMaterial(materialId) {
+            console.log(`📑 SELECT MATERIAL llamado con: ${materialId}`);
+            
+            if (selectedMaterial) {
+                document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
+            }
+            selectedMaterial = materialId;
+            document.getElementById(`btn-${materialId}`).classList.add('selected');
+            
+            updateUI();
+            
+            // Solo buscar ubicación si hay biblioteca seleccionada
+            if (selectedLibrary) {
+                console.log(`🔍 Buscando ubicación para material: ${materialId}`);
+                findAndDisplayLocation();
+            } else {
+                console.log("⚠️ No hay biblioteca seleccionada, no se puede buscar ubicación");
+            }
+        }
+        
+        function updateUI() {
+            const signature = document.getElementById('signature');
+            const signatureValue = signature.value.trim();
+            
+            if (selectedMaterial === 'libro') {
+                signature.disabled = false;
+                signature.setAttribute('required', 'required');
+                signature.placeholder = "Ejemplo: 658.403, 005.1, 900.2, A412, 312 A123";
+            } else {
+                signature.disabled = true;
+                signature.removeAttribute('required');
+                signature.value = '';
+                signature.placeholder = "Solo para libros";
+            }
+            
+            if (selectedLibrary || selectedMaterial || signatureValue) {
+                document.getElementById('selection-info').style.display = 'block';
+                document.getElementById('current-library').textContent = selectedLibrary ? 
+                    libraryMap[selectedLibrary] : '-';
+                document.getElementById('current-material').textContent = selectedMaterial ? 
+                    materialDisplayNames[selectedMaterial] : '-';
+                document.getElementById('current-signature').textContent = signatureValue || '-';
+            } else {
+                document.getElementById('selection-info').style.display = 'none';
+            }
+        }
+        
+        function showLocationInfo(locationMessage) {
             const locationInfoPanel = document.getElementById('location-info-panel');
             const locationInfoText = document.getElementById('location-info-text');
             
-            // Actualizar texto de ubicación
             locationInfoText.textContent = locationMessage;
-            
-            // Mostrar el panel de información
             locationInfoPanel.classList.add('active');
-            
-            // Mostrar la leyenda cuando hay información de ubicación
             document.getElementById('legend-panel').classList.add('active');
         }
         
-        // Función para dibujar ubicación en el mapa
         function drawLocation(locationResult) {
             const mapContainer = document.getElementById('map-container');
             
-            // Limpiar marcadores anteriores
             clearMapMarkers();
             
-            // Agregar marcadores si hay ubicación específica
             if (locationResult) {
                 if (locationResult.isMultiple && locationResult.locations) {
-                    // Múltiples ubicaciones
                     locationResult.locations.forEach((loc, index) => {
                         const marker = createMarker(loc.x, loc.y, loc.width, loc.height, index);
                         mapContainer.appendChild(marker);
                     });
                 } else if (!locationResult.isMultiple && locationResult.x !== undefined) {
-                    // Ubicación única
                     const marker = createMarker(locationResult.x, locationResult.y, locationResult.width, locationResult.height);
                     mapContainer.appendChild(marker);
                 }
                 
-                // Ajustar posicionamiento después de que la imagen se cargue
                 setTimeout(adjustMarkersPosition, 100);
             }
         }
         
-        // Función para crear marcador
         function createMarker(x, y, width, height, index = 0) {
             const marker = document.createElement('div');
             marker.className = 'map-marker';
@@ -819,7 +1037,7 @@
             marker.style.borderRadius = '4px';
             marker.style.boxShadow = '0 0 15px rgba(230, 126, 34, 0.8)';
             marker.style.zIndex = '10';
-            marker.style.display = 'none'; // Ocultar inicialmente hasta ajustar posición
+            marker.style.display = 'none';
             
             const markerIcon = document.createElement('div');
             markerIcon.style.color = '#2c3e50';
@@ -840,7 +1058,6 @@
             return marker;
         }
         
-        // Función para ajustar la posición de los marcadores según la imagen del mapa
         function adjustMarkersPosition() {
             const mapContainer = document.getElementById('map-container');
             const mapImage = mapContainer.querySelector('img#map-image');
@@ -848,34 +1065,44 @@
             
             if (!mapImage || markers.length === 0) return;
             
-            // Obtener dimensiones del contenedor y la imagen
-            const containerRect = mapContainer.getBoundingClientRect();
-            const imgRect = mapImage.getBoundingClientRect();
+            if (mapImage.naturalWidth === 0 || mapImage.naturalHeight === 0) {
+                setTimeout(adjustMarkersPosition, 100);
+                return;
+            }
             
-            // Calcular escala y desplazamiento de la imagen dentro del contenedor
-            const containerWidth = containerRect.width;
-            const containerHeight = containerRect.height;
-            const imgWidth = imgRect.width;
-            const imgHeight = imgRect.height;
+            const containerWidth = mapContainer.clientWidth;
+            const containerHeight = mapContainer.clientHeight;
+            const naturalWidth = mapImage.naturalWidth;
+            const naturalHeight = mapImage.naturalHeight;
             
-            // Calcular márgenes (si la imagen está centrada con object-fit: contain)
-            const marginLeft = (containerWidth - imgWidth) / 2;
-            const marginTop = (containerHeight - imgHeight) / 2;
+            const containerAspectRatio = containerWidth / containerHeight;
+            const imageAspectRatio = naturalWidth / naturalHeight;
+            
+            let displayWidth, displayHeight, offsetX, offsetY;
+            
+            if (containerAspectRatio > imageAspectRatio) {
+                displayHeight = containerHeight;
+                displayWidth = naturalWidth * (containerHeight / naturalHeight);
+                offsetX = (containerWidth - displayWidth) / 2;
+                offsetY = 0;
+            } else {
+                displayWidth = containerWidth;
+                displayHeight = naturalHeight * (containerWidth / naturalWidth);
+                offsetX = 0;
+                offsetY = (containerHeight - displayHeight) / 2;
+            }
             
             markers.forEach(marker => {
-                // Obtener coordenadas relativas almacenadas en data attributes
                 const relX = parseFloat(marker.getAttribute('data-relative-x'));
                 const relY = parseFloat(marker.getAttribute('data-relative-y'));
                 const relWidth = parseFloat(marker.getAttribute('data-relative-width'));
                 const relHeight = parseFloat(marker.getAttribute('data-relative-height'));
                 
-                // Calcular posición y tamaño absolutos en píxeles
-                const markerLeft = marginLeft + (relX * imgWidth);
-                const markerTop = marginTop + (relY * imgHeight);
-                const markerWidth = relWidth * imgWidth;
-                const markerHeight = relHeight * imgHeight;
+                const markerLeft = offsetX + (relX * displayWidth);
+                const markerTop = offsetY + (relY * displayHeight);
+                const markerWidth = relWidth * displayWidth;
+                const markerHeight = relHeight * displayHeight;
                 
-                // Aplicar estilos en píxeles
                 marker.style.left = `${markerLeft}px`;
                 marker.style.top = `${markerTop}px`;
                 marker.style.width = `${markerWidth}px`;
@@ -884,177 +1111,30 @@
             });
         }
         
-        // Función para limpiar marcadores del mapa
         function clearMapMarkers() {
             const mapContainer = document.getElementById('map-container');
             const markers = mapContainer.querySelectorAll('.map-marker');
             markers.forEach(marker => marker.remove());
         }
         
-        // Función unificada para encontrar y mostrar ubicación
-        function findAndDisplayLocation() {
-            if (!selectedLibrary || !selectedMaterial) return;
-            
-            const libraryKey = libraryMap[selectedLibrary];
-            const locationType = materialMap[selectedMaterial];
-            const libraryData = mapData[libraryKey];
-            
-            if (!libraryData) {
-                return;
-            }
-            
-            let locationResult, locationMessage;
-            
-            if (selectedMaterial === 'libro') {
-                const signature = document.getElementById('signature').value.trim();
-                if (!signature) {
-                    // No hay signatura, no buscar
-                    return;
-                }
-                
-                // Validar signatura
-                if (!validateSignature(signature)) {
-                    return;
-                }
-                
-                locationResult = searchInStacks(libraryData, signature);
-                if (locationResult) {
-                    const parts = locationResult.stackInfo.split('.');
-                    locationMessage = `Este material puede encontrarse en el piso ${locationResult.floor} de la ${libraryData.name}, estante ${parts[1]} lado ${parts[2]}. Esta es una referencia aproximada.`;
-                } else {
-                    locationMessage = `Material disponible en ${libraryData.name} (Colección General). Consulte con el personal para ubicación exacta.`;
-                }
-            } else {
-                locationResult = searchInStaticLocations(libraryData, locationType);
-                if (locationResult) {
-                    if (locationResult.isMultiple) {
-                        locationMessage = locationResult.locations[0].message;
-                    } else {
-                        locationMessage = locationResult.message;
-                    }
-                } else {
-                    locationMessage = `Material disponible en ${libraryData.name} (${materialDisplayNames[selectedMaterial]}). Consulte con el personal para ubicación exacta.`;
-                }
-            }
-            
-            // Dibujar y mostrar resultado
-            if (locationResult) {
-                drawLocation(locationResult);
-                showLocationInfo(locationMessage);
-            } else {
-                clearMapMarkers();
-                showLocationInfo(locationMessage);
-            }
-        }
-        
-        // Funciones de la interfaz
-        function selectLibrary(libraryId) {
-            if (selectedLibrary) {
-                document.getElementById(`btn-${selectedLibrary}`).classList.remove('selected');
-            }
-            selectedLibrary = libraryId;
-            document.getElementById(`btn-${libraryId}`).classList.add('selected');
-            
-            // Cargar automáticamente el mapa base de la biblioteca
-            const libraryKey = libraryMap[libraryId];
-            if (loadMapBase(libraryKey)) {
-                hideAllMessages();
-            }
-            
-            updateUI();
-            
-            // Ocultar panel de información hasta que se seleccione material
-            const locationInfoPanel = document.getElementById('location-info-panel');
-            locationInfoPanel.classList.remove('active');
-            document.getElementById('legend-panel').classList.remove('active');
-            
-            // Si ya hay un material seleccionado (que no sea libro), mostrar ubicación automáticamente
-            if (selectedMaterial && selectedMaterial !== 'libro') {
-                findAndDisplayLocation();
-            }
-        }
-        
-        function selectMaterial(materialId) {
-            if (selectedMaterial) {
-                document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
-            }
-            selectedMaterial = materialId;
-            document.getElementById(`btn-${materialId}`).classList.add('selected');
-            
-            updateUI();
-            hideAllMessages();
-            
-            // Si hay biblioteca seleccionada
-            if (selectedLibrary) {
-                if (selectedMaterial !== 'libro') {
-                    // Para materiales que no son libros, mostrar ubicación automáticamente
-                    findAndDisplayLocation();
-                } else {
-                    // Para libros, limpiar marcadores y ocultar paneles
-                    clearMapMarkers();
-                    const locationInfoPanel = document.getElementById('location-info-panel');
-                    locationInfoPanel.classList.remove('active');
-                    document.getElementById('legend-panel').classList.remove('active');
-                }
-            }
-        }
-        
-        function updateUI() {
-            const signature = document.getElementById('signature');
-            const signatureValue = signature.value.trim();
-            
-            // Habilitar/deshabilitar campo de signatura según el material seleccionado
-            if (selectedMaterial === 'libro') {
-                signature.disabled = false;
-                signature.setAttribute('required', 'required');
-            } else {
-                signature.disabled = true;
-                signature.removeAttribute('required');
-                signature.value = '';
-            }
-            
-            // Mostrar/ocultar información de selección
-            if (selectedLibrary || selectedMaterial || signatureValue) {
-                document.getElementById('selection-info').style.display = 'block';
-                document.getElementById('current-library').textContent = selectedLibrary ? 
-                    libraryMap[selectedLibrary] : '-';
-                document.getElementById('current-material').textContent = selectedMaterial ? 
-                    materialDisplayNames[selectedMaterial] : '-';
-                document.getElementById('current-signature').textContent = signatureValue || '-';
-            } else {
-                document.getElementById('selection-info').style.display = 'none';
-            }
-        }
-        
-        function showMessage(type, text) {
-            hideAllMessages();
-            const element = document.getElementById(`message-${type}`);
-            element.textContent = text;
-            element.style.display = 'block';
-        }
-        
-        function hideAllMessages() {
-            ['error', 'warning', 'success'].forEach(type => {
-                document.getElementById(`message-${type}`).style.display = 'none';
-            });
-        }
-        
-        // Agregar event listener para redimensionamiento de ventana
+        // Redimensionamiento
+        let resizeTimeout;
         window.addEventListener('resize', function() {
-            if (selectedLibrary && selectedMaterial) {
-                setTimeout(adjustMarkersPosition, 100);
-            }
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                if (selectedLibrary && selectedMaterial) {
+                    adjustMarkersPosition();
+                }
+            }, 250);
         });
         
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
             const signatureInput = document.getElementById('signature');
             
-            // Cuando se escribe en el campo de signatura, buscar automáticamente
             signatureInput.addEventListener('input', function() {
                 updateUI();
                 
-                // Si es un libro, buscar automáticamente después de un breve delay
                 if (selectedMaterial === 'libro') {
                     clearTimeout(searchTimeout);
                     searchTimeout = setTimeout(() => {
@@ -1063,7 +1143,6 @@
                 }
             });
             
-            // Permitir búsqueda con Enter
             signatureInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter' && selectedMaterial === 'libro') {
                     e.preventDefault();
@@ -1071,6 +1150,8 @@
                     findAndDisplayLocation();
                 }
             });
+            
+            console.log('✅ Sistema inicializado - Correcciones aplicadas');
         });
     </script>
 </body>
