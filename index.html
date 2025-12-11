@@ -550,13 +550,13 @@
             // Evitar inyección de código o caracteres maliciosos
             const safePattern = /^[0-9.,\sA-Za-z-]+$/;
             if (!safePattern.test(signature)) {
-                showMessage('error', 'Signatura contiene caracteres no válidos');
+                // No mostrar mensaje emergente, solo devolver false
                 return false;
             }
             
             // Longitud máxima razonable
             if (signature.length > 50) {
-                showMessage('error', 'Signatura demasiado larga');
+                // No mostrar mensaje emergente, solo devolver false
                 return false;
             }
             
@@ -825,7 +825,7 @@
             const libraryData = mapData[libraryKey];
             
             if (!libraryData) {
-                showMessage('error', 'Biblioteca no encontrada en el sistema');
+                // No mostrar mensaje emergente
                 return;
             }
             
@@ -867,11 +867,11 @@
             if (locationResult) {
                 drawLocation(locationResult);
                 showLocationInfo(locationMessage);
-                showMessage('success', 'Ubicación encontrada');
+                // NO mostrar mensaje emergente de éxito
             } else {
                 clearMapMarkers();
                 showLocationInfo(locationMessage);
-                showMessage('warning', locationMessage);
+                // NO mostrar mensaje emergente de advertencia
             }
         }
         
@@ -955,17 +955,12 @@
         }
         
         function showMessage(type, text) {
+            // Esta función se mantiene pero no se llama desde ninguna otra parte
+            // Solo se deja por si es necesaria para otros propósitos futuros
             hideAllMessages();
             const element = document.getElementById(`message-${type}`);
             element.textContent = text;
             element.style.display = 'block';
-            
-            // Ocultar mensaje después de 5 segundos (excepto errores)
-            if (type !== 'error') {
-                setTimeout(() => {
-                    element.style.display = 'none';
-                }, 5000);
-            }
         }
         
         function hideAllMessages() {
