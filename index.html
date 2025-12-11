@@ -966,32 +966,40 @@
             }
         }
         
-        function updateUI() {
-            const signature = document.getElementById('signature');
-            const signatureValue = signature.value.trim();
-            
-            if (selectedMaterial === 'libro') {
-                signature.disabled = false;
-                signature.setAttribute('required', 'required');
-                signature.placeholder = "Ejemplo: 658.403, 005.1, 900.2, A412, 312 A123";
-            } else {
-                signature.disabled = true;
-                signature.removeAttribute('required');
-                signature.value = '';
-                signature.placeholder = "Solo para libros";
-            }
-            
-            if (selectedLibrary || selectedMaterial || signatureValue) {
-                document.getElementById('selection-info').style.display = 'block';
-                document.getElementById('current-library').textContent = selectedLibrary ? 
-                    libraryMap[selectedLibrary] : '-';
-                document.getElementById('current-material').textContent = selectedMaterial ? 
-                    materialDisplayNames[selectedMaterial] : '-';
-                document.getElementById('current-signature').textContent = signatureValue || '-';
-            } else {
-                document.getElementById('selection-info').style.display = 'none';
-            }
-        }
+function updateUI() {
+    const signature = document.getElementById('signature');
+    const signatureValue = signature.value.trim();
+    
+    if (selectedMaterial === 'libro') {
+        signature.disabled = false;
+        signature.setAttribute('required', 'required');
+        signature.placeholder = "Ejemplo: 658.403, 005.1, 900.2, A412, 312 A123";
+    } else {
+        signature.disabled = true;
+        signature.removeAttribute('required');
+        signature.value = '';
+        signature.placeholder = "Solo para libros";
+    }
+    
+    // Actualizar información de selección
+    if (selectedLibrary || selectedMaterial || signatureValue) {
+        document.getElementById('selection-info').style.display = 'block';
+        document.getElementById('current-library').textContent = selectedLibrary ? 
+            libraryMap[selectedLibrary] : '-';
+        document.getElementById('current-material').textContent = selectedMaterial ? 
+            materialDisplayNames[selectedMaterial] : '-';
+        document.getElementById('current-signature').textContent = signatureValue || '-';
+    } else {
+        document.getElementById('selection-info').style.display = 'none';
+    }
+    
+    // Si cambiamos a libro y hay signatura, buscar automáticamente después de un breve delay
+    if (selectedMaterial === 'libro' && signatureValue) {
+        setTimeout(() => {
+            findAndDisplayLocation();
+        }, 100);
+    }
+}
         
         function showLocationInfo(locationMessage) {
             const locationInfoPanel = document.getElementById('location-info-panel');
