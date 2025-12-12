@@ -408,7 +408,7 @@
                 name: "Biblioteca Medellín",
                 floors: {
                     1: {
-                        img: "https://bibliotecapjic.github.io/images/mapa-medellin-piso-1.png",
+                        img: "images/mapa-medellin-piso-1.png",
                         staticLocations: {
                             "REVISTA": {
                                 x: 0.0815, y: 0.8564, width: 0.1046, height: 0.0799,
@@ -1207,11 +1207,11 @@
         document.addEventListener('DOMContentLoaded', function() {
             const signatureInput = document.getElementById('signature');
             
-            // Deshabilitar controles inicialmente
+            // Deshabilitar controles inicialmente (ninguna biblioteca seleccionada)
             toggleControls(false);
             
-            // Cargar mapa de Centro Regional Oriente por defecto
-            selectLibrary('oriente');
+            // NINGUNA BIBLIOTECA SELECCIONADA POR DEFECTO
+            // El mapa mostrará el estado inicial sin selección
             
             signatureInput.addEventListener('input', function() {
                 updateUI();
@@ -1241,7 +1241,7 @@
             });
             
             updateUI();
-            console.log('✅ Sistema inicializado - Correcciones aplicadas');
+            console.log('✅ Sistema inicializado - Ninguna biblioteca seleccionada por defecto');
         });
     </script>
 </body>
