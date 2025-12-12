@@ -272,7 +272,7 @@
     <div class="container">
         <div class="header">
             <h1><span aria-hidden="true">🗺️</span> Sistema de Mapas de Biblioteca</h1>
-            <div class="subtitle">Seleccione biblioteca e ingrese la signatura del material</div>
+            <div class="subtitle">Selecciona la Biblioteca de tu interés y localiza los materiales en el mapa de cada Biblioteca. Puede realizar la búsqueda mediante el código de clasificación (localización en estantería) o por tipo de material.</div>
         </div>
         
         <div class="main-content">
@@ -288,7 +288,7 @@
                         </button>
                         <button class="library-btn selected" id="btn-oriente" onclick="selectLibrary('oriente')"
                                 aria-label="Seleccionar Centro Regional Oriente">
-                            <span class="library-icon" aria-hidden="true">🏛️</span> Centro Regional Oriente
+                            <span class="library-icon" aria-hidden="true">📚</span> Centro Regional Oriente
                         </button>
                         <button class="library-btn" id="btn-uraba" onclick="selectLibrary('uraba')"
                                 aria-label="Seleccionar Centro Regional Urabá">
@@ -302,15 +302,15 @@
                 
                 <!-- Signatura Section -->
                 <div class="signature-section">
-                    <h2 class="signature-title"><span aria-hidden="true">🔢</span> <span class="required-field">Signatura</span></h2>
+                    <h2 class="signature-title"><span aria-hidden="true">🔢</span> <span class="required-field">Número de localización en estantería (solo para Libros)</span></h2>
                     <div class="signature-box">
-                        <label class="signature-label" for="signature">Ingrese la signatura del material:</label>
+                        <label class="signature-label" for="signature">Ingrese el número que corresponde a la localización del libro en estantería:</label>
                         <input type="text" class="signature-input" id="signature" 
-                               placeholder="123" 
+                               placeholder="123.4 A12 || 512.1 B18" 
                                aria-describedby="signature-help"
                                required>
                         <div id="signature-help" class="help-text">
-                            Ingrese la signatura para ubicar el material en el mapa. Ejemplos: 658.403, 005.1, 900.2, A412, 312 A123.
+                            Ingrese el número de localización para ubicar el material en el mapa. Ejemplos: 658.403, 005.1, 900.2, A412, 312 A123.
                         </div>
                     </div>
                 </div>
