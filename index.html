@@ -72,6 +72,11 @@
             border-left: 4px solid #3498db;
         }
         .signature-input:focus { outline: none; border-color: #3498db; box-shadow: 0 0 0 3px rgba(52,152,219,0.2); }
+        .signature-input:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
         .help-text {
             font-size: 12px;
             color: #666;
@@ -91,6 +96,11 @@
         }
         .material-btn:hover { border-color: #f39c12; background: #fff9e6; }
         .material-btn.selected { border-color: #f39c12; background: #fff3cd; color: #856404; }
+        .material-btn:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
         
         /* Map Panel (NO MODIFICADO) */
         .map-panel { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; }
@@ -308,7 +318,8 @@
                         <input type="text" class="signature-input" id="signature" 
                                placeholder="123.4 A12 || 512.1 B18" 
                                aria-describedby="signature-help"
-                               required>
+                               required
+                               disabled>
                         <div id="signature-help" class="help-text">
                             Ingrese el número de localización para ubicar el material en el mapa. Ejemplos: 658.403, 005.1, 900.2, A412, 312 A123.
                         </div>
@@ -322,11 +333,11 @@
                 <div class="other-materials-section">
                     <h2 class="section-title"><span aria-hidden="true">📑</span> Otros Materiales</h2>
                     <div class="material-buttons">
-                        <button class="material-btn" id="btn-tesis" onclick="selectMaterial('tesis')" aria-label="Buscar trabajo de grado">TRABAJOS DE GRADO</button>
-                        <button class="material-btn" id="btn-cd" onclick="selectMaterial('cd')" aria-label="Buscar CD´S">CD</button>
-                        <button class="material-btn" id="btn-revista" onclick="selectMaterial('revista')" aria-label="Buscar revista">REVISTAS</button>
-                        <button class="material-btn" id="btn-folleto" onclick="selectMaterial('folleto')" aria-label="Buscar folleto">FOLLETOS</button>
-                        <button class="material-btn" id="btn-norma" onclick="selectMaterial('norma')" aria-label="Buscar norma">NORMAS</button>
+                        <button class="material-btn" id="btn-tesis" onclick="selectMaterial('tesis')" aria-label="Buscar trabajo de grado" disabled>TRABAJOS DE GRADO</button>
+                        <button class="material-btn" id="btn-cd" onclick="selectMaterial('cd')" aria-label="Buscar CD´S" disabled>CD</button>
+                        <button class="material-btn" id="btn-revista" onclick="selectMaterial('revista')" aria-label="Buscar revista" disabled>REVISTAS</button>
+                        <button class="material-btn" id="btn-folleto" onclick="selectMaterial('folleto')" aria-label="Buscar folleto" disabled>FOLLETOS</button>
+                        <button class="material-btn" id="btn-norma" onclick="selectMaterial('norma')" aria-label="Buscar norma" disabled>NORMAS</button>
                     </div>
                 </div>
             </div>
@@ -397,7 +408,7 @@
                 name: "Biblioteca Medellín",
                 floors: {
                     1: {
-                        img: "images/mapa-medellin-piso-1.png",
+                        img: "https://bibliotecapjic.github.io/images/mapa-medellin-piso-1.png",
                         staticLocations: {
                             "REVISTA": {
                                 x: 0.0815, y: 0.8564, width: 0.1046, height: 0.0799,
@@ -527,6 +538,24 @@
             'folleto': 'FOLLETO',
             'norma': 'NORMA'
         };
+
+        // Función para habilitar/deshabilitar controles
+        function toggleControls(enabled) {
+            const signatureInput = document.getElementById('signature');
+            const materialButtons = document.querySelectorAll('.material-btn');
+            
+            signatureInput.disabled = !enabled;
+            
+            materialButtons.forEach(button => {
+                button.disabled = !enabled;
+            });
+            
+            if (!enabled) {
+                signatureInput.value = '';
+                selectedMaterial = null;
+                materialButtons.forEach(btn => btn.classList.remove('selected'));
+            }
+        }
 
         // FUNCIÓN MEJORADA: Normalizar números Dewey
         function normalizeDewey(callNumber) {
@@ -898,12 +927,27 @@
                 return;
             }
             
+            // Limpiar selección anterior
             if (selectedLibrary) {
                 document.getElementById(`btn-${selectedLibrary}`).classList.remove('selected');
             }
             
+            // Limpiar selección de material
+            if (selectedMaterial) {
+                document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
+                selectedMaterial = null;
+            }
+            
+            // Limpiar cuadro de texto
+            const signatureInput = document.getElementById('signature');
+            signatureInput.value = '';
+            
+            // Actualizar biblioteca seleccionada
             selectedLibrary = libraryId;
             document.getElementById(`btn-${libraryId}`).classList.add('selected');
+            
+            // Habilitar controles
+            toggleControls(true);
             
             // Resetear estado de carga
             isMapLoading = false;
@@ -917,6 +961,11 @@
             }
             
             updateUI();
+            
+            // Limpiar marcadores y paneles de información
+            clearMapMarkers();
+            document.getElementById('location-info-panel').classList.remove('active');
+            document.getElementById('legend-panel').classList.remove('active');
         }
         
         function selectMaterial(materialId) {
@@ -928,7 +977,7 @@
             selectedMaterial = materialId;
             document.getElementById(`btn-${materialId}`).classList.add('selected');
             
-            // AJUSTE: Borrar signatura si hay datos en el campo
+            // Borrar signatura si hay datos en el campo
             const signatureInput = document.getElementById('signature');
             if (signatureInput.value.trim()) {
                 console.log(`🧹 Borrando signatura porque se seleccionó: ${materialId}`);
@@ -1006,18 +1055,13 @@
             const signature = document.getElementById('signature');
             const signatureValue = signature.value.trim();
             
-            // El campo de signatura siempre está habilitado
-            signature.disabled = false;
-            signature.setAttribute('required', 'required');
-            signature.placeholder = "123.4 A12 || 512.1 B18";
-            
             // Actualizar información de selección
             if (selectedLibrary || selectedMaterial || signatureValue) {
                 document.getElementById('selection-info').style.display = 'block';
                 document.getElementById('current-library').textContent = selectedLibrary ? 
                     libraryMap[selectedLibrary] : '-';
                 document.getElementById('current-material').textContent = selectedMaterial ? 
-                    materialDisplayNames[selectedMaterial] : 'LIBRO';
+                    materialDisplayNames[selectedMaterial] : (signatureValue ? 'LIBRO' : '-');
                 document.getElementById('current-signature').textContent = signatureValue || '-';
             } else {
                 document.getElementById('selection-info').style.display = 'none';
@@ -1163,14 +1207,20 @@
         document.addEventListener('DOMContentLoaded', function() {
             const signatureInput = document.getElementById('signature');
             
+            // Deshabilitar controles inicialmente
+            toggleControls(false);
+            
             // Cargar mapa de Centro Regional Oriente por defecto
-           
-            if (libraryKey) {
-                loadLibraryMap(libraryKey);
-            }
+            selectLibrary('oriente');
             
             signatureInput.addEventListener('input', function() {
                 updateUI();
+                
+                // Si hay material seleccionado, limpiarlo cuando se empiece a escribir
+                if (selectedMaterial && this.value.trim() !== '') {
+                    document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
+                    selectedMaterial = null;
+                }
                 
                 if (selectedLibrary) {
                     clearTimeout(searchTimeout);
@@ -1191,7 +1241,7 @@
             });
             
             updateUI();
-            console.log('✅ Sistema inicializado - Ajuste aplicado: se borra signatura al seleccionar otros materiales');
+            console.log('✅ Sistema inicializado - Correcciones aplicadas');
         });
     </script>
 </body>
