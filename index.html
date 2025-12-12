@@ -286,7 +286,7 @@
                                 aria-label="Seleccionar biblioteca de Medellín">
                             <span class="library-icon" aria-hidden="true">📚</span> Medellín
                         </button>
-                        <button class="library-btn selected" id="btn-oriente" onclick="selectLibrary('oriente')"
+                        <button class="library-btn" id="btn-oriente" onclick="selectLibrary('oriente')"
                                 aria-label="Seleccionar Centro Regional Oriente">
                             <span class="library-icon" aria-hidden="true">📚</span> Centro Regional Oriente
                         </button>
@@ -384,7 +384,7 @@
 
     <script>
         // Variables de estado
-        let selectedLibrary = 'oriente'; // Centro Regional Oriente por defecto
+        let selectedLibrary = null;
         let selectedMaterial = null;
         let currentLibraryData = null;
         let searchTimeout = null;
@@ -1164,7 +1164,7 @@
             const signatureInput = document.getElementById('signature');
             
             // Cargar mapa de Centro Regional Oriente por defecto
-            const libraryKey = libraryMap['oriente'];
+           
             if (libraryKey) {
                 loadLibraryMap(libraryKey);
             }
