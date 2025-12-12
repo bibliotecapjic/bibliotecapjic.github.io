@@ -24,14 +24,16 @@
         
         /* Controls Panel */
         .controls-panel { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .section { margin-bottom: 30px; }
+        
+        /* Biblioteca Section */
+        .library-section { margin-bottom: 30px; }
         .section-title { 
             font-size: 18px; color: #2c3e50; margin-bottom: 15px; padding-bottom: 10px; 
             border-bottom: 2px solid #eee; display: flex; align-items: center; gap: 10px;
         }
         
-        /* Library Buttons */
-        .library-buttons { display: flex; flex-direction: column; gap: 12px; }
+        /* Library Buttons - REORGANIZADO */
+        .library-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
         .library-btn { 
             padding: 16px; background: white; border: 2px solid #ddd; border-radius: 8px; 
             font-size: 16px; font-weight: 500; color: #555; cursor: pointer; transition: all 0.3s;
@@ -41,18 +43,27 @@
         .library-btn.selected { border-color: #3498db; background: #e3f2fd; color: #2c3e50; }
         .library-icon { font-size: 22px; width: 30px; }
         
-        /* Material Buttons */
-        .material-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .material-btn { 
-            padding: 14px 10px; background: white; border: 2px solid #ddd; border-radius: 6px; 
-            font-size: 14px; font-weight: 500; color: #555; cursor: pointer; transition: all 0.3s;
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: #e0e0e0;
+            margin: 25px 0;
+            width: 100%;
         }
-        .material-btn:hover { border-color: #f39c12; background: #fff9e6; }
-        .material-btn.selected { border-color: #f39c12; background: #fff3cd; color: #856404; }
         
-        /* Signature Input */
+        /* Signatura Section - REORGANIZADO */
+        .signature-section { margin-bottom: 30px; }
+        .signature-title { 
+            font-size: 18px; color: #2c3e50; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .required-field::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
         .signature-box { margin-top: 10px; }
-        .signature-label { display: block; margin-bottom: 8px; font-weight: 500; color: #555; }
+        .signature-label { display: block; margin-bottom: 8px; font-weight: 500; color: #555; font-size: 14px; }
         .signature-input { 
             width: 100%; padding: 16px; border: 2px solid #ddd; border-radius: 8px; 
             font-size: 16px; font-family: monospace; transition: all 0.3s;
@@ -61,26 +72,27 @@
             border-left: 4px solid #3498db;
         }
         .signature-input:focus { outline: none; border-color: #3498db; box-shadow: 0 0 0 3px rgba(52,152,219,0.2); }
-        .signature-input:disabled { 
-            background-color: #f5f5f5;
-            cursor: not-allowed;
-            opacity: 0.6;
-            border-left-color: #ddd;
-        }
         .help-text {
             font-size: 12px;
             color: #666;
             margin-top: 5px;
             font-style: italic;
+            line-height: 1.5;
         }
         
-        /* Required field indicator */
-        .required-field::after {
-            content: " *";
-            color: #e74c3c;
-        }
+        /* Otros Materiales Section - REORGANIZADO */
+        .other-materials-section { margin-bottom: 20px; }
         
-        /* Map Panel */
+        /* Material Buttons - MANTENIDO PERO REORGANIZADO */
+        .material-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+        .material-btn { 
+            padding: 14px 10px; background: white; border: 2px solid #ddd; border-radius: 6px; 
+            font-size: 14px; font-weight: 500; color: #555; cursor: pointer; transition: all 0.3s;
+        }
+        .material-btn:hover { border-color: #f39c12; background: #fff9e6; }
+        .material-btn.selected { border-color: #f39c12; background: #fff3cd; color: #856404; }
+        
+        /* Map Panel (NO MODIFICADO) */
         .map-panel { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; }
         
         /* Compact Selection Info */
@@ -260,20 +272,21 @@
     <div class="container">
         <div class="header">
             <h1><span aria-hidden="true">🗺️</span> Sistema de Mapas de Biblioteca</h1>
-            <div class="subtitle">Seleccione biblioteca, tipo de material e ingrese la signatura (solo para libros)</div>
+            <div class="subtitle">Seleccione biblioteca e ingrese la signatura del material</div>
         </div>
         
         <div class="main-content">
-            <!-- Controls Panel -->
+            <!-- Controls Panel - REORGANIZADO -->
             <div class="controls-panel">
-                <div class="section">
+                <!-- Biblioteca Section -->
+                <div class="library-section">
                     <h2 class="section-title"><span aria-hidden="true">🏛️</span> Biblioteca</h2>
                     <div class="library-buttons">
                         <button class="library-btn" id="btn-medellin" onclick="selectLibrary('medellin')"
                                 aria-label="Seleccionar biblioteca de Medellín">
                             <span class="library-icon" aria-hidden="true">📚</span> Medellín
                         </button>
-                        <button class="library-btn" id="btn-oriente" onclick="selectLibrary('oriente')"
+                        <button class="library-btn selected" id="btn-oriente" onclick="selectLibrary('oriente')"
                                 aria-label="Seleccionar Centro Regional Oriente">
                             <span class="library-icon" aria-hidden="true">🏛️</span> Centro Regional Oriente
                         </button>
@@ -284,10 +297,31 @@
                     </div>
                 </div>
                 
-                <div class="section">
-                    <h2 class="section-title"><span aria-hidden="true">📑</span> Tipo de Material</h2>
+                <!-- Divider -->
+                <div class="divider"></div>
+                
+                <!-- Signatura Section -->
+                <div class="signature-section">
+                    <h2 class="signature-title"><span aria-hidden="true">🔢</span> <span class="required-field">Signatura</span></h2>
+                    <div class="signature-box">
+                        <label class="signature-label" for="signature">Ingrese la signatura del material:</label>
+                        <input type="text" class="signature-input" id="signature" 
+                               placeholder="123" 
+                               aria-describedby="signature-help"
+                               required>
+                        <div id="signature-help" class="help-text">
+                            Ingrese la signatura para ubicar el material en el mapa. Ejemplos: 658.403, 005.1, 900.2, A412, 312 A123.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Divider -->
+                <div class="divider"></div>
+                
+                <!-- Otros Materiales Section -->
+                <div class="other-materials-section">
+                    <h2 class="section-title"><span aria-hidden="true">📑</span> Otros Materiales</h2>
                     <div class="material-buttons">
-                        <button class="material-btn" id="btn-libro" onclick="selectMaterial('libro')" aria-label="Buscar libro">LIBRO</button>
                         <button class="material-btn" id="btn-tesis" onclick="selectMaterial('tesis')" aria-label="Buscar trabajo de grado">TRABAJO DE GRADO</button>
                         <button class="material-btn" id="btn-cd" onclick="selectMaterial('cd')" aria-label="Buscar CD">CD</button>
                         <button class="material-btn" id="btn-revista" onclick="selectMaterial('revista')" aria-label="Buscar revista">REVISTA</button>
@@ -295,24 +329,9 @@
                         <button class="material-btn" id="btn-norma" onclick="selectMaterial('norma')" aria-label="Buscar norma">NORMA</button>
                     </div>
                 </div>
-                
-                <div class="section">
-                    <h2 class="section-title"><span aria-hidden="true">🔢</span> <span class="required-field">Signatura</span></h2>
-                    <div class="signature-box">
-                        <label class="signature-label" for="signature">Ingrese la signatura del material (requerido solo para libros):</label>
-                        <input type="text" class="signature-input" id="signature" 
-                               placeholder="Ejemplo: 658.403, 005.1, 900.2, A412, 312 A123" 
-                               disabled
-                               aria-describedby="signature-help"
-                               required>
-                        <div id="signature-help" class="help-text">
-                            Ejemplos de signatura válida: 658.403, 005.1, 900.2, A412, 312 A123.
-                        </div>
-                    </div>
-                </div>
             </div>
             
-            <!-- Map Panel -->
+            <!-- Map Panel (NO MODIFICADO) -->
             <div class="map-panel">
                 <!-- Messages -->
                 <div class="message message-error" id="message-error" role="alert"></div>
@@ -341,7 +360,7 @@
                 <!-- Location Info Panel -->
                 <div class="location-info-panel" id="location-info-panel">
                     <div class="location-info-title"><span aria-hidden="true">📍</span> Información de Ubicación</div>
-                    <div class="location-info-text" id="location-info-text">Seleccione una biblioteca y tipo de material para ver la ubicación</div>
+                    <div class="location-info-text" id="location-info-text">Seleccione una biblioteca e ingrese una signatura para ver la ubicación</div>
                 </div>
                 
                 <!-- Map Container -->
@@ -349,7 +368,7 @@
                     <div class="initial-state" id="initial-state">
                         <div>
                             <span aria-hidden="true">🗺️</span>
-                            <p>Seleccione biblioteca y tipo de material para ver su ubicación en el mapa</p>
+                            <p>Seleccione biblioteca e ingrese una signatura para ver su ubicación en el mapa</p>
                         </div>
                     </div>
                 </div>
@@ -365,12 +384,12 @@
 
     <script>
         // Variables de estado
-        let selectedLibrary = null;
+        let selectedLibrary = 'oriente'; // Centro Regional Oriente por defecto
         let selectedMaterial = null;
         let currentLibraryData = null;
         let searchTimeout = null;
         let currentImageLoadTimeout = null;
-        let isMapLoading = false; // Nueva variable para evitar bucles
+        let isMapLoading = false;
         
         // Configuración de mapas
         const mapData = {
@@ -494,7 +513,6 @@
         };
         
         const materialMap = {
-            'libro': 'COLECCIÓN GENERAL',
             'tesis': 'TRABAJO DE GRADO',
             'cd': 'MULTIMEDIA',
             'revista': 'REVISTA',
@@ -503,7 +521,6 @@
         };
         
         const materialDisplayNames = {
-            'libro': 'LIBRO',
             'tesis': 'TRABAJO DE GRADO',
             'cd': 'CD',
             'revista': 'REVISTA',
@@ -516,23 +533,12 @@
             if (!callNumber) return null;
             
             try {
-                // Mantener la signatura original para depuración
                 const original = callNumber.toString().trim();
                 console.log(`🔍 Normalizando signatura: "${original}"`);
                 
-                // Extraer la parte numérica principal (antes del primer espacio o letra)
-                // Ejemplos:
-                // "A412" → "412"
-                // "312 A123" → "312"
-                // "658.403" → "658.403"
-                // "005.1" → "005.1"
-                
-                // Primero, buscar números con o sin decimales
-                // Permitir números con puntos decimales y que puedan tener letras después
                 let match = original.match(/^[A-Z]*(\d+(?:\.\d+)?)/);
                 
                 if (!match) {
-                    // Intentar otro patrón: números seguidos de espacio y letras
                     match = original.match(/^(\d+(?:\.\d+)?)/);
                 }
                 
@@ -559,14 +565,12 @@
         }
         
         function validateSignature(signature) {
-            // Patrón más flexible para signaturas
             const safePattern = /^[0-9A-Za-z.,\s-]+$/;
             if (!safePattern.test(signature)) {
                 console.log(`❌ Signatura no válida (patrón): "${signature}"`);
                 return false;
             }
             
-            // Longitud máxima razonable
             if (signature.length > 50) {
                 console.log(`❌ Signatura demasiado larga: "${signature}"`);
                 return false;
@@ -665,11 +669,10 @@
             return null;
         }
 
-        // FUNCIÓN CORREGIDA: Cargar mapa de biblioteca (EVITA BUCLE)
+        // FUNCIÓN CORREGIDA: Cargar mapa de biblioteca
         function loadLibraryMap(libraryKey) {
             console.log(`🔄 CARGANDO MAPA para: ${libraryKey}`);
             
-            // Si ya está cargando, no hacer nada
             if (isMapLoading) {
                 console.log(`⏳ Ya se está cargando un mapa, esperando...`);
                 return false;
@@ -677,7 +680,6 @@
             
             isMapLoading = true;
             
-            // Limpiar timeout anterior si existe
             if (currentImageLoadTimeout) {
                 clearTimeout(currentImageLoadTimeout);
                 currentImageLoadTimeout = null;
@@ -695,10 +697,10 @@
             
             const mapContainer = document.getElementById('map-container');
             
-            // 1. Limpiar el contenedor
+            // Limpiar el contenedor
             mapContainer.innerHTML = '';
             
-            // 2. Mostrar estado de carga
+            // Mostrar estado de carga
             mapContainer.innerHTML = `
                 <div class="loading-state" id="current-loading-state">
                     <div>
@@ -708,7 +710,7 @@
                 </div>
             `;
             
-            // 3. Cargar la imagen
+            // Cargar la imagen
             const floorData = libraryData.floors[1];
             const imgPath = floorData.img;
             
@@ -716,7 +718,6 @@
             
             const img = new Image();
             
-            // Configurar timeout
             currentImageLoadTimeout = setTimeout(() => {
                 console.log(`⏰ Timeout: La imagen ${imgPath} está tardando demasiado`);
                 if (img && !img.complete) {
@@ -736,7 +737,6 @@
                     currentImageLoadTimeout = null;
                 }
                 
-                // Crear elemento de imagen
                 const imgElement = document.createElement('img');
                 imgElement.id = 'map-image';
                 imgElement.src = imgPath;
@@ -745,7 +745,6 @@
                 imgElement.style.height = '100%';
                 imgElement.style.objectFit = 'contain';
                 
-                // Limpiar y agregar imagen
                 mapContainer.innerHTML = '';
                 mapContainer.appendChild(imgElement);
                 clearMapMarkers();
@@ -754,8 +753,9 @@
                     console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
                     isMapLoading = false;
                     
-                    // Solo buscar ubicación si hay material seleccionado
-                    if (selectedMaterial && selectedMaterial !== 'libro') {
+                    // Si hay signatura ingresada, buscar ubicación
+                    const signature = document.getElementById('signature').value.trim();
+                    if (signature) {
                         setTimeout(() => {
                             findAndDisplayLocation();
                         }, 100);
@@ -777,7 +777,6 @@
                     currentImageLoadTimeout = null;
                 }
                 
-                // Mostrar error y NO intentar cargar de nuevo
                 showNoMapAvailable(`No se pudo cargar el mapa de ${libraryData.name}.`);
                 isMapLoading = false;
                 return false;
@@ -792,13 +791,11 @@
         function showNoMapAvailable(message = "El mapa para esta selección no está disponible en el sistema.") {
             const mapContainer = document.getElementById('map-container');
             
-            // Limpiar cualquier timeout pendiente
             if (currentImageLoadTimeout) {
                 clearTimeout(currentImageLoadTimeout);
                 currentImageLoadTimeout = null;
             }
             
-            // Mostrar estado de error
             mapContainer.innerHTML = `
                 <div class="no-map-state">
                     <div>
@@ -817,15 +814,20 @@
             document.getElementById('legend-panel').classList.remove('active');
         }
 
-        // FUNCIÓN CORREGIDA: Buscar y mostrar ubicación (EVITA BUCLE)
+        // FUNCIÓN CORREGIDA: Buscar y mostrar ubicación
         function findAndDisplayLocation() {
-            if (!selectedLibrary || !selectedMaterial) {
-                console.log("❌ Faltan selecciones para buscar ubicación");
+            if (!selectedLibrary) {
+                console.log("❌ No hay biblioteca seleccionada");
+                return;
+            }
+            
+            const signature = document.getElementById('signature').value.trim();
+            if (!signature) {
+                console.log("❌ No hay signatura ingresada");
                 return;
             }
             
             const libraryKey = libraryMap[selectedLibrary];
-            const locationType = materialMap[selectedMaterial];
             const libraryData = mapData[libraryKey];
             
             if (!libraryData) {
@@ -838,74 +840,45 @@
             const mapImage = mapContainer.querySelector('img#map-image');
             const noMapState = mapContainer.querySelector('.no-map-state');
             
-            // Si ya hay un estado de "no mapa disponible", NO intentar cargar de nuevo
             if (noMapState) {
                 console.log("⏹️ Ya se mostró que no hay mapa disponible, deteniendo búsqueda");
                 return;
             }
             
-            // Si no hay imagen de mapa, NO intentar cargarla automáticamente
-            // (esto evita el bucle infinito)
             if (!mapImage) {
                 console.log("⚠️ El mapa no está cargado. Mostrando mensaje informativo.");
                 
-                // Mostrar mensaje informativo en lugar de intentar cargar
                 const locationInfoPanel = document.getElementById('location-info-panel');
                 const locationInfoText = document.getElementById('location-info-text');
                 
-                if (selectedMaterial === 'libro') {
-                    const signature = document.getElementById('signature').value.trim();
-                    if (signature) {
-                        locationInfoText.textContent = `Material disponible en ${libraryData.name}. Seleccione primero una biblioteca para ver el mapa.`;
-                    } else {
-                        locationInfoText.textContent = `Ingrese una signatura para buscar en ${libraryData.name}.`;
-                    }
-                } else {
-                    locationInfoText.textContent = `${materialDisplayNames[selectedMaterial]} disponible en ${libraryData.name}. Seleccione primero una biblioteca para ver el mapa.`;
-                }
-                
+                locationInfoText.textContent = `Material disponible en ${libraryData.name}. Seleccione primero una biblioteca para ver el mapa.`;
                 locationInfoPanel.classList.add('active');
                 return;
             }
             
-            console.log(`🔍 Buscando ubicación en ${libraryData.name} para: ${locationType}`);
+            console.log(`🔍 Buscando ubicación en ${libraryData.name} para signatura: ${signature}`);
             
-            let locationResult, locationMessage;
+            // Validar la signatura
+            if (!validateSignature(signature)) {
+                const locationInfoPanel = document.getElementById('location-info-panel');
+                const locationInfoText = document.getElementById('location-info-text');
+                locationInfoText.textContent = `Signatura no válida. Por favor ingrese una signatura válida.`;
+                locationInfoPanel.classList.add('active');
+                clearMapMarkers();
+                return;
+            }
             
-            if (selectedMaterial === 'libro') {
-                const signature = document.getElementById('signature').value.trim();
-                if (!signature) {
-                    console.log("⚠️ No hay signatura para buscar");
-                    return;
-                }
-                
-                if (!validateSignature(signature)) {
-                    console.log("❌ Signatura no válida");
-                    return;
-                }
-                
-                locationResult = searchInStacks(libraryData, signature);
-                if (locationResult) {
-                    const parts = locationResult.stackInfo.split('.');
-                    locationMessage = `Este material puede encontrarse en el piso ${locationResult.floor} de la ${libraryData.name}, estante ${parts[1]} lado ${parts[2]}. Esta es una referencia aproximada.`;
-                    console.log(`✅ Ubicación encontrada: ${locationMessage}`);
-                } else {
-                    locationMessage = `Material disponible en ${libraryData.name} (Colección General). Consulte con el personal para ubicación exacta.`;
-                    console.log(`ℹ️ Ubicación general: ${locationMessage}`);
-                }
+            // Buscar en los estantes (para libros)
+            const locationResult = searchInStacks(libraryData, signature);
+            let locationMessage;
+            
+            if (locationResult) {
+                const parts = locationResult.stackInfo.split('.');
+                locationMessage = `Este material puede encontrarse en el piso ${locationResult.floor} de la ${libraryData.name}, estante ${parts[1]} lado ${parts[2]}. Esta es una referencia aproximada.`;
+                console.log(`✅ Ubicación encontrada: ${locationMessage}`);
             } else {
-                locationResult = searchInStaticLocations(libraryData, locationType);
-                if (locationResult) {
-                    if (locationResult.isMultiple) {
-                        locationMessage = locationResult.locations[0].message;
-                    } else {
-                        locationMessage = locationResult.message;
-                    }
-                    console.log(`✅ Ubicación estática encontrada: ${locationMessage}`);
-                } else {
-                    locationMessage = `Material disponible en ${libraryData.name} (${materialDisplayNames[selectedMaterial]}). Consulte con el personal para ubicación exacta.`;
-                    console.log(`ℹ️ Ubicación general: ${locationMessage}`);
-                }
+                locationMessage = `Material disponible en ${libraryData.name} (Colección General). Consulte con el personal para ubicación exacta.`;
+                console.log(`ℹ️ Ubicación general: ${locationMessage}`);
             }
             
             if (locationResult) {
@@ -955,51 +928,101 @@
             selectedMaterial = materialId;
             document.getElementById(`btn-${materialId}`).classList.add('selected');
             
+            // AJUSTE: Borrar signatura si hay datos en el campo
+            const signatureInput = document.getElementById('signature');
+            if (signatureInput.value.trim()) {
+                console.log(`🧹 Borrando signatura porque se seleccionó: ${materialId}`);
+                signatureInput.value = '';
+            }
+            
             updateUI();
             
-            // Solo buscar ubicación si hay biblioteca seleccionada
+            // Si hay biblioteca seleccionada, buscar ubicación para este material
             if (selectedLibrary) {
                 console.log(`🔍 Buscando ubicación para material: ${materialId}`);
-                findAndDisplayLocation();
+                findAndDisplayLocationForMaterial(materialId);
             } else {
                 console.log("⚠️ No hay biblioteca seleccionada, no se puede buscar ubicación");
             }
         }
         
-function updateUI() {
-    const signature = document.getElementById('signature');
-    const signatureValue = signature.value.trim();
-    
-    if (selectedMaterial === 'libro') {
-        signature.disabled = false;
-        signature.setAttribute('required', 'required');
-        signature.placeholder = "Ejemplo: 658.403, 005.1, 900.2, A412, 312 A123";
-    } else {
-        signature.disabled = true;
-        signature.removeAttribute('required');
-        signature.value = '';
-        signature.placeholder = "Solo para libros";
-    }
-    
-    // Actualizar información de selección
-    if (selectedLibrary || selectedMaterial || signatureValue) {
-        document.getElementById('selection-info').style.display = 'block';
-        document.getElementById('current-library').textContent = selectedLibrary ? 
-            libraryMap[selectedLibrary] : '-';
-        document.getElementById('current-material').textContent = selectedMaterial ? 
-            materialDisplayNames[selectedMaterial] : '-';
-        document.getElementById('current-signature').textContent = signatureValue || '-';
-    } else {
-        document.getElementById('selection-info').style.display = 'none';
-    }
-    
-    // Si cambiamos a libro y hay signatura, buscar automáticamente después de un breve delay
-    if (selectedMaterial === 'libro' && signatureValue) {
-        setTimeout(() => {
-            findAndDisplayLocation();
-        }, 100);
-    }
-}
+        function findAndDisplayLocationForMaterial(materialId) {
+            if (!selectedLibrary) {
+                console.log("❌ No hay biblioteca seleccionada");
+                return;
+            }
+            
+            const libraryKey = libraryMap[selectedLibrary];
+            const locationType = materialMap[materialId];
+            const libraryData = mapData[libraryKey];
+            
+            if (!libraryData) {
+                console.error("❌ No hay datos para la biblioteca:", libraryKey);
+                return;
+            }
+            
+            // Verificar que el mapa esté cargado
+            const mapContainer = document.getElementById('map-container');
+            const mapImage = mapContainer.querySelector('img#map-image');
+            const noMapState = mapContainer.querySelector('.no-map-state');
+            
+            if (noMapState) {
+                console.log("⏹️ Ya se mostró que no hay mapa disponible, deteniendo búsqueda");
+                return;
+            }
+            
+            if (!mapImage) {
+                console.log("⚠️ El mapa no está cargado.");
+                return;
+            }
+            
+            console.log(`🔍 Buscando ubicación en ${libraryData.name} para: ${locationType}`);
+            
+            const locationResult = searchInStaticLocations(libraryData, locationType);
+            let locationMessage;
+            
+            if (locationResult) {
+                if (locationResult.isMultiple) {
+                    locationMessage = locationResult.locations[0].message;
+                } else {
+                    locationMessage = locationResult.message;
+                }
+                console.log(`✅ Ubicación estática encontrada: ${locationMessage}`);
+            } else {
+                locationMessage = `Material disponible en ${libraryData.name} (${materialDisplayNames[materialId]}). Consulte con el personal para ubicación exacta.`;
+                console.log(`ℹ️ Ubicación general: ${locationMessage}`);
+            }
+            
+            if (locationResult) {
+                drawLocation(locationResult);
+                showLocationInfo(locationMessage);
+            } else {
+                clearMapMarkers();
+                showLocationInfo(locationMessage);
+            }
+        }
+        
+        function updateUI() {
+            const signature = document.getElementById('signature');
+            const signatureValue = signature.value.trim();
+            
+            // El campo de signatura siempre está habilitado
+            signature.disabled = false;
+            signature.setAttribute('required', 'required');
+            signature.placeholder = "123";
+            
+            // Actualizar información de selección
+            if (selectedLibrary || selectedMaterial || signatureValue) {
+                document.getElementById('selection-info').style.display = 'block';
+                document.getElementById('current-library').textContent = selectedLibrary ? 
+                    libraryMap[selectedLibrary] : '-';
+                document.getElementById('current-material').textContent = selectedMaterial ? 
+                    materialDisplayNames[selectedMaterial] : 'LIBRO';
+                document.getElementById('current-signature').textContent = signatureValue || '-';
+            } else {
+                document.getElementById('selection-info').style.display = 'none';
+            }
+        }
         
         function showLocationInfo(locationMessage) {
             const locationInfoPanel = document.getElementById('location-info-panel');
@@ -1130,7 +1153,7 @@ function updateUI() {
         window.addEventListener('resize', function() {
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(function() {
-                if (selectedLibrary && selectedMaterial) {
+                if (selectedLibrary) {
                     adjustMarkersPosition();
                 }
             }, 250);
@@ -1140,10 +1163,16 @@ function updateUI() {
         document.addEventListener('DOMContentLoaded', function() {
             const signatureInput = document.getElementById('signature');
             
+            // Cargar mapa de Centro Regional Oriente por defecto
+            const libraryKey = libraryMap['oriente'];
+            if (libraryKey) {
+                loadLibraryMap(libraryKey);
+            }
+            
             signatureInput.addEventListener('input', function() {
                 updateUI();
                 
-                if (selectedMaterial === 'libro') {
+                if (selectedLibrary) {
                     clearTimeout(searchTimeout);
                     searchTimeout = setTimeout(() => {
                         findAndDisplayLocation();
@@ -1152,14 +1181,17 @@ function updateUI() {
             });
             
             signatureInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter' && selectedMaterial === 'libro') {
+                if (e.key === 'Enter') {
                     e.preventDefault();
                     clearTimeout(searchTimeout);
-                    findAndDisplayLocation();
+                    if (selectedLibrary) {
+                        findAndDisplayLocation();
+                    }
                 }
             });
             
-            console.log('✅ Sistema inicializado - Correcciones aplicadas');
+            updateUI();
+            console.log('✅ Sistema inicializado - Ajuste aplicado: se borra signatura al seleccionar otros materiales');
         });
     </script>
 </body>
