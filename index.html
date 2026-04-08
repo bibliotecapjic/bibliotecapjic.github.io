@@ -564,22 +564,11 @@
 
     function initFromURL() {
 
-
-            console.log("🚀 initFromURL ejecutándose");
+    console.log("🚀 initFromURL ejecutándose");
 
     const params = new URLSearchParams(window.location.search);
 
     console.log("🌐 search:", window.location.search);
-
-    const library_code = params.get('library_code');
-    const call_number = params.get('call_number');
-
-    console.log("🌐 URL detectada:", library_code, call_number);
-
-
-
-        
-    const params = new URLSearchParams(window.location.search);
 
     const library_code = params.get('library_code');
     const call_number = params.get('call_number');
@@ -600,11 +589,11 @@
         pendingCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
     }
 
-    // 🚀 Ejecutar selección SOLO si hay biblioteca
     if (pendingLibrary) {
         selectLibrary(pendingLibrary);
     }
 }
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
