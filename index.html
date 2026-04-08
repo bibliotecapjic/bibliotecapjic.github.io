@@ -850,22 +850,32 @@
     const signatureInput = document.getElementById('signature');
 
     // 🚀 CASO URL (flujo automático)
-    if (pendingCallNumber) {
-        console.log("🚀 Ejecutando flujo desde URL");
+   if (pendingCallNumber) {
+    console.log("🚀 Ejecutando flujo desde URL");
 
-        signatureInput.value = pendingCallNumber;
-        updateUI();
+    signatureInput.value = pendingCallNumber;
 
-        setTimeout(() => {
-            findAndDisplayLocation();
-        }, 200);
+    // 🔓 aseguramos que el usuario pueda escribir después
+    signatureInput.disabled = false;
 
-        // limpiar estado
-        pendingCallNumber = null;
-        pendingLibrary = null;
+    updateUI();
 
-        return;
-    }
+    setTimeout(() => {
+        findAndDisplayLocation();
+    }, 200);
+
+       setTimeout(() => {
+        signatureInput.focus();
+        signatureInput.select();
+    }, 300);
+
+    // limpiar estado
+    pendingCallNumber = null;
+    pendingLibrary = null;
+
+    return;
+}
+
 
     // 🔁 flujo normal
     const signature = signatureInput.value.trim();
