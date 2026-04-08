@@ -401,10 +401,6 @@
         let searchTimeout = null;
         let currentImageLoadTimeout = null;
         let isMapLoading = false;
-        let pendingCallNumber = null;
-        let pendingLibrary = null;
-
-
         
         // Configuración de mapas
         const mapData = {
@@ -542,67 +538,6 @@
             'folleto': 'FOLLETO',
             'norma': 'NORMA'
         };
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // 🔗 NUEVA FUNCIONALIDAD: URL
-    function getURLParams() {
-        const params = new URLSearchParams(window.location.search);
-        return {
-            library_code: params.get('library_code'),
-            call_number: params.get('call_number')
-        };
-    }
-
-    function mapLibraryCode(externalCode) {
-        const mapping = {
-            'POBLA': 'medellin',
-            'RIONE': 'oriente',
-            'APART': 'uraba'
-        };
-        return mapping[externalCode] || null;
-    }
-
-    function initFromURL() {
-
-    console.log("🚀 initFromURL ejecutándose");
-
-    const url = new URL(window.location.href);
-    const params = url.searchParams;
-
-    console.log("🌐 URL completa:", window.location.href);
-
-    const library_code = params.get('library_code');
-    const call_number = params.get('call_number');
-
-    console.log("🌐 URL detectada:", library_code, call_number);
-
-    const mapping = {
-        'POBLA': 'medellin',
-        'RIONE': 'oriente',
-        'APART': 'uraba'
-    };
-
-    if (library_code && mapping[library_code]) {
-        pendingLibrary = mapping[library_code];
-    }
-
-    if (call_number) {
-        pendingCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
-    }
-
-    if (pendingLibrary) {
-        selectLibrary(pendingLibrary);
-    }
-}
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-        
 
         // Función para habilitar/deshabilitar controles
         function toggleControls(enabled) {
@@ -844,53 +779,17 @@
                 clearMapMarkers();
                 
                 imgElement.onload = function() {
-    console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
-    isMapLoading = false;
-
-    const signatureInput = document.getElementById('signature');
-
-    // 🚀 CASO URL (flujo automático)
-   if (pendingCallNumber) {
-    console.log("🚀 Ejecutando flujo desde URL");
-
-    signatureInput.value = pendingCallNumber;
-
-    // 🔓 aseguramos que el usuario pueda escribir después
-    signatureInput.disabled = false;
-
-    updateUI();
-
-    setTimeout(() => {
-        findAndDisplayLocation();
-    }, 200);
-
-       setTimeout(() => {
-        signatureInput.focus();
-        signatureInput.select();
-    }, 300);
-
-    // limpiar estado
-    pendingCallNumber = null;
-    pendingLibrary = null;
-
-    return;
-}
-
-
-    // 🔁 flujo normal
-    const signature = signatureInput.value.trim();
-    if (signature) {
-        setTimeout(() => {
-            findAndDisplayLocation();
-        }, 100);
-    }
-
-                    // 🔓 GARANTIZAR que el input siempre quede habilitado
-const signatureInput = document.getElementById('signature');
-signatureInput.disabled = false;
-
-};
-
+                    console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
+                    isMapLoading = false;
+                    
+                    // Si hay signatura ingresada, buscar ubicación
+                    const signature = document.getElementById('signature').value.trim();
+                    if (signature) {
+                        setTimeout(() => {
+                            findAndDisplayLocation();
+                        }, 100);
+                    }
+                };
                 
                 imgElement.onerror = function() {
                     console.error(`❌ Error renderizando imagen en DOM: ${imgPath}`);
@@ -942,31 +841,6 @@ signatureInput.disabled = false;
             clearMapMarkers();
             document.getElementById('location-info-panel').classList.remove('active');
             document.getElementById('legend-panel').classList.remove('active');
-
-
-            // 🧠 Aunque no haya mapa, permitir mostrar información de ubicación
-if (selectedLibrary) {
-    const signature = document.getElementById('signature').value.trim();
-
-    if (signature) {
-        const libraryKey = libraryMap[selectedLibrary];
-        const libraryData = mapData[libraryKey];
-
-        const locationResult = searchInStacks(libraryData, signature);
-
-        let locationMessage;
-
-        if (locationResult) {
-            const parts = locationResult.stackInfo.split('.');
-            locationMessage = `Este material puede encontrarse en el piso ${locationResult.floor} de la ${libraryData.name}, estante ${parts[1]} lado ${parts[2]}. (Mapa no disponible)`;
-        } else {
-            locationMessage = `Material disponible en ${libraryData.name}. (Mapa no disponible). Consulte con el personal para ubicación exacta.`;
-        }
-
-        showLocationInfo(locationMessage);
-    }
-}
-
         }
 
         // FUNCIÓN CORREGIDA: Buscar y mostrar ubicación
@@ -995,12 +869,10 @@ if (selectedLibrary) {
             const mapImage = mapContainer.querySelector('img#map-image');
             const noMapState = mapContainer.querySelector('.no-map-state');
             
-           if (noMapState) {
-    console.log("⏹️ Ya se mostró que no hay mapa disponible, deteniendo búsqueda");
-    return;
-}
-
-
+            if (noMapState) {
+                console.log("⏹️ Ya se mostró que no hay mapa disponible, deteniendo búsqueda");
+                return;
+            }
             
             if (!mapImage) {
                 console.log("⚠️ El mapa no está cargado. Mostrando mensaje informativo.");
@@ -1068,11 +940,7 @@ if (selectedLibrary) {
             
             // Limpiar cuadro de texto
             const signatureInput = document.getElementById('signature');
-            // ⚠️ SOLO limpiar si NO viene desde URL
-if (!pendingCallNumber) {
-    signatureInput.value = '';
-}
-
+            signatureInput.value = '';
             
             // Actualizar biblioteca seleccionada
             selectedLibrary = libraryId;
@@ -1337,36 +1205,44 @@ if (!pendingCallNumber) {
         
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
-
-    console.log("🔥 DOM cargado");
-
-    initFromURL(); // 👈 ESTO ES CRÍTICO
-
-    const signatureInput = document.getElementById('signature');
-
-    toggleControls(false);
-
-    signatureInput.addEventListener('input', function() {
-        updateUI();
-
-        if (selectedMaterial && this.value.trim() !== '') {
-            document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
-            selectedMaterial = null;
-        }
-
-        if (selectedLibrary) {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                findAndDisplayLocation();
-            }, 500);
-        }
-    });
-
-    updateUI();
-
-    console.log('✅ Sistema inicializado con soporte de URL');
-});
-
+            const signatureInput = document.getElementById('signature');
+            
+            // Deshabilitar controles inicialmente (ninguna biblioteca seleccionada)
+            toggleControls(false);
+            
+            // NINGUNA BIBLIOTECA SELECCIONADA POR DEFECTO
+            // El mapa mostrará el estado inicial sin selección
+            
+            signatureInput.addEventListener('input', function() {
+                updateUI();
+                
+                // Si hay material seleccionado, limpiarlo cuando se empiece a escribir
+                if (selectedMaterial && this.value.trim() !== '') {
+                    document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
+                    selectedMaterial = null;
+                }
+                
+                if (selectedLibrary) {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        findAndDisplayLocation();
+                    }, 500);
+                }
+            });
+            
+            signatureInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    clearTimeout(searchTimeout);
+                    if (selectedLibrary) {
+                        findAndDisplayLocation();
+                    }
+                }
+            });
+            
+            updateUI();
+            console.log('✅ Sistema inicializado - Ninguna biblioteca seleccionada por defecto');
+        });
     </script>
 </body>
 </html>
