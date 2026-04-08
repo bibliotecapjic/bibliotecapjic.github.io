@@ -402,7 +402,7 @@ let searchTimeout = null;
 let currentImageLoadTimeout = null;
 let isMapLoading = false;
 let pendingCallNumber = null;
-        let pendingLibrary = null;
+let pendingLibrary = null;
 
 
 
@@ -563,42 +563,46 @@ return mapping[externalCode] || null;
 }
 
 function initFromURL() {
-        const { library_code, call_number } = getURLParams();
+
+
+            console.log("🚀 initFromURL ejecutándose");
+
     const params = new URLSearchParams(window.location.search);
 
-        console.log("🌐 Parámetros URL:", library_code, call_number);
+    console.log("🌐 search:", window.location.search);
+
     const library_code = params.get('library_code');
     const call_number = params.get('call_number');
 
-        if (library_code) {
-            const mappedLibrary = mapLibraryCode(library_code);
     console.log("🌐 URL detectada:", library_code, call_number);
 
-            if (mappedLibrary) {
-                selectLibrary(mappedLibrary);
-            }
-        }
-    if (library_code) {
-        const mapping = {
-            'POBLA': 'medellin',
-            'RIONE': 'oriente',
-            'APART': 'uraba'
-        };
 
-        if (call_number) {
-    pendingCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
-    console.log("📚 Signatura en espera:", pendingCallNumber);
-        }
-        pendingLibrary = mapping[library_code] || null;
-    }
 
-    if (call_number) {
-        pendingCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
-    }
+        
+const params = new URLSearchParams(window.location.search);
 
-    // 🚀 Ejecutar selección SOLO si hay biblioteca
-    if (pendingLibrary) {
-        selectLibrary(pendingLibrary);
+const library_code = params.get('library_code');
+const call_number = params.get('call_number');
+
+console.log("🌐 URL detectada:", library_code, call_number);
+
+if (library_code) {
+const mapping = {
+'POBLA': 'medellin',
+'RIONE': 'oriente',
+'APART': 'uraba'
+};
+
+pendingLibrary = mapping[library_code] || null;
+}
+
+if (call_number) {
+pendingCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
+}
+
+// 🚀 Ejecutar selección SOLO si hay biblioteca
+if (pendingLibrary) {
+selectLibrary(pendingLibrary);
 }
 }
 
@@ -854,29 +858,25 @@ isMapLoading = false;
 
 const signatureInput = document.getElementById('signature');
 
-    // 🚀 Si viene desde URL
-    // 🚀 CASO URL (flujo automático)
+// 🚀 CASO URL (flujo automático)
 if (pendingCallNumber) {
-        console.log("🚀 Aplicando signatura desde URL:", pendingCallNumber);
-        console.log("🚀 Ejecutando flujo desde URL");
+console.log("🚀 Ejecutando flujo desde URL");
 
 signatureInput.value = pendingCallNumber;
 updateUI();
 
 setTimeout(() => {
 findAndDisplayLocation();
-        }, 150);
-        }, 200);
+}, 200);
 
-        // limpiar estado
+// limpiar estado
 pendingCallNumber = null;
-        pendingLibrary = null;
+pendingLibrary = null;
 
 return;
 }
 
-    // 🔁 comportamiento normal
-    // 🔁 flujo normal
+// 🔁 flujo normal
 const signature = signatureInput.value.trim();
 if (signature) {
 setTimeout(() => {
@@ -1035,10 +1035,9 @@ selectedMaterial = null;
 
 // Limpiar cuadro de texto
 const signatureInput = document.getElementById('signature');
-            signatureInput.value = '';
-            // ⚠️ SOLO limpiar si NO viene desde URL
+// ⚠️ SOLO limpiar si NO viene desde URL
 if (!pendingCallNumber) {
-    signatureInput.value = '';
+signatureInput.value = '';
 }
 
 
@@ -1305,44 +1304,74 @@ adjustMarkersPosition();
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
-const signatureInput = document.getElementById('signature');
+            const signatureInput = document.getElementById('signature');
+            
+            // Deshabilitar controles inicialmente (ninguna biblioteca seleccionada)
+            toggleControls(false);
+            
+            // NINGUNA BIBLIOTECA SELECCIONADA POR DEFECTO
+            // El mapa mostrará el estado inicial sin selección
+            
+            signatureInput.addEventListener('input', function() {
+                updateUI();
+                
+                // Si hay material seleccionado, limpiarlo cuando se empiece a escribir
+                if (selectedMaterial && this.value.trim() !== '') {
+                    document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
+                    selectedMaterial = null;
+                }
+                
+                if (selectedLibrary) {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        findAndDisplayLocation();
+                    }, 500);
+                }
+            });
+            
+            signatureInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    clearTimeout(searchTimeout);
+                    if (selectedLibrary) {
+                        findAndDisplayLocation();
+                    }
+                }
+            });
+            
+            updateUI();
+            console.log('✅ Sistema inicializado - Ninguna biblioteca seleccionada por defecto');
+        });
 
-// Deshabilitar controles inicialmente (ninguna biblioteca seleccionada)
-toggleControls(false);
+    console.log("🔥 DOM cargado");
 
-// NINGUNA BIBLIOTECA SELECCIONADA POR DEFECTO
-// El mapa mostrará el estado inicial sin selección
+    initFromURL(); // 👈 ESTO ES CRÍTICO
 
-signatureInput.addEventListener('input', function() {
-updateUI();
+    const signatureInput = document.getElementById('signature');
 
-// Si hay material seleccionado, limpiarlo cuando se empiece a escribir
-if (selectedMaterial && this.value.trim() !== '') {
-document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
-selectedMaterial = null;
-}
+    toggleControls(false);
 
-if (selectedLibrary) {
-clearTimeout(searchTimeout);
-searchTimeout = setTimeout(() => {
-findAndDisplayLocation();
-}, 500);
-}
+    signatureInput.addEventListener('input', function() {
+        updateUI();
+
+        if (selectedMaterial && this.value.trim() !== '') {
+            document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
+            selectedMaterial = null;
+        }
+
+        if (selectedLibrary) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                findAndDisplayLocation();
+            }, 500);
+        }
+    });
+
+    updateUI();
+
+    console.log('✅ Sistema inicializado con soporte de URL');
 });
 
-signatureInput.addEventListener('keypress', function(e) {
-if (e.key === 'Enter') {
-e.preventDefault();
-clearTimeout(searchTimeout);
-if (selectedLibrary) {
-findAndDisplayLocation();
-}
-}
-});
-
-updateUI();
-console.log('✅ Sistema inicializado - Ninguna biblioteca seleccionada por defecto');
-});
 </script>
 </body>
 </html>
