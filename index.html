@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapas de Biblioteca</title>
     <style>
-        /* Tus estilos originales, intactos */
+        /* (Mantén exactamente tus estilos actuales, no los cambio para no alterar la apariencia) */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; color: #333; padding: 20px; }
         .container { max-width: 1200px; margin: 0 auto; }
@@ -131,15 +131,14 @@
         </div>
     </div>
     <script>
-        // ======================== DATOS (sin cambios) ========================
+        // ======================== CONFIGURACIÓN Y DATOS ========================
         let selectedLibrary = null;
         let selectedMaterial = null;
         let currentLibraryData = null;
         let searchTimeout = null;
         let currentImageLoadTimeout = null;
         let isMapLoading = false;
-        let currentMarker = null;      // Referencia al marcador actual
-        let currentLocationInfo = null; // Última ubicación mostrada
+        let pendingLocation = null;  // Para guardar ubicación mientras carga el mapa
         
         const mapData = {
             "MEDELLÍN": {
@@ -202,83 +201,7 @@
             return null;
         }
 
-        // ======================== MANEJO DE MARCADOR SIN PARPADEO ========================
-        function updateMarker(location) {
-            if (!location) {
-                if (currentMarker) currentMarker.style.display = 'none';
-                return;
-            }
-            if (!currentMarker) {
-                currentMarker = createMarker(0, 0, 0, 0);
-                document.getElementById('map-container').appendChild(currentMarker);
-            }
-            // Actualizar atributos del marcador
-            if (location.isMultiple && location.locations) {
-                // Para múltiples ubicaciones, por simplicidad usamos la primera
-                const first = location.locations[0];
-                currentMarker.setAttribute('data-relative-x', first.x);
-                currentMarker.setAttribute('data-relative-y', first.y);
-                currentMarker.setAttribute('data-relative-width', first.width);
-                currentMarker.setAttribute('data-relative-height', first.height);
-                currentMarker.style.display = 'block';
-                // Si hay más de una, podrías crear más marcadores, pero para evitar parpadeo se mantiene uno
-                // En tu diseño original se soportaban múltiples, pero aquí simplificamos para velocidad.
-                // Si necesitas múltiples, avísame.
-            } else if (location.x !== undefined) {
-                currentMarker.setAttribute('data-relative-x', location.x);
-                currentMarker.setAttribute('data-relative-y', location.y);
-                currentMarker.setAttribute('data-relative-width', location.width);
-                currentMarker.setAttribute('data-relative-height', location.height);
-                currentMarker.style.display = 'block';
-            }
-            adjustMarkersPosition(); // Reajustar posición
-        }
-
-        function createMarker(x, y, w, h) {
-            const marker = document.createElement('div');
-            marker.className = 'map-marker';
-            marker.setAttribute('data-relative-x', x);
-            marker.setAttribute('data-relative-y', y);
-            marker.setAttribute('data-relative-width', w);
-            marker.setAttribute('data-relative-height', h);
-            Object.assign(marker.style, {
-                position: 'absolute', background: 'rgba(255,215,0,0.7)', border: '2px solid #e67e22',
-                pointerEvents: 'none', boxSizing: 'border-box', borderRadius: '4px',
-                boxShadow: '0 0 15px rgba(230,126,34,0.8)', zIndex: '10', display: 'none'
-            });
-            const icon = document.createElement('div');
-            icon.textContent = '📍';
-            Object.assign(icon.style, { position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '24px', textShadow: '2px 2px 4px rgba(0,0,0,0.3)' });
-            marker.appendChild(icon);
-            return marker;
-        }
-
-        function adjustMarkersPosition() {
-            const container = document.getElementById('map-container');
-            const img = container.querySelector('img#map-image');
-            if (!img || !currentMarker || currentMarker.style.display === 'none') return;
-            if (img.naturalWidth === 0) { requestAnimationFrame(() => adjustMarkersPosition()); return; }
-            const cw = container.clientWidth, ch = container.clientHeight;
-            const nw = img.naturalWidth, nh = img.naturalHeight;
-            const containerRatio = cw / ch, imageRatio = nw / nh;
-            let dw, dh, ox, oy;
-            if (containerRatio > imageRatio) { dh = ch; dw = nw * (ch / nh); ox = (cw - dw) / 2; oy = 0; }
-            else { dw = cw; dh = nh * (cw / nw); ox = 0; oy = (ch - dh) / 2; }
-            const rx = parseFloat(currentMarker.getAttribute('data-relative-x'));
-            const ry = parseFloat(currentMarker.getAttribute('data-relative-y'));
-            const rw = parseFloat(currentMarker.getAttribute('data-relative-width'));
-            const rh = parseFloat(currentMarker.getAttribute('data-relative-height'));
-            currentMarker.style.left = `${ox + rx * dw}px`;
-            currentMarker.style.top = `${oy + ry * dh}px`;
-            currentMarker.style.width = `${rw * dw}px`;
-            currentMarker.style.height = `${rh * dh}px`;
-        }
-
-        function clearMapMarkers() {
-            if (currentMarker) currentMarker.style.display = 'none';
-        }
-
-        // ======================== CARGA DE MAPA OPTIMIZADA ========================
+        // ======================== MAPA Y MARCADORES OPTIMIZADOS ========================
         function loadLibraryMap(libraryKey) {
             if (isMapLoading) return false;
             isMapLoading = true;
@@ -304,12 +227,18 @@
                 imgElement.style.objectFit = 'contain';
                 mapContainer.innerHTML = '';
                 mapContainer.appendChild(imgElement);
-                // Si hay un marcador pendiente, mostrarlo
-                if (currentMarker && currentMarker.style.display !== 'none') {
-                    imgElement.onload = () => { adjustMarkersPosition(); };
-                } else {
-                    imgElement.onload = () => { isMapLoading = false; };
-                }
+                clearMapMarkers();
+                imgElement.onload = () => {
+                    isMapLoading = false;
+                    if (pendingLocation) {
+                        drawLocation(pendingLocation);
+                        showLocationInfo(pendingLocation.message || (pendingLocation.stackInfo ? `Ubicado en estante ${pendingLocation.stackInfo}` : "Ubicación encontrada"));
+                        pendingLocation = null;
+                    } else {
+                        const signature = document.getElementById('signature').value.trim();
+                        if (signature) findAndDisplayLocation();
+                    }
+                };
                 imgElement.onerror = () => { showNoMapAvailable(`Error al mostrar mapa`); isMapLoading = false; };
             };
             img.onerror = () => { showNoMapAvailable(`No se pudo cargar el mapa`); isMapLoading = false; };
@@ -327,17 +256,17 @@
             isMapLoading = false;
         }
 
-        // ======================== BÚSQUEDA Y ACTUALIZACIÓN RÁPIDA ========================
         function findAndDisplayLocation() {
             if (!selectedLibrary) return;
             const signature = document.getElementById('signature').value.trim();
-            if (!signature) { clearMapMarkers(); return; }
+            if (!signature) return;
             const libKey = libraryMap[selectedLibrary];
             const libData = mapData[libKey];
             if (!libData) return;
             const mapImage = document.getElementById('map-container').querySelector('img#map-image');
             if (!mapImage && !isMapLoading) {
-                showLocationInfo("Espere a que cargue el mapa...");
+                document.getElementById('location-info-text').textContent = `Espere a que cargue el mapa...`;
+                document.getElementById('location-info-panel').classList.add('active');
                 return;
             }
             if (!validateSignature(signature)) {
@@ -348,7 +277,8 @@
             const location = searchInStacks(libData, signature);
             const message = location ? `Este material puede encontrarse en el piso ${location.floor} de ${libData.name}, estante ${location.stackInfo.split('.')[1]} lado ${location.stackInfo.split('.')[2]}.` : `Material disponible en ${libData.name} (Colección General). Consulte al personal.`;
             if (location) {
-                updateMarker(location);
+                if (mapImage) drawLocation(location);
+                else pendingLocation = { ...location, message };
                 showLocationInfo(message);
             } else {
                 clearMapMarkers();
@@ -365,10 +295,10 @@
             document.getElementById(`btn-${libId}`).classList.add('selected');
             toggleControls(true);
             isMapLoading = false;
-            // Limpiar marcador anterior
-            if (currentMarker) currentMarker.style.display = 'none';
+            pendingLocation = null;
             loadLibraryMap(libraryMap[libId]);
             updateUI();
+            clearMapMarkers();
             document.getElementById('location-info-panel').classList.remove('active');
             document.getElementById('legend-panel').classList.remove('active');
         }
@@ -392,11 +322,62 @@
             const locType = materialMap[matId];
             const location = searchInStaticLocations(libData, locType);
             const message = location ? (location.isMultiple ? location.locations[0].message : location.message) : `Material disponible en ${libData.name} (${materialDisplayNames[matId]}). Consulte al personal.`;
-            if (location) updateMarker(location);
+            if (location) drawLocation(location);
             else clearMapMarkers();
             showLocationInfo(message);
         }
 
+        function drawLocation(loc) {
+            clearMapMarkers();
+            if (!loc) return;
+            if (loc.isMultiple && loc.locations) {
+                loc.locations.forEach((l, idx) => { const m = createMarker(l.x, l.y, l.width, l.height, idx); document.getElementById('map-container').appendChild(m); });
+            } else if (loc.x !== undefined) {
+                const m = createMarker(loc.x, loc.y, loc.width, loc.height);
+                document.getElementById('map-container').appendChild(m);
+            }
+            requestAnimationFrame(() => adjustMarkersPosition());
+        }
+
+        function createMarker(x, y, w, h, idx = 0) {
+            const marker = document.createElement('div');
+            marker.className = 'map-marker';
+            marker.setAttribute('data-relative-x', x);
+            marker.setAttribute('data-relative-y', y);
+            marker.setAttribute('data-relative-width', w);
+            marker.setAttribute('data-relative-height', h);
+            Object.assign(marker.style, { position: 'absolute', background: 'rgba(255,215,0,0.7)', border: '2px solid #e67e22', pointerEvents: 'none', boxSizing: 'border-box', borderRadius: '4px', boxShadow: '0 0 15px rgba(230,126,34,0.8)', zIndex: '10', display: 'none' });
+            const icon = document.createElement('div');
+            icon.textContent = '📍';
+            Object.assign(icon.style, { position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: idx > 0 ? '20px' : '24px', textShadow: '2px 2px 4px rgba(0,0,0,0.3)' });
+            marker.appendChild(icon);
+            return marker;
+        }
+
+        function adjustMarkersPosition() {
+            const container = document.getElementById('map-container');
+            const img = container.querySelector('img#map-image');
+            const markers = container.querySelectorAll('.map-marker');
+            if (!img || markers.length === 0) return;
+            if (img.naturalWidth === 0) { requestAnimationFrame(() => adjustMarkersPosition()); return; }
+            const cw = container.clientWidth, ch = container.clientHeight;
+            const nw = img.naturalWidth, nh = img.naturalHeight;
+            const containerRatio = cw / ch, imageRatio = nw / nh;
+            let dw, dh, ox, oy;
+            if (containerRatio > imageRatio) { dh = ch; dw = nw * (ch / nh); ox = (cw - dw) / 2; oy = 0; }
+            else { dw = cw; dh = nh * (cw / nw); ox = 0; oy = (ch - dh) / 2; }
+            markers.forEach(m => {
+                const rx = parseFloat(m.getAttribute('data-relative-x')), ry = parseFloat(m.getAttribute('data-relative-y'));
+                const rw = parseFloat(m.getAttribute('data-relative-width')), rh = parseFloat(m.getAttribute('data-relative-height'));
+                m.style.left = `${ox + rx * dw}px`;
+                m.style.top = `${oy + ry * dh}px`;
+                m.style.width = `${rw * dw}px`;
+                m.style.height = `${rh * dh}px`;
+                m.style.display = 'block';
+            });
+        }
+
+        function clearMapMarkers() { document.querySelectorAll('#map-container .map-marker').forEach(m => m.remove()); }
         function updateUI() {
             const sig = document.getElementById('signature').value.trim();
             if (selectedLibrary || selectedMaterial || sig) {
@@ -406,7 +387,6 @@
                 document.getElementById('current-signature').textContent = sig || '-';
             } else document.getElementById('selection-info').style.display = 'none';
         }
-
         function showLocationInfo(msg) {
             document.getElementById('location-info-text').textContent = msg;
             document.getElementById('location-info-panel').classList.add('active');
@@ -428,7 +408,7 @@
                 }
                 if (selectedLibrary) {
                     if (searchTimeout) clearTimeout(searchTimeout);
-                    searchTimeout = setTimeout(() => findAndDisplayLocation(), 150); // Aún más rápido
+                    searchTimeout = setTimeout(() => findAndDisplayLocation(), 200); // Reducido a 200ms
                 }
             });
             sigInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); clearTimeout(searchTimeout); if (selectedLibrary) findAndDisplayLocation(); } });
