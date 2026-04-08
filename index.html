@@ -46,8 +46,7 @@
         .detail-item { flex: 1; min-width: 150px; }
         .detail-label { font-size: 12px; color: #666; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
         .detail-value { font-size: 14px; font-weight: 600; color: #2c3e50; word-break: break-word; }
-        .location-info-panel { background: #e8f6ef; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; border-left: 4px solid #27ae60; }
-        .location-info-panel.active { display: block; }
+        .location-info-panel { background: #e8f6ef; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #27ae60; }
         .location-info-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #2c3e50; display: flex; align-items: center; gap: 8px; }
         .location-info-text { font-size: 14px; line-height: 1.6; color: #555; }
         .map-container { flex: 1; position: relative; background: #f8f9fa; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0; min-height: 500px; margin-bottom: 20px; }
@@ -124,22 +123,21 @@
                     <div class="location-info-text" id="location-info-text">Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa</div>
                 </div>
                 <div class="map-container" id="map-container">
-                    <div class="initial-state"><div><span>🗺️</span><p>Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa</p></div></div>
+                    <div class="initial-state" id="initial-state"><div><span>🗺️</span><p>Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa</p></div></div>
                 </div>
                 <div class="legend-panel" id="legend-panel"><div class="legend-color"></div><div class="legend-text">Ubicación aproximada del material</div></div>
             </div>
         </div>
     </div>
     <script>
-        // ======================== DATOS (sin cambios) ========================
+        // ======================== DATOS ========================
         let selectedLibrary = null;
         let selectedMaterial = null;
         let currentLibraryData = null;
         let searchTimeout = null;
         let currentImageLoadTimeout = null;
         let isMapLoading = false;
-        let currentMarker = null;      // Referencia al marcador actual
-        let currentLocationInfo = null; // Última ubicación mostrada
+        let currentMarker = null;      // Referencia al marcador actual (único)
         
         const mapData = {
             "MEDELLÍN": {
@@ -202,28 +200,55 @@
             return null;
         }
 
-        // ======================== MANEJO DE MARCADOR SIN PARPADEO ========================
+        // ======================== MARCADOR PERSISTENTE (SIN PARPADEO) ========================
+        function createMarkerElement() {
+            const marker = document.createElement('div');
+            marker.className = 'map-marker';
+            marker.setAttribute('data-relative-x', 0);
+            marker.setAttribute('data-relative-y', 0);
+            marker.setAttribute('data-relative-width', 0);
+            marker.setAttribute('data-relative-height', 0);
+            Object.assign(marker.style, {
+                position: 'absolute',
+                background: 'rgba(255,215,0,0.7)',
+                border: '2px solid #e67e22',
+                pointerEvents: 'none',
+                boxSizing: 'border-box',
+                borderRadius: '4px',
+                boxShadow: '0 0 15px rgba(230,126,34,0.8)',
+                zIndex: '10',
+                display: 'none'
+            });
+            const icon = document.createElement('div');
+            icon.textContent = '📍';
+            Object.assign(icon.style, {
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                fontSize: '24px',
+                textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+            });
+            marker.appendChild(icon);
+            return marker;
+        }
+
         function updateMarker(location) {
             if (!location) {
                 if (currentMarker) currentMarker.style.display = 'none';
                 return;
             }
             if (!currentMarker) {
-                currentMarker = createMarker(0, 0, 0, 0);
+                currentMarker = createMarkerElement();
                 document.getElementById('map-container').appendChild(currentMarker);
             }
-            // Actualizar atributos del marcador
             if (location.isMultiple && location.locations) {
-                // Para múltiples ubicaciones, por simplicidad usamos la primera
                 const first = location.locations[0];
                 currentMarker.setAttribute('data-relative-x', first.x);
                 currentMarker.setAttribute('data-relative-y', first.y);
                 currentMarker.setAttribute('data-relative-width', first.width);
                 currentMarker.setAttribute('data-relative-height', first.height);
                 currentMarker.style.display = 'block';
-                // Si hay más de una, podrías crear más marcadores, pero para evitar parpadeo se mantiene uno
-                // En tu diseño original se soportaban múltiples, pero aquí simplificamos para velocidad.
-                // Si necesitas múltiples, avísame.
             } else if (location.x !== undefined) {
                 currentMarker.setAttribute('data-relative-x', location.x);
                 currentMarker.setAttribute('data-relative-y', location.y);
@@ -231,39 +256,32 @@
                 currentMarker.setAttribute('data-relative-height', location.height);
                 currentMarker.style.display = 'block';
             }
-            adjustMarkersPosition(); // Reajustar posición
-        }
-
-        function createMarker(x, y, w, h) {
-            const marker = document.createElement('div');
-            marker.className = 'map-marker';
-            marker.setAttribute('data-relative-x', x);
-            marker.setAttribute('data-relative-y', y);
-            marker.setAttribute('data-relative-width', w);
-            marker.setAttribute('data-relative-height', h);
-            Object.assign(marker.style, {
-                position: 'absolute', background: 'rgba(255,215,0,0.7)', border: '2px solid #e67e22',
-                pointerEvents: 'none', boxSizing: 'border-box', borderRadius: '4px',
-                boxShadow: '0 0 15px rgba(230,126,34,0.8)', zIndex: '10', display: 'none'
-            });
-            const icon = document.createElement('div');
-            icon.textContent = '📍';
-            Object.assign(icon.style, { position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '24px', textShadow: '2px 2px 4px rgba(0,0,0,0.3)' });
-            marker.appendChild(icon);
-            return marker;
+            adjustMarkersPosition();
         }
 
         function adjustMarkersPosition() {
             const container = document.getElementById('map-container');
             const img = container.querySelector('img#map-image');
             if (!img || !currentMarker || currentMarker.style.display === 'none') return;
-            if (img.naturalWidth === 0) { requestAnimationFrame(() => adjustMarkersPosition()); return; }
+            if (img.naturalWidth === 0) {
+                requestAnimationFrame(() => adjustMarkersPosition());
+                return;
+            }
             const cw = container.clientWidth, ch = container.clientHeight;
             const nw = img.naturalWidth, nh = img.naturalHeight;
             const containerRatio = cw / ch, imageRatio = nw / nh;
             let dw, dh, ox, oy;
-            if (containerRatio > imageRatio) { dh = ch; dw = nw * (ch / nh); ox = (cw - dw) / 2; oy = 0; }
-            else { dw = cw; dh = nh * (cw / nw); ox = 0; oy = (ch - dh) / 2; }
+            if (containerRatio > imageRatio) {
+                dh = ch;
+                dw = nw * (ch / nh);
+                ox = (cw - dw) / 2;
+                oy = 0;
+            } else {
+                dw = cw;
+                dh = nh * (cw / nw);
+                ox = 0;
+                oy = (ch - dh) / 2;
+            }
             const rx = parseFloat(currentMarker.getAttribute('data-relative-x'));
             const ry = parseFloat(currentMarker.getAttribute('data-relative-y'));
             const rw = parseFloat(currentMarker.getAttribute('data-relative-width'));
@@ -278,41 +296,98 @@
             if (currentMarker) currentMarker.style.display = 'none';
         }
 
-        // ======================== CARGA DE MAPA OPTIMIZADA ========================
+        // ======================== CARGA DE MAPA SIN DESTRUIR EL MARCADOR ========================
         function loadLibraryMap(libraryKey) {
             if (isMapLoading) return false;
             isMapLoading = true;
             if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
             const libData = mapData[libraryKey];
-            if (!libData) { showNoMapAvailable("No hay datos"); isMapLoading = false; return false; }
+            if (!libData) {
+                showNoMapAvailable("No hay datos");
+                isMapLoading = false;
+                return false;
+            }
             currentLibraryData = libData;
             const mapContainer = document.getElementById('map-container');
-            mapContainer.innerHTML = `<div class="loading-state"><div><div class="loading-spinner"></div><p>Cargando mapa de ${libData.name}...</p></div></div>`;
             const imgPath = libData.floors[1].img;
+            
+            // Mostrar estado de carga (sin eliminar el marcador)
+            const existingImg = mapContainer.querySelector('img#map-image');
+            if (!existingImg) {
+                // Primera carga: mostrar loading state
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'loading-state';
+                loadingDiv.id = 'temp-loading';
+                loadingDiv.innerHTML = `<div><div class="loading-spinner"></div><p>Cargando mapa de ${libData.name}...</p></div>`;
+                // Limpiar solo el contenido que no sea el marcador
+                Array.from(mapContainer.children).forEach(child => {
+                    if (child !== currentMarker && child.id !== 'map-image') child.remove();
+                });
+                mapContainer.appendChild(loadingDiv);
+            } else {
+                // Ya existe imagen, mostrar loading overlay (opcional)
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'loading-state';
+                loadingDiv.id = 'temp-loading';
+                loadingDiv.style.position = 'absolute';
+                loadingDiv.style.top = '0';
+                loadingDiv.style.left = '0';
+                loadingDiv.style.width = '100%';
+                loadingDiv.style.height = '100%';
+                loadingDiv.style.backgroundColor = 'rgba(248,249,250,0.9)';
+                loadingDiv.style.zIndex = '5';
+                loadingDiv.innerHTML = `<div><div class="loading-spinner"></div><p>Cargando mapa...</p></div>`;
+                mapContainer.appendChild(loadingDiv);
+            }
+            
             const img = new Image();
             currentImageLoadTimeout = setTimeout(() => {
-                if (img && !img.complete) { img.onload = null; img.onerror = null; showNoMapAvailable(`Tiempo de espera agotado`); }
-                currentImageLoadTimeout = null; isMapLoading = false;
+                if (img && !img.complete) {
+                    img.onload = null;
+                    img.onerror = null;
+                    showNoMapAvailable(`Tiempo de espera agotado`);
+                }
+                currentImageLoadTimeout = null;
+                isMapLoading = false;
             }, 8000);
+            
             img.onload = () => {
                 if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
-                const imgElement = document.createElement('img');
-                imgElement.id = 'map-image';
-                imgElement.src = imgPath;
-                imgElement.style.width = '100%';
-                imgElement.style.height = '100%';
-                imgElement.style.objectFit = 'contain';
-                mapContainer.innerHTML = '';
-                mapContainer.appendChild(imgElement);
-                // Si hay un marcador pendiente, mostrarlo
-                if (currentMarker && currentMarker.style.display !== 'none') {
-                    imgElement.onload = () => { adjustMarkersPosition(); };
-                } else {
-                    imgElement.onload = () => { isMapLoading = false; };
+                // Eliminar loading overlay si existe
+                const loadingDiv = document.getElementById('temp-loading');
+                if (loadingDiv) loadingDiv.remove();
+                
+                let imgElement = mapContainer.querySelector('img#map-image');
+                if (!imgElement) {
+                    imgElement = document.createElement('img');
+                    imgElement.id = 'map-image';
+                    imgElement.style.width = '100%';
+                    imgElement.style.height = '100%';
+                    imgElement.style.objectFit = 'contain';
+                    mapContainer.appendChild(imgElement);
                 }
-                imgElement.onerror = () => { showNoMapAvailable(`Error al mostrar mapa`); isMapLoading = false; };
+                imgElement.src = imgPath;
+                imgElement.alt = `Mapa de ${libData.name}`;
+                
+                imgElement.onload = () => {
+                    isMapLoading = false;
+                    // Si hay un marcador visible, reajustar posición
+                    if (currentMarker && currentMarker.style.display !== 'none') {
+                        adjustMarkersPosition();
+                    }
+                };
+                imgElement.onerror = () => {
+                    showNoMapAvailable(`Error al mostrar mapa de ${libData.name}`);
+                    isMapLoading = false;
+                };
             };
-            img.onerror = () => { showNoMapAvailable(`No se pudo cargar el mapa`); isMapLoading = false; };
+            img.onerror = () => {
+                if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
+                const loadingDiv = document.getElementById('temp-loading');
+                if (loadingDiv) loadingDiv.remove();
+                showNoMapAvailable(`No se pudo cargar el mapa de ${libData.name}`);
+                isMapLoading = false;
+            };
             img.src = imgPath;
             return true;
         }
@@ -320,14 +395,23 @@
         function showNoMapAvailable(msg) {
             const mapContainer = document.getElementById('map-container');
             if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
-            mapContainer.innerHTML = `<div class="no-map-state"><div><span>🚫</span><h3>Mapa no disponible</h3><p>${msg}</p></div></div>`;
+            // Limpiar solo la imagen y loading, pero mantener el marcador
+            const img = mapContainer.querySelector('img#map-image');
+            if (img) img.remove();
+            const loadingDiv = document.getElementById('temp-loading');
+            if (loadingDiv) loadingDiv.remove();
+            // Mostrar mensaje de error sin borrar el marcador (se ocultará)
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'no-map-state';
+            errorDiv.innerHTML = `<div><span>🚫</span><h3>Mapa no disponible</h3><p>${msg}</p></div>`;
+            mapContainer.appendChild(errorDiv);
             clearMapMarkers();
             document.getElementById('location-info-panel').classList.remove('active');
             document.getElementById('legend-panel').classList.remove('active');
             isMapLoading = false;
         }
 
-        // ======================== BÚSQUEDA Y ACTUALIZACIÓN RÁPIDA ========================
+        // ======================== BÚSQUEDA Y ACTUALIZACIÓN ========================
         function findAndDisplayLocation() {
             if (!selectedLibrary) return;
             const signature = document.getElementById('signature').value.trim();
@@ -359,13 +443,16 @@
         function selectLibrary(libId) {
             if (selectedLibrary === libId) return;
             if (selectedLibrary) document.getElementById(`btn-${selectedLibrary}`).classList.remove('selected');
-            if (selectedMaterial) { document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected'); selectedMaterial = null; }
+            if (selectedMaterial) {
+                document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
+                selectedMaterial = null;
+            }
             document.getElementById('signature').value = '';
             selectedLibrary = libId;
             document.getElementById(`btn-${libId}`).classList.add('selected');
             toggleControls(true);
             isMapLoading = false;
-            // Limpiar marcador anterior
+            // Ocultar marcador (no eliminarlo)
             if (currentMarker) currentMarker.style.display = 'none';
             loadLibraryMap(libraryMap[libId]);
             updateUI();
@@ -404,7 +491,9 @@
                 document.getElementById('current-library').textContent = selectedLibrary ? libraryMap[selectedLibrary] : '-';
                 document.getElementById('current-material').textContent = selectedMaterial ? materialDisplayNames[selectedMaterial] : (sig ? 'LIBRO' : '-');
                 document.getElementById('current-signature').textContent = sig || '-';
-            } else document.getElementById('selection-info').style.display = 'none';
+            } else {
+                document.getElementById('selection-info').style.display = 'none';
+            }
         }
 
         function showLocationInfo(msg) {
@@ -415,7 +504,12 @@
 
         // ======================== EVENTOS E INICIALIZACIÓN ========================
         let resizeTimer;
-        window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if (selectedLibrary) adjustMarkersPosition(); }, 100); });
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (selectedLibrary) adjustMarkersPosition();
+            }, 100);
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
             const sigInput = document.getElementById('signature');
@@ -428,10 +522,16 @@
                 }
                 if (selectedLibrary) {
                     if (searchTimeout) clearTimeout(searchTimeout);
-                    searchTimeout = setTimeout(() => findAndDisplayLocation(), 150); // Aún más rápido
+                    searchTimeout = setTimeout(() => findAndDisplayLocation(), 150);
                 }
             });
-            sigInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); clearTimeout(searchTimeout); if (selectedLibrary) findAndDisplayLocation(); } });
+            sigInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    clearTimeout(searchTimeout);
+                    if (selectedLibrary) findAndDisplayLocation();
+                }
+            });
             updateUI();
 
             // Leer parámetros URL
