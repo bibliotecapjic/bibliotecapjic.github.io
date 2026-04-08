@@ -138,7 +138,7 @@
         let currentImageLoadTimeout = null;
         let isMapLoading = false;
         
-        // Configuración de mapas
+        // Configuración de mapas (igual que original)
         const mapData = {
             "MEDELLÍN": {
                 name: "Biblioteca Medellín",
@@ -155,22 +155,6 @@
         const materialMap = { 'tesis': 'TRABAJO DE GRADO', 'cd': 'MULTIMEDIA', 'revista': 'REVISTA', 'folleto': 'FOLLETO', 'norma': 'NORMAS' };
         const materialDisplayNames = { 'tesis': 'TRABAJO DE GRADO', 'cd': 'CD', 'revista': 'REVISTA', 'folleto': 'FOLLETO', 'norma': 'NORMA' };
 
-        // Precarga de imágenes (optimización de velocidad)
-        function preloadImages() {
-            const imagesToPreload = [];
-            for (let lib in mapData) {
-                for (let floor in mapData[lib].floors) {
-                    let imgUrl = mapData[lib].floors[floor].img;
-                    if (imgUrl && !imagesToPreload.includes(imgUrl)) {
-                        imagesToPreload.push(imgUrl);
-                        const img = new Image();
-                        img.src = imgUrl;
-                    }
-                }
-            }
-            console.log(`🖼️ Precargando ${imagesToPreload.length} imágenes de mapas`);
-        }
-        
         function toggleControls(enabled) {
             const signatureInput = document.getElementById('signature');
             const materialButtons = document.querySelectorAll('.material-btn');
@@ -238,17 +222,16 @@
             mapContainer.innerHTML = `<div class="loading-state"><div><div class="loading-spinner"></div><p>Cargando mapa de ${libraryData.name}...</p></div></div>`;
             const floorData = libraryData.floors[1];
             const imgPath = floorData.img;
-            console.log(`📁 Cargando imagen: ${imgPath}`);
+            console.log(`📁 Intentando cargar imagen: ${imgPath}`);
             const img = new Image();
-            // Timeout reducido a 6 segundos para mayor velocidad (pero suficiente)
             currentImageLoadTimeout = setTimeout(() => {
-                console.log(`⏰ Timeout: ${imgPath} tardó más de 6s`);
-                if (img && !img.complete) { img.onload = null; img.onerror = null; showNoMapAvailable(`El mapa no se pudo cargar.`); }
+                console.log(`⏰ Timeout: La imagen ${imgPath} tardó demasiado`);
+                if (img && !img.complete) { img.onload = null; img.onerror = null; showNoMapAvailable(`El mapa no se pudo cargar. Tiempo de espera agotado.`); }
                 currentImageLoadTimeout = null; isMapLoading = false;
-            }, 6000);
+            }, 15000); // Aumentado a 15 segundos
             
             img.onload = function() {
-                console.log(`✅ Imagen cargada: ${imgPath}`);
+                console.log(`✅ Imagen cargada exitosamente: ${imgPath}`);
                 if (currentImageLoadTimeout) { clearTimeout(currentImageLoadTimeout); currentImageLoadTimeout = null; }
                 const imgElement = document.createElement('img');
                 imgElement.id = 'map-image';
@@ -261,21 +244,21 @@
                 mapContainer.appendChild(imgElement);
                 clearMapMarkers();
                 imgElement.onload = function() {
-                    console.log(`✅ Mapa renderizado: ${libraryData.name}`);
+                    console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
                     isMapLoading = false;
                     const signature = document.getElementById('signature').value.trim();
-                    if (signature) { findAndDisplayLocation(); }
+                    if (signature) { setTimeout(() => findAndDisplayLocation(), 100); }
                 };
                 imgElement.onerror = function() {
-                    console.error(`❌ Error renderizando: ${imgPath}`);
-                    showNoMapAvailable(`Error al mostrar el mapa.`);
+                    console.error(`❌ Error renderizando imagen en DOM: ${imgPath}`);
+                    showNoMapAvailable(`Error al mostrar el mapa de ${libraryData.name}`);
                     isMapLoading = false;
                 };
             };
             img.onerror = function() {
-                console.error(`❌ Error cargando: ${imgPath}`);
+                console.error(`❌ Error cargando imagen: ${imgPath}`);
                 if (currentImageLoadTimeout) { clearTimeout(currentImageLoadTimeout); currentImageLoadTimeout = null; }
-                showNoMapAvailable(`No se pudo cargar el mapa.`);
+                showNoMapAvailable(`No se pudo cargar el mapa de ${libraryData.name}.`);
                 isMapLoading = false;
             };
             img.src = imgPath;
@@ -382,7 +365,7 @@
             if (locationResult) {
                 if (locationResult.isMultiple && locationResult.locations) locationResult.locations.forEach((loc, idx) => { const marker = createMarker(loc.x, loc.y, loc.width, loc.height, idx); document.getElementById('map-container').appendChild(marker); });
                 else if (!locationResult.isMultiple && locationResult.x !== undefined) { const marker = createMarker(locationResult.x, locationResult.y, locationResult.width, locationResult.height); document.getElementById('map-container').appendChild(marker); }
-                setTimeout(adjustMarkersPosition, 50); // Reducido de 100 a 50ms
+                setTimeout(adjustMarkersPosition, 100);
             }
         }
         
@@ -419,7 +402,7 @@
             const mapImage = mapContainer.querySelector('img#map-image');
             const markers = mapContainer.querySelectorAll('.map-marker');
             if (!mapImage || markers.length === 0) return;
-            if (mapImage.naturalWidth === 0 || mapImage.naturalHeight === 0) { setTimeout(adjustMarkersPosition, 50); return; }
+            if (mapImage.naturalWidth === 0 || mapImage.naturalHeight === 0) { setTimeout(adjustMarkersPosition, 100); return; }
             const containerWidth = mapContainer.clientWidth, containerHeight = mapContainer.clientHeight;
             const naturalWidth = mapImage.naturalWidth, naturalHeight = mapImage.naturalHeight;
             const containerAspect = containerWidth / containerHeight, imageAspect = naturalWidth / naturalHeight;
@@ -440,49 +423,38 @@
         function clearMapMarkers() { document.querySelectorAll('#map-container .map-marker').forEach(m => m.remove()); }
         
         let resizeTimeout;
-        window.addEventListener('resize', () => { clearTimeout(resizeTimeout); resizeTimeout = setTimeout(() => { if (selectedLibrary) adjustMarkersPosition(); }, 150); });
+        window.addEventListener('resize', () => { clearTimeout(resizeTimeout); resizeTimeout = setTimeout(() => { if (selectedLibrary) adjustMarkersPosition(); }, 250); });
         
-        // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
             const signatureInput = document.getElementById('signature');
             toggleControls(false);
             signatureInput.addEventListener('input', function() {
                 updateUI();
                 if (selectedMaterial && this.value.trim() !== '') { document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected'); selectedMaterial = null; }
-                if (selectedLibrary) { clearTimeout(searchTimeout); searchTimeout = setTimeout(() => findAndDisplayLocation(), 300); } // reducido de 500 a 300ms
+                if (selectedLibrary) { clearTimeout(searchTimeout); searchTimeout = setTimeout(() => findAndDisplayLocation(), 500); }
             });
             signatureInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') { e.preventDefault(); clearTimeout(searchTimeout); if (selectedLibrary) findAndDisplayLocation(); } });
             updateUI();
-            
-            // Precargar imágenes en segundo plano (no bloquea)
-            if (window.requestIdleCallback) {
-                requestIdleCallback(() => preloadImages());
-            } else {
-                setTimeout(preloadImages, 100);
-            }
             
             // Leer parámetros URL
             const urlParams = new URLSearchParams(window.location.search);
             let libraryCode = urlParams.get('library_code');
             let callNumber = urlParams.get('call_number');
             const codeToLibraryId = { 'POBLA': 'medellin', 'RIONE': 'oriente', 'APART': 'uraba' };
-            
-            console.log(`🔍 URL detectada: library_code=${libraryCode}, call_number=${callNumber}`);
-            
             if (libraryCode && codeToLibraryId[libraryCode]) {
                 const libraryId = codeToLibraryId[libraryCode];
-                console.log(`🌐 Seleccionando biblioteca automática: ${libraryId} (código ${libraryCode})`);
+                console.log(`🌐 URL detectada: library_code=${libraryCode} → seleccionar ${libraryId}`);
                 selectLibrary(libraryId);
                 if (callNumber) {
                     let decodedCallNumber = callNumber.replace(/\+/g, ' ');
-                    console.log(`📖 Asignando call_number: "${decodedCallNumber}"`);
-                    // Asignar directamente sin setTimeout para mayor velocidad
-                    signatureInput.value = decodedCallNumber;
-                    signatureInput.dispatchEvent(new Event('input'));
+                    console.log(`📖 call_number: "${callNumber}" → decodificado: "${decodedCallNumber}"`);
+                    // Esperar un poco para que el mapa comience a cargarse y luego asignar
+                    setTimeout(() => {
+                        signatureInput.value = decodedCallNumber;
+                        signatureInput.dispatchEvent(new Event('input'));
+                    }, 300);
                 }
-            } else {
-                console.log(`ℹ️ No se detectó library_code válido o no hay parámetros. Comportamiento manual.`);
-            }
+            } else if (libraryCode) { console.warn(`⚠️ library_code desconocido: ${libraryCode}`); }
         });
     </script>
 </body>
