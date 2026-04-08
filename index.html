@@ -401,6 +401,8 @@
         let searchTimeout = null;
         let currentImageLoadTimeout = null;
         let isMapLoading = false;
+        let pendingCallNumber = null;
+
         
         // Configuración de mapas
         const mapData = {
@@ -572,18 +574,10 @@
         }
 
         if (call_number) {
-            const cleanCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
-            const signatureInput = document.getElementById('signature');
-
-            setTimeout(() => {
-                signatureInput.value = cleanCallNumber;
-                updateUI();
-
-                if (selectedLibrary) {
-                    findAndDisplayLocation();
-                }
-            }, 600);
+    pendingCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
+    console.log("📚 Signatura en espera:", pendingCallNumber);
         }
+
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -832,17 +826,35 @@
                 clearMapMarkers();
                 
                 imgElement.onload = function() {
-                    console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
-                    isMapLoading = false;
-                    
-                    // Si hay signatura ingresada, buscar ubicación
-                    const signature = document.getElementById('signature').value.trim();
-                    if (signature) {
-                        setTimeout(() => {
-                            findAndDisplayLocation();
-                        }, 100);
-                    }
-                };
+    console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
+    isMapLoading = false;
+
+    const signatureInput = document.getElementById('signature');
+
+    // 🚀 Si viene desde URL
+    if (pendingCallNumber) {
+        console.log("🚀 Aplicando signatura desde URL:", pendingCallNumber);
+
+        signatureInput.value = pendingCallNumber;
+        updateUI();
+
+        setTimeout(() => {
+            findAndDisplayLocation();
+        }, 150);
+
+        pendingCallNumber = null;
+        return;
+    }
+
+    // 🔁 comportamiento normal
+    const signature = signatureInput.value.trim();
+    if (signature) {
+        setTimeout(() => {
+            findAndDisplayLocation();
+        }, 100);
+    }
+};
+
                 
                 imgElement.onerror = function() {
                     console.error(`❌ Error renderizando imagen en DOM: ${imgPath}`);
