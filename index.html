@@ -566,23 +566,24 @@
 
     console.log("🚀 initFromURL ejecutándose");
 
-    const params = new URLSearchParams(window.location.search);
+    const url = new URL(window.location.href);
+    const params = url.searchParams;
 
-    console.log("🌐 search:", window.location.search);
+    console.log("🌐 URL completa:", window.location.href);
 
     const library_code = params.get('library_code');
     const call_number = params.get('call_number');
 
     console.log("🌐 URL detectada:", library_code, call_number);
 
-    if (library_code) {
-        const mapping = {
-            'POBLA': 'medellin',
-            'RIONE': 'oriente',
-            'APART': 'uraba'
-        };
+    const mapping = {
+        'POBLA': 'medellin',
+        'RIONE': 'oriente',
+        'APART': 'uraba'
+    };
 
-        pendingLibrary = mapping[library_code] || null;
+    if (library_code && mapping[library_code]) {
+        pendingLibrary = mapping[library_code];
     }
 
     if (call_number) {
@@ -593,6 +594,7 @@
         selectLibrary(pendingLibrary);
     }
 }
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
