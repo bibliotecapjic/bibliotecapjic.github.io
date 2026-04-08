@@ -539,6 +539,59 @@
             'norma': 'NORMA'
         };
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 🔗 NUEVA FUNCIONALIDAD: URL
+    function getURLParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+            library_code: params.get('library_code'),
+            call_number: params.get('call_number')
+        };
+    }
+
+    function mapLibraryCode(externalCode) {
+        const mapping = {
+            'POBLA': 'medellin',
+            'RIONE': 'oriente',
+            'APART': 'uraba'
+        };
+        return mapping[externalCode] || null;
+    }
+
+    function initFromURL() {
+        const { library_code, call_number } = getURLParams();
+
+        console.log("🌐 Parámetros URL:", library_code, call_number);
+
+        if (library_code) {
+            const mappedLibrary = mapLibraryCode(library_code);
+
+            if (mappedLibrary) {
+                selectLibrary(mappedLibrary);
+            }
+        }
+
+        if (call_number) {
+            const cleanCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
+            const signatureInput = document.getElementById('signature');
+
+            setTimeout(() => {
+                signatureInput.value = cleanCallNumber;
+                updateUI();
+
+                if (selectedLibrary) {
+                    findAndDisplayLocation();
+                }
+            }, 600);
+        }
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+        
+
         // Función para habilitar/deshabilitar controles
         function toggleControls(enabled) {
             const signatureInput = document.getElementById('signature');
