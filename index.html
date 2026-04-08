@@ -768,9 +768,10 @@
             console.log(`🔄 CARGANDO MAPA para: ${libraryKey}`);
             
             if (isMapLoading) {
-                console.log(`⏳ Ya se está cargando un mapa, esperando...`);
-                return false;
-            }
+    console.log("🔁 Forzando recarga de mapa...");
+    isMapLoading = false;
+}
+
             
             isMapLoading = true;
             
@@ -824,89 +825,41 @@
             }, 5000);
             
             img.onload = function() {
-                console.log(`✅ Imagen cargada exitosamente: ${imgPath}`);
-                
-                if (currentImageLoadTimeout) {
-                    clearTimeout(currentImageLoadTimeout);
-                    currentImageLoadTimeout = null;
-                }
-                
-                const imgElement = document.createElement('img');
-                imgElement.id = 'map-image';
-                imgElement.src = imgPath;
-                imgElement.alt = `Mapa de ${libraryData.name}`;
-                imgElement.style.width = '100%';
-                imgElement.style.height = '100%';
-                imgElement.style.objectFit = 'contain';
-                
-                mapContainer.innerHTML = '';
-                mapContainer.appendChild(imgElement);
-                clearMapMarkers();
-                
-                imgElement.onload = function() {
-    console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
+    console.log(`✅ Imagen cargada: ${imgPath}`);
+
+    if (currentImageLoadTimeout) {
+        clearTimeout(currentImageLoadTimeout);
+        currentImageLoadTimeout = null;
+    }
+
+    mapContainer.innerHTML = `
+        <img id="map-image" 
+             src="${imgPath}" 
+             style="width:100%;height:100%;object-fit:contain;">
+    `;
+
+    clearMapMarkers();
     isMapLoading = false;
 
-const signatureInput = document.getElementById('signature');
+    // 🔁 Ejecutar búsqueda si hay datos
+    const signatureInput = document.getElementById('signature');
 
-// 🚀 flujo URL
-if (pendingCallNumber) {
-    signatureInput.value = pendingCallNumber;
+    if (pendingCallNumber) {
+        signatureInput.value = pendingCallNumber;
+        findAndDisplayLocation();
+        pendingCallNumber = null;
+        pendingLibrary = null;
+        return;
+    }
+
+    const signature = signatureInput.value.trim();
+    if (signature) {
+        setTimeout(findAndDisplayLocation, 100);
+    }
+
     signatureInput.disabled = false;
+};
 
-    updateUI();
-
-    setTimeout(() => {
-        findAndDisplayLocation();
-    }, 200);
-
-    setTimeout(() => {
-        signatureInput.focus();
-        signatureInput.select();
-    }, 300);
-
-    pendingCallNumber = null;
-    pendingLibrary = null;
-    return;
-}
-
-// 🔁 flujo normal
-const signature = signatureInput.value.trim();
-if (signature) {
-    setTimeout(() => {
-        findAndDisplayLocation();
-    }, 100);
-}
-
-// 🔓 asegurar SIEMPRE habilitado
-signatureInput.disabled = false;
-
-
-                
-                imgElement.onerror = function() {
-                    console.error(`❌ Error renderizando imagen en DOM: ${imgPath}`);
-                    showNoMapAvailable(`Error al mostrar el mapa de ${libraryData.name}`);
-                    isMapLoading = false;
-                };
-            };
-            
-            img.onerror = function() {
-                console.error(`❌ Error cargando imagen: ${imgPath}`);
-                
-                if (currentImageLoadTimeout) {
-                    clearTimeout(currentImageLoadTimeout);
-                    currentImageLoadTimeout = null;
-                }
-                
-                showNoMapAvailable(`No se pudo cargar el mapa de ${libraryData.name}.`);
-                isMapLoading = false;
-                return false;
-            };
-            
-            img.src = imgPath;
-            
-            return true;
-        }
 
         // FUNCIÓN MEJORADA: Mostrar estado "mapa no disponible"
         function showNoMapAvailable(message = "El mapa para esta selección no está disponible en el sistema.") {
@@ -990,10 +943,12 @@ signatureInput.disabled = false;
             const mapImage = mapContainer.querySelector('img#map-image');
             const noMapState = mapContainer.querySelector('.no-map-state');
             
-           if (noMapState) {
-    console.log("⏹️ Ya se mostró que no hay mapa disponible, deteniendo búsqueda");
+          if (noMapState) {
+    console.log("🔄 Reintentando carga de mapa...");
+    loadLibraryMap(libraryKey);
     return;
 }
+
 
 
             
