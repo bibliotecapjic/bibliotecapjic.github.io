@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapas de Biblioteca</title>
     <style>
-        /* ========== ESTILOS ORIGINALES (sin cambios estéticos) ========== */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; color: #333; padding: 20px; }
         .container { max-width: 1200px; margin: 0 auto; }
@@ -46,37 +45,10 @@
         .detail-item { flex: 1; min-width: 150px; }
         .detail-label { font-size: 12px; color: #666; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
         .detail-value { font-size: 14px; font-weight: 600; color: #2c3e50; word-break: break-word; }
-        
-        /* PANEL DE INFORMACIÓN DE UBICACIÓN - AHORA SIEMPRE VISIBLE (estático) */
-        .location-info-panel {
-            background: #f0f2f5;      /* Color neutro inactivo */
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #b0b3b8;
-            transition: all 0.2s ease;
-            /* Altura consistente */
-            min-height: 85px;
-        }
-        .location-info-panel.active {
-            background: #e8f6ef;
-            border-left-color: #27ae60;
-        }
-        .location-info-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #2c3e50;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .location-info-text {
-            font-size: 14px;
-            line-height: 1.6;
-            color: #555;
-        }
-        
+        .location-info-panel { background: #e8f6ef; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; border-left: 4px solid #27ae60; }
+        .location-info-panel.active { display: block; }
+        .location-info-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #2c3e50; display: flex; align-items: center; gap: 8px; }
+        .location-info-text { font-size: 14px; line-height: 1.6; color: #555; }
         .map-container { flex: 1; position: relative; background: #f8f9fa; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0; min-height: 500px; margin-bottom: 20px; }
         .initial-state { display: flex; align-items: center; justify-content: center; height: 100%; color: #999; font-size: 18px; text-align: center; padding: 40px; }
         .loading-state { display: flex; align-items: center; justify-content: center; height: 100%; background: #f8f9fa; color: #6c757d; font-size: 18px; text-align: center; padding: 40px; }
@@ -108,9 +80,9 @@
                 <div class="library-section">
                     <h2 class="section-title"><span aria-hidden="true">🏛️</span>Biblioteca</h2>
                     <div class="library-buttons">
-                        <button class="library-btn" id="btn-medellin" onclick="selectLibrary('medellin')"><span class="library-icon">📚</span> Medellín</button>
-                        <button class="library-btn" id="btn-oriente" onclick="selectLibrary('oriente')"><span class="library-icon">📚</span> Centro Regional Oriente</button>
-                        <button class="library-btn" id="btn-uraba" onclick="selectLibrary('uraba')"><span class="library-icon">📚</span> Centro Regional Urabá</button>
+                        <button class="library-btn" id="btn-medellin" onclick="selectLibrary('medellin')" aria-label="Seleccionar biblioteca de Medellín"><span class="library-icon" aria-hidden="true">📚</span> Medellín</button>
+                        <button class="library-btn" id="btn-oriente" onclick="selectLibrary('oriente')" aria-label="Seleccionar Centro Regional Oriente"><span class="library-icon" aria-hidden="true">📚</span> Centro Regional Oriente</button>
+                        <button class="library-btn" id="btn-uraba" onclick="selectLibrary('uraba')" aria-label="Seleccionar Centro Regional Urabá"><span class="library-icon" aria-hidden="true">📚</span> Centro Regional Urabá</button>
                     </div>
                 </div>
                 <div class="divider"></div>
@@ -118,8 +90,8 @@
                     <h2 class="signature-title"><span aria-hidden="true">🕮</span> <span class="required-field">Localización de Libros</span></h2>
                     <div class="signature-box">
                         <label class="signature-label" for="signature">Ingrese el número que corresponde a la localización del libro en estantería:</label>
-                        <input type="text" class="signature-input" id="signature" placeholder="123.4 A12 || 512.1 B18" required disabled>
-                        <div class="help-text">Ingrese el número de localización para ubicar el material en el mapa. Ejemplos: 658.403, 005.1, 900.2, A412, 312 A123.</div>
+                        <input type="text" class="signature-input" id="signature" placeholder="123.4 A12 || 512.1 B18" aria-describedby="signature-help" required disabled>
+                        <div id="signature-help" class="help-text">Ingrese el número de localización para ubicar el material en el mapa. Ejemplos: 658.403, 005.1, 900.2, A412, 312 A123.</div>
                     </div>
                 </div>
                 <div class="divider"></div>
@@ -135,39 +107,38 @@
                 </div>
             </div>
             <div class="map-panel">
-                <div class="message message-error" id="message-error"></div>
-                <div class="message message-warning" id="message-warning"></div>
-                <div class="message message-success" id="message-success"></div>
+                <div class="message message-error" id="message-error" role="alert"></div>
+                <div class="message message-warning" id="message-warning" role="alert"></div>
+                <div class="message message-success" id="message-success" role="alert"></div>
                 <div class="selection-info" id="selection-info" style="display: none;">
-                    <h3><span>📋</span> Selección Actual</h3>
+                    <h3><span aria-hidden="true">📋</span> Selección Actual</h3>
                     <div class="selection-details">
                         <div class="detail-item"><div class="detail-label">Biblioteca:</div><div class="detail-value" id="current-library">-</div></div>
                         <div class="detail-item"><div class="detail-label">Tipo de material:</div><div class="detail-value" id="current-material">-</div></div>
                         <div class="detail-item"><div class="detail-label">Localización:</div><div class="detail-value" id="current-signature">-</div></div>
                     </div>
                 </div>
-                <!-- Panel de ubicación siempre presente, sin efecto de desplazamiento -->
                 <div class="location-info-panel" id="location-info-panel">
-                    <div class="location-info-title"><span>📍</span> Información de Ubicación</div>
+                    <div class="location-info-title"><span aria-hidden="true">📍</span> Información de Ubicación</div>
                     <div class="location-info-text" id="location-info-text">Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa</div>
                 </div>
                 <div class="map-container" id="map-container">
-                    <div class="initial-state"><div><span>🗺️</span><p>Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa</p></div></div>
+                    <div class="initial-state" id="initial-state"><div><span aria-hidden="true">🗺️</span><p>Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa</p></div></div>
                 </div>
                 <div class="legend-panel" id="legend-panel"><div class="legend-color"></div><div class="legend-text">Ubicación aproximada del material</div></div>
             </div>
         </div>
     </div>
     <script>
-        // ======================== DATOS (sin cambios) ========================
+        // Variables de estado
         let selectedLibrary = null;
         let selectedMaterial = null;
         let currentLibraryData = null;
         let searchTimeout = null;
         let currentImageLoadTimeout = null;
         let isMapLoading = false;
-        let currentMarker = null;      // Referencia al marcador actual
         
+        // Configuración de mapas
         const mapData = {
             "MEDELLÍN": {
                 name: "Biblioteca Medellín",
@@ -184,300 +155,333 @@
         const materialMap = { 'tesis': 'TRABAJO DE GRADO', 'cd': 'MULTIMEDIA', 'revista': 'REVISTA', 'folleto': 'FOLLETO', 'norma': 'NORMAS' };
         const materialDisplayNames = { 'tesis': 'TRABAJO DE GRADO', 'cd': 'CD', 'revista': 'REVISTA', 'folleto': 'FOLLETO', 'norma': 'NORMA' };
 
-        // ======================== FUNCIONES AUXILIARES ========================
+        // Precarga de imágenes (optimización de velocidad)
+        function preloadImages() {
+            const imagesToPreload = [];
+            for (let lib in mapData) {
+                for (let floor in mapData[lib].floors) {
+                    let imgUrl = mapData[lib].floors[floor].img;
+                    if (imgUrl && !imagesToPreload.includes(imgUrl)) {
+                        imagesToPreload.push(imgUrl);
+                        const img = new Image();
+                        img.src = imgUrl;
+                    }
+                }
+            }
+            console.log(`🖼️ Precargando ${imagesToPreload.length} imágenes de mapas`);
+        }
+        
         function toggleControls(enabled) {
-            document.getElementById('signature').disabled = !enabled;
-            document.querySelectorAll('.material-btn').forEach(btn => btn.disabled = !enabled);
-            if (!enabled) { document.getElementById('signature').value = ''; selectedMaterial = null; document.querySelectorAll('.material-btn').forEach(btn => btn.classList.remove('selected')); }
+            const signatureInput = document.getElementById('signature');
+            const materialButtons = document.querySelectorAll('.material-btn');
+            signatureInput.disabled = !enabled;
+            materialButtons.forEach(button => button.disabled = !enabled);
+            if (!enabled) { signatureInput.value = ''; selectedMaterial = null; materialButtons.forEach(btn => btn.classList.remove('selected')); }
         }
 
         function normalizeDewey(callNumber) {
             if (!callNumber) return null;
-            const match = callNumber.toString().trim().match(/^[A-Z]*(\d+(?:\.\d+)?)/);
-            if (!match) return null;
-            return { original: callNumber, numericPart: parseFloat(match[1]) };
+            try {
+                const original = callNumber.toString().trim();
+                let match = original.match(/^[A-Z]*(\d+(?:\.\d+)?)/);
+                if (!match) match = original.match(/^(\d+(?:\.\d+)?)/);
+                if (!match) return null;
+                const numericPart = match[1];
+                const numericValue = parseFloat(numericPart);
+                return { original, numericPart: numericValue, fullMatch: match[0], normalized: numericPart };
+            } catch(e) { return null; }
         }
-
-        function validateSignature(s) { return /^[0-9A-Za-z.,\s-]+$/.test(s) && s.length <= 50; }
-
-        function searchInStacks(libData, callNumber) {
-            const norm = normalizeDewey(callNumber);
-            if (!norm || isNaN(norm.numericPart)) return null;
-            for (let floor in libData.floors) {
-                const stacks = libData.floors[floor].stacks;
-                if (!stacks) continue;
-                for (let stack of stacks) {
-                    const start = normalizeDewey(stack.start);
-                    const end = normalizeDewey(stack.end);
-                    if (start && end && norm.numericPart >= start.numericPart && norm.numericPart <= end.numericPart) {
-                        return { floor, x: stack.x, y: stack.y, width: stack.width, height: stack.height, stackInfo: stack.id };
+        
+        function validateSignature(signature) { return /^[0-9A-Za-z.,\s-]+$/.test(signature) && signature.length <= 50; }
+        
+        function searchInStacks(libraryMapData, callNumber) {
+            if (!callNumber) return null;
+            let callNumNormalized = normalizeDewey(callNumber);
+            if (callNumNormalized && !isNaN(callNumNormalized.numericPart)) {
+                for (let floorNum in libraryMapData.floors) {
+                    let floor = libraryMapData.floors[floorNum];
+                    if (floor.stacks && floor.stacks.length) {
+                        for (let stack of floor.stacks) {
+                            let startNorm = normalizeDewey(stack.start);
+                            let endNorm = normalizeDewey(stack.end);
+                            if (startNorm && endNorm && callNumNormalized.numericPart >= startNorm.numericPart && callNumNormalized.numericPart <= endNorm.numericPart) {
+                                return { floor: floorNum, x: stack.x, y: stack.y, width: stack.width, height: stack.height, stackInfo: stack.id };
+                            }
+                        }
                     }
                 }
             }
             return null;
         }
-
-        function searchInStaticLocations(libData, type) {
-            for (let floor in libData.floors) {
-                const locs = libData.floors[floor].staticLocations;
-                if (locs && locs[type]) {
-                    const loc = locs[type];
-                    if (Array.isArray(loc)) return { floor, locations: loc, isMultiple: true };
-                    else return { floor, x: loc.x, y: loc.y, width: loc.width, height: loc.height, message: loc.message, isMultiple: false };
+        
+        function searchInStaticLocations(libraryMapData, locationType) {
+            for (let floorNum in libraryMapData.floors) {
+                let floor = libraryMapData.floors[floorNum];
+                if (floor.staticLocations && floor.staticLocations[locationType]) {
+                    let staticLoc = floor.staticLocations[locationType];
+                    if (Array.isArray(staticLoc)) return { floor: floorNum, locations: staticLoc, isMultiple: true };
+                    else return { floor: floorNum, x: staticLoc.x, y: staticLoc.y, width: staticLoc.width, height: staticLoc.height, message: staticLoc.message, isMultiple: false };
                 }
             }
             return null;
         }
 
-        // ======================== MARCADOR SIN PARPADEO ========================
-        function updateMarker(location) {
-            if (!location) {
-                if (currentMarker) currentMarker.style.display = 'none';
-                return;
-            }
-            if (!currentMarker) {
-                currentMarker = createMarker(0, 0, 0, 0);
-                document.getElementById('map-container').appendChild(currentMarker);
-            }
-            if (location.isMultiple && location.locations) {
-                const first = location.locations[0];
-                currentMarker.setAttribute('data-relative-x', first.x);
-                currentMarker.setAttribute('data-relative-y', first.y);
-                currentMarker.setAttribute('data-relative-width', first.width);
-                currentMarker.setAttribute('data-relative-height', first.height);
-                currentMarker.style.display = 'block';
-            } else if (location.x !== undefined) {
-                currentMarker.setAttribute('data-relative-x', location.x);
-                currentMarker.setAttribute('data-relative-y', location.y);
-                currentMarker.setAttribute('data-relative-width', location.width);
-                currentMarker.setAttribute('data-relative-height', location.height);
-                currentMarker.style.display = 'block';
-            }
-            adjustMarkersPosition();
-        }
-
-        function createMarker(x, y, w, h) {
-            const marker = document.createElement('div');
-            marker.className = 'map-marker';
-            marker.setAttribute('data-relative-x', x);
-            marker.setAttribute('data-relative-y', y);
-            marker.setAttribute('data-relative-width', w);
-            marker.setAttribute('data-relative-height', h);
-            Object.assign(marker.style, {
-                position: 'absolute', background: 'rgba(255,215,0,0.7)', border: '2px solid #e67e22',
-                pointerEvents: 'none', boxSizing: 'border-box', borderRadius: '4px',
-                boxShadow: '0 0 15px rgba(230,126,34,0.8)', zIndex: '10', display: 'none'
-            });
-            const icon = document.createElement('div');
-            icon.textContent = '📍';
-            Object.assign(icon.style, { position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '24px', textShadow: '2px 2px 4px rgba(0,0,0,0.3)' });
-            marker.appendChild(icon);
-            return marker;
-        }
-
-        function adjustMarkersPosition() {
-            const container = document.getElementById('map-container');
-            const img = container.querySelector('img#map-image');
-            if (!img || !currentMarker || currentMarker.style.display === 'none') return;
-            if (img.naturalWidth === 0) { requestAnimationFrame(() => adjustMarkersPosition()); return; }
-            const cw = container.clientWidth, ch = container.clientHeight;
-            const nw = img.naturalWidth, nh = img.naturalHeight;
-            const containerRatio = cw / ch, imageRatio = nw / nh;
-            let dw, dh, ox, oy;
-            if (containerRatio > imageRatio) { dh = ch; dw = nw * (ch / nh); ox = (cw - dw) / 2; oy = 0; }
-            else { dw = cw; dh = nh * (cw / nw); ox = 0; oy = (ch - dh) / 2; }
-            const rx = parseFloat(currentMarker.getAttribute('data-relative-x'));
-            const ry = parseFloat(currentMarker.getAttribute('data-relative-y'));
-            const rw = parseFloat(currentMarker.getAttribute('data-relative-width'));
-            const rh = parseFloat(currentMarker.getAttribute('data-relative-height'));
-            currentMarker.style.left = `${ox + rx * dw}px`;
-            currentMarker.style.top = `${oy + ry * dh}px`;
-            currentMarker.style.width = `${rw * dw}px`;
-            currentMarker.style.height = `${rh * dh}px`;
-        }
-
-        function clearMapMarkers() {
-            if (currentMarker) currentMarker.style.display = 'none';
-        }
-
-        // ======================== CARGA DE MAPA ========================
         function loadLibraryMap(libraryKey) {
+            console.log(`🔄 CARGANDO MAPA para: ${libraryKey}`);
             if (isMapLoading) return false;
             isMapLoading = true;
             if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
-            const libData = mapData[libraryKey];
-            if (!libData) { showNoMapAvailable("No hay datos"); isMapLoading = false; return false; }
-            currentLibraryData = libData;
+            const libraryData = mapData[libraryKey];
+            if (!libraryData) { showNoMapAvailable("No se encontraron datos para esta biblioteca"); isMapLoading = false; return false; }
+            currentLibraryData = libraryData;
             const mapContainer = document.getElementById('map-container');
-            mapContainer.innerHTML = `<div class="loading-state"><div><div class="loading-spinner"></div><p>Cargando mapa de ${libData.name}...</p></div></div>`;
-            const imgPath = libData.floors[1].img;
+            mapContainer.innerHTML = `<div class="loading-state"><div><div class="loading-spinner"></div><p>Cargando mapa de ${libraryData.name}...</p></div></div>`;
+            const floorData = libraryData.floors[1];
+            const imgPath = floorData.img;
+            console.log(`📁 Cargando imagen: ${imgPath}`);
             const img = new Image();
+            // Timeout reducido a 6 segundos para mayor velocidad (pero suficiente)
             currentImageLoadTimeout = setTimeout(() => {
-                if (img && !img.complete) { img.onload = null; img.onerror = null; showNoMapAvailable(`Tiempo de espera agotado`); }
+                console.log(`⏰ Timeout: ${imgPath} tardó más de 6s`);
+                if (img && !img.complete) { img.onload = null; img.onerror = null; showNoMapAvailable(`El mapa no se pudo cargar.`); }
                 currentImageLoadTimeout = null; isMapLoading = false;
-            }, 8000);
-            img.onload = () => {
-                if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
+            }, 6000);
+            
+            img.onload = function() {
+                console.log(`✅ Imagen cargada: ${imgPath}`);
+                if (currentImageLoadTimeout) { clearTimeout(currentImageLoadTimeout); currentImageLoadTimeout = null; }
                 const imgElement = document.createElement('img');
                 imgElement.id = 'map-image';
                 imgElement.src = imgPath;
+                imgElement.alt = `Mapa de ${libraryData.name}`;
                 imgElement.style.width = '100%';
                 imgElement.style.height = '100%';
                 imgElement.style.objectFit = 'contain';
                 mapContainer.innerHTML = '';
                 mapContainer.appendChild(imgElement);
-                if (currentMarker && currentMarker.style.display !== 'none') {
-                    imgElement.onload = () => { adjustMarkersPosition(); };
-                } else {
-                    imgElement.onload = () => { isMapLoading = false; };
-                }
-                imgElement.onerror = () => { showNoMapAvailable(`Error al mostrar mapa`); isMapLoading = false; };
+                clearMapMarkers();
+                imgElement.onload = function() {
+                    console.log(`✅ Mapa renderizado: ${libraryData.name}`);
+                    isMapLoading = false;
+                    const signature = document.getElementById('signature').value.trim();
+                    if (signature) { findAndDisplayLocation(); }
+                };
+                imgElement.onerror = function() {
+                    console.error(`❌ Error renderizando: ${imgPath}`);
+                    showNoMapAvailable(`Error al mostrar el mapa.`);
+                    isMapLoading = false;
+                };
             };
-            img.onerror = () => { showNoMapAvailable(`No se pudo cargar el mapa`); isMapLoading = false; };
+            img.onerror = function() {
+                console.error(`❌ Error cargando: ${imgPath}`);
+                if (currentImageLoadTimeout) { clearTimeout(currentImageLoadTimeout); currentImageLoadTimeout = null; }
+                showNoMapAvailable(`No se pudo cargar el mapa.`);
+                isMapLoading = false;
+            };
             img.src = imgPath;
             return true;
         }
 
-        function showNoMapAvailable(msg) {
+        function showNoMapAvailable(message) {
             const mapContainer = document.getElementById('map-container');
             if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
-            mapContainer.innerHTML = `<div class="no-map-state"><div><span>🚫</span><h3>Mapa no disponible</h3><p>${msg}</p></div></div>`;
+            mapContainer.innerHTML = `<div class="no-map-state"><div><span aria-hidden="true">🚫</span><h3>Mapa no disponible</h3><p>${message}</p><p style="margin-top:10px;font-size:12px;">Seleccione otra biblioteca o consulte con el personal.</p></div></div>`;
             clearMapMarkers();
+            document.getElementById('location-info-panel').classList.remove('active');
             document.getElementById('legend-panel').classList.remove('active');
-            isMapLoading = false;
         }
 
-        // ======================== BÚSQUEDA Y ACTUALIZACIÓN ========================
         function findAndDisplayLocation() {
             if (!selectedLibrary) return;
             const signature = document.getElementById('signature').value.trim();
-            if (!signature) { clearMapMarkers(); return; }
-            const libKey = libraryMap[selectedLibrary];
-            const libData = mapData[libKey];
-            if (!libData) return;
-            const mapImage = document.getElementById('map-container').querySelector('img#map-image');
-            if (!mapImage && !isMapLoading) {
-                showLocationInfo("Espere a que cargue el mapa...");
+            if (!signature) return;
+            const libraryKey = libraryMap[selectedLibrary];
+            const libraryData = mapData[libraryKey];
+            if (!libraryData) return;
+            const mapContainer = document.getElementById('map-container');
+            const mapImage = mapContainer.querySelector('img#map-image');
+            const noMapState = mapContainer.querySelector('.no-map-state');
+            if (noMapState) return;
+            if (!mapImage) {
+                document.getElementById('location-info-text').textContent = `Material disponible en ${libraryData.name}. Espere a que cargue el mapa.`;
+                document.getElementById('location-info-panel').classList.add('active');
                 return;
             }
             if (!validateSignature(signature)) {
-                showLocationInfo("Signatura no válida.");
+                document.getElementById('location-info-text').textContent = `Signatura no válida.`;
+                document.getElementById('location-info-panel').classList.add('active');
                 clearMapMarkers();
                 return;
             }
-            const location = searchInStacks(libData, signature);
-            const message = location ? `Este material puede encontrarse en el piso ${location.floor} de ${libData.name}, estante ${location.stackInfo.split('.')[1]} lado ${location.stackInfo.split('.')[2]}.` : `Material disponible en ${libData.name} (Colección General). Consulte al personal.`;
-            if (location) {
-                updateMarker(location);
-                showLocationInfo(message);
-            } else {
-                clearMapMarkers();
-                showLocationInfo(message);
-            }
+            const locationResult = searchInStacks(libraryData, signature);
+            let locationMessage = locationResult ? `Este material puede encontrarse en el piso ${locationResult.floor} de ${libraryData.name}, estante ${locationResult.stackInfo.split('.')[1]} lado ${locationResult.stackInfo.split('.')[2]}. Esta es una referencia aproximada.` : `Material disponible en ${libraryData.name} (Colección General). Consulte con el personal.`;
+            if (locationResult) { drawLocation(locationResult); showLocationInfo(locationMessage); }
+            else { clearMapMarkers(); showLocationInfo(locationMessage); }
         }
-
-        function selectLibrary(libId) {
-            if (selectedLibrary === libId) return;
+        
+        function selectLibrary(libraryId) {
+            console.log(`🎯 selectLibrary(${libraryId})`);
+            if (selectedLibrary === libraryId) return;
             if (selectedLibrary) document.getElementById(`btn-${selectedLibrary}`).classList.remove('selected');
             if (selectedMaterial) { document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected'); selectedMaterial = null; }
             document.getElementById('signature').value = '';
-            selectedLibrary = libId;
-            document.getElementById(`btn-${libId}`).classList.add('selected');
+            selectedLibrary = libraryId;
+            document.getElementById(`btn-${libraryId}`).classList.add('selected');
             toggleControls(true);
             isMapLoading = false;
-            if (currentMarker) currentMarker.style.display = 'none';
-            loadLibraryMap(libraryMap[libId]);
+            const libraryKey = libraryMap[libraryId];
+            if (libraryKey) loadLibraryMap(libraryKey);
             updateUI();
-            // Limpiar mensaje de ubicación (solo texto, no desaparece el panel)
-            showLocationInfo("Seleccione una localización para ver su ubicación en el mapa.");
+            clearMapMarkers();
+            document.getElementById('location-info-panel').classList.remove('active');
             document.getElementById('legend-panel').classList.remove('active');
         }
-
-        function selectMaterial(matId) {
+        
+        function selectMaterial(materialId) {
             if (selectedMaterial) document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
-            selectedMaterial = matId;
-            document.getElementById(`btn-${matId}`).classList.add('selected');
+            selectedMaterial = materialId;
+            document.getElementById(`btn-${materialId}`).classList.add('selected');
             document.getElementById('signature').value = '';
             updateUI();
-            if (selectedLibrary) findAndDisplayLocationForMaterial(matId);
+            if (selectedLibrary) findAndDisplayLocationForMaterial(materialId);
         }
-
-        function findAndDisplayLocationForMaterial(matId) {
+        
+        function findAndDisplayLocationForMaterial(materialId) {
             if (!selectedLibrary) return;
-            const libKey = libraryMap[selectedLibrary];
-            const libData = mapData[libKey];
-            if (!libData) return;
+            const libraryKey = libraryMap[selectedLibrary];
+            const locationType = materialMap[materialId];
+            const libraryData = mapData[libraryKey];
+            if (!libraryData) return;
             const mapImage = document.getElementById('map-container').querySelector('img#map-image');
             if (!mapImage) return;
-            const locType = materialMap[matId];
-            const location = searchInStaticLocations(libData, locType);
-            const message = location ? (location.isMultiple ? location.locations[0].message : location.message) : `Material disponible en ${libData.name} (${materialDisplayNames[matId]}). Consulte al personal.`;
-            if (location) updateMarker(location);
+            const locationResult = searchInStaticLocations(libraryData, locationType);
+            let locationMessage = locationResult ? (locationResult.isMultiple ? locationResult.locations[0].message : locationResult.message) : `Material disponible en ${libraryData.name} (${materialDisplayNames[materialId]}). Consulte con el personal.`;
+            if (locationResult) drawLocation(locationResult);
             else clearMapMarkers();
-            showLocationInfo(message);
+            showLocationInfo(locationMessage);
         }
-
+        
         function updateUI() {
-            const sig = document.getElementById('signature').value.trim();
-            if (selectedLibrary || selectedMaterial || sig) {
+            const signatureValue = document.getElementById('signature').value.trim();
+            if (selectedLibrary || selectedMaterial || signatureValue) {
                 document.getElementById('selection-info').style.display = 'block';
                 document.getElementById('current-library').textContent = selectedLibrary ? libraryMap[selectedLibrary] : '-';
-                document.getElementById('current-material').textContent = selectedMaterial ? materialDisplayNames[selectedMaterial] : (sig ? 'LIBRO' : '-');
-                document.getElementById('current-signature').textContent = sig || '-';
-            } else document.getElementById('selection-info').style.display = 'none';
+                document.getElementById('current-material').textContent = selectedMaterial ? materialDisplayNames[selectedMaterial] : (signatureValue ? 'LIBRO' : '-');
+                document.getElementById('current-signature').textContent = signatureValue || '-';
+            } else { document.getElementById('selection-info').style.display = 'none'; }
         }
-
-        // Función para mostrar mensaje en el panel estático (sin ocultar/mostrar el panel)
-        function showLocationInfo(msg) {
-            const panel = document.getElementById('location-info-panel');
-            const textDiv = document.getElementById('location-info-text');
-            textDiv.textContent = msg;
-            panel.classList.add('active');
-            // La leyenda solo aparece cuando hay ubicación con marcador
-            if (msg !== "Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa" && msg !== "Seleccione una localización para ver su ubicación en el mapa.") {
-                document.getElementById('legend-panel').classList.add('active');
-            } else {
-                document.getElementById('legend-panel').classList.remove('active');
+        
+        function showLocationInfo(locationMessage) {
+            document.getElementById('location-info-text').textContent = locationMessage;
+            document.getElementById('location-info-panel').classList.add('active');
+            document.getElementById('legend-panel').classList.add('active');
+        }
+        
+        function drawLocation(locationResult) {
+            clearMapMarkers();
+            if (locationResult) {
+                if (locationResult.isMultiple && locationResult.locations) locationResult.locations.forEach((loc, idx) => { const marker = createMarker(loc.x, loc.y, loc.width, loc.height, idx); document.getElementById('map-container').appendChild(marker); });
+                else if (!locationResult.isMultiple && locationResult.x !== undefined) { const marker = createMarker(locationResult.x, locationResult.y, locationResult.width, locationResult.height); document.getElementById('map-container').appendChild(marker); }
+                setTimeout(adjustMarkersPosition, 50); // Reducido de 100 a 50ms
             }
         }
-
-        // ======================== EVENTOS E INICIALIZACIÓN ========================
-        let resizeTimer;
-        window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if (selectedLibrary) adjustMarkersPosition(); }, 100); });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const sigInput = document.getElementById('signature');
-            toggleControls(false);
-            sigInput.addEventListener('input', () => {
-                updateUI();
-                if (selectedMaterial && sigInput.value.trim() !== '') {
-                    document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
-                    selectedMaterial = null;
-                }
-                if (selectedLibrary) {
-                    if (searchTimeout) clearTimeout(searchTimeout);
-                    searchTimeout = setTimeout(() => findAndDisplayLocation(), 150);
-                }
+        
+        function createMarker(x, y, width, height, index = 0) {
+            const marker = document.createElement('div');
+            marker.className = 'map-marker';
+            marker.setAttribute('data-relative-x', x);
+            marker.setAttribute('data-relative-y', y);
+            marker.setAttribute('data-relative-width', width);
+            marker.setAttribute('data-relative-height', height);
+            marker.style.position = 'absolute';
+            marker.style.background = 'rgba(255, 215, 0, 0.7)';
+            marker.style.border = '2px solid #e67e22';
+            marker.style.pointerEvents = 'none';
+            marker.style.boxSizing = 'border-box';
+            marker.style.borderRadius = '4px';
+            marker.style.boxShadow = '0 0 15px rgba(230, 126, 34, 0.8)';
+            marker.style.zIndex = '10';
+            marker.style.display = 'none';
+            const icon = document.createElement('div');
+            icon.textContent = '📍';
+            icon.style.position = 'absolute';
+            icon.style.top = '50%';
+            icon.style.left = '50%';
+            icon.style.transform = 'translate(-50%, -50%)';
+            icon.style.fontSize = index > 0 ? '20px' : '24px';
+            icon.style.textShadow = '2px 2px 4px rgba(0,0,0,0.3)';
+            marker.appendChild(icon);
+            return marker;
+        }
+        
+        function adjustMarkersPosition() {
+            const mapContainer = document.getElementById('map-container');
+            const mapImage = mapContainer.querySelector('img#map-image');
+            const markers = mapContainer.querySelectorAll('.map-marker');
+            if (!mapImage || markers.length === 0) return;
+            if (mapImage.naturalWidth === 0 || mapImage.naturalHeight === 0) { setTimeout(adjustMarkersPosition, 50); return; }
+            const containerWidth = mapContainer.clientWidth, containerHeight = mapContainer.clientHeight;
+            const naturalWidth = mapImage.naturalWidth, naturalHeight = mapImage.naturalHeight;
+            const containerAspect = containerWidth / containerHeight, imageAspect = naturalWidth / naturalHeight;
+            let displayWidth, displayHeight, offsetX, offsetY;
+            if (containerAspect > imageAspect) { displayHeight = containerHeight; displayWidth = naturalWidth * (containerHeight / naturalHeight); offsetX = (containerWidth - displayWidth) / 2; offsetY = 0; }
+            else { displayWidth = containerWidth; displayHeight = naturalHeight * (containerWidth / naturalWidth); offsetX = 0; offsetY = (containerHeight - displayHeight) / 2; }
+            markers.forEach(m => {
+                const relX = parseFloat(m.getAttribute('data-relative-x')), relY = parseFloat(m.getAttribute('data-relative-y'));
+                const relW = parseFloat(m.getAttribute('data-relative-width')), relH = parseFloat(m.getAttribute('data-relative-height'));
+                m.style.left = `${offsetX + relX * displayWidth}px`;
+                m.style.top = `${offsetY + relY * displayHeight}px`;
+                m.style.width = `${relW * displayWidth}px`;
+                m.style.height = `${relH * displayHeight}px`;
+                m.style.display = 'block';
             });
-            sigInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); clearTimeout(searchTimeout); if (selectedLibrary) findAndDisplayLocation(); } });
+        }
+        
+        function clearMapMarkers() { document.querySelectorAll('#map-container .map-marker').forEach(m => m.remove()); }
+        
+        let resizeTimeout;
+        window.addEventListener('resize', () => { clearTimeout(resizeTimeout); resizeTimeout = setTimeout(() => { if (selectedLibrary) adjustMarkersPosition(); }, 150); });
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            const signatureInput = document.getElementById('signature');
+            toggleControls(false);
+            signatureInput.addEventListener('input', function() {
+                updateUI();
+                if (selectedMaterial && this.value.trim() !== '') { document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected'); selectedMaterial = null; }
+                if (selectedLibrary) { clearTimeout(searchTimeout); searchTimeout = setTimeout(() => findAndDisplayLocation(), 300); } // reducido de 500 a 300ms
+            });
+            signatureInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') { e.preventDefault(); clearTimeout(searchTimeout); if (selectedLibrary) findAndDisplayLocation(); } });
             updateUI();
-
+            
+            // Precargar imágenes en segundo plano (no bloquea)
+            if (window.requestIdleCallback) {
+                requestIdleCallback(() => preloadImages());
+            } else {
+                setTimeout(preloadImages, 100);
+            }
+            
             // Leer parámetros URL
-            const params = new URLSearchParams(window.location.search);
-            const libCode = params.get('library_code');
-            const callNum = params.get('call_number');
-            const codeMap = { 'POBLA': 'medellin', 'RIONE': 'oriente', 'APART': 'uraba' };
-            if (libCode && codeMap[libCode]) {
-                const libId = codeMap[libCode];
-                console.log(`URL: library_code=${libCode} → ${libId}`);
-                selectLibrary(libId);
-                if (callNum) {
-                    const decoded = callNum.replace(/\+/g, ' ');
-                    setTimeout(() => {
-                        sigInput.value = decoded;
-                        sigInput.dispatchEvent(new Event('input'));
-                    }, 100);
+            const urlParams = new URLSearchParams(window.location.search);
+            let libraryCode = urlParams.get('library_code');
+            let callNumber = urlParams.get('call_number');
+            const codeToLibraryId = { 'POBLA': 'medellin', 'RIONE': 'oriente', 'APART': 'uraba' };
+            
+            console.log(`🔍 URL detectada: library_code=${libraryCode}, call_number=${callNumber}`);
+            
+            if (libraryCode && codeToLibraryId[libraryCode]) {
+                const libraryId = codeToLibraryId[libraryCode];
+                console.log(`🌐 Seleccionando biblioteca automática: ${libraryId} (código ${libraryCode})`);
+                selectLibrary(libraryId);
+                if (callNumber) {
+                    let decodedCallNumber = callNumber.replace(/\+/g, ' ');
+                    console.log(`📖 Asignando call_number: "${decodedCallNumber}"`);
+                    // Asignar directamente sin setTimeout para mayor velocidad
+                    signatureInput.value = decodedCallNumber;
+                    signatureInput.dispatchEvent(new Event('input'));
                 }
+            } else {
+                console.log(`ℹ️ No se detectó library_code válido o no hay parámetros. Comportamiento manual.`);
             }
         });
     </script>
