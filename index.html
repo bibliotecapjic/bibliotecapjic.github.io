@@ -563,6 +563,22 @@
     }
 
     function initFromURL() {
+
+
+            console.log("🚀 initFromURL ejecutándose");
+
+    const params = new URLSearchParams(window.location.search);
+
+    console.log("🌐 search:", window.location.search);
+
+    const library_code = params.get('library_code');
+    const call_number = params.get('call_number');
+
+    console.log("🌐 URL detectada:", library_code, call_number);
+
+
+
+        
     const params = new URLSearchParams(window.location.search);
 
     const library_code = params.get('library_code');
@@ -1288,44 +1304,36 @@ if (!pendingCallNumber) {
         
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
-            const signatureInput = document.getElementById('signature');
-            
-            // Deshabilitar controles inicialmente (ninguna biblioteca seleccionada)
-            toggleControls(false);
-            
-            // NINGUNA BIBLIOTECA SELECCIONADA POR DEFECTO
-            // El mapa mostrará el estado inicial sin selección
-            
-            signatureInput.addEventListener('input', function() {
-                updateUI();
-                
-                // Si hay material seleccionado, limpiarlo cuando se empiece a escribir
-                if (selectedMaterial && this.value.trim() !== '') {
-                    document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
-                    selectedMaterial = null;
-                }
-                
-                if (selectedLibrary) {
-                    clearTimeout(searchTimeout);
-                    searchTimeout = setTimeout(() => {
-                        findAndDisplayLocation();
-                    }, 500);
-                }
-            });
-            
-            signatureInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    clearTimeout(searchTimeout);
-                    if (selectedLibrary) {
-                        findAndDisplayLocation();
-                    }
-                }
-            });
-            
-            updateUI();
-            console.log('✅ Sistema inicializado - Ninguna biblioteca seleccionada por defecto');
-        });
+
+    console.log("🔥 DOM cargado");
+
+    initFromURL(); // 👈 ESTO ES CRÍTICO
+
+    const signatureInput = document.getElementById('signature');
+
+    toggleControls(false);
+
+    signatureInput.addEventListener('input', function() {
+        updateUI();
+
+        if (selectedMaterial && this.value.trim() !== '') {
+            document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
+            selectedMaterial = null;
+        }
+
+        if (selectedLibrary) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                findAndDisplayLocation();
+            }, 500);
+        }
+    });
+
+    updateUI();
+
+    console.log('✅ Sistema inicializado con soporte de URL');
+});
+
     </script>
 </body>
 </html>
