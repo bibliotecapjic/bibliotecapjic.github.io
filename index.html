@@ -402,6 +402,8 @@
         let currentImageLoadTimeout = null;
         let isMapLoading = false;
         let pendingCallNumber = null;
+        let pendingLibrary = null;
+
 
         
         // Configuración de mapas
@@ -561,24 +563,33 @@
     }
 
     function initFromURL() {
-        const { library_code, call_number } = getURLParams();
+    const params = new URLSearchParams(window.location.search);
 
-        console.log("🌐 Parámetros URL:", library_code, call_number);
+    const library_code = params.get('library_code');
+    const call_number = params.get('call_number');
 
-        if (library_code) {
-            const mappedLibrary = mapLibraryCode(library_code);
+    console.log("🌐 URL detectada:", library_code, call_number);
 
-            if (mappedLibrary) {
-                selectLibrary(mappedLibrary);
-            }
-        }
+    if (library_code) {
+        const mapping = {
+            'POBLA': 'medellin',
+            'RIONE': 'oriente',
+            'APART': 'uraba'
+        };
 
-        if (call_number) {
-    pendingCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
-    console.log("📚 Signatura en espera:", pendingCallNumber);
-        }
-
+        pendingLibrary = mapping[library_code] || null;
     }
+
+    if (call_number) {
+        pendingCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
+    }
+
+    // 🚀 Ejecutar selección SOLO si hay biblioteca
+    if (pendingLibrary) {
+        selectLibrary(pendingLibrary);
+    }
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -831,22 +842,25 @@
 
     const signatureInput = document.getElementById('signature');
 
-    // 🚀 Si viene desde URL
+    // 🚀 CASO URL (flujo automático)
     if (pendingCallNumber) {
-        console.log("🚀 Aplicando signatura desde URL:", pendingCallNumber);
+        console.log("🚀 Ejecutando flujo desde URL");
 
         signatureInput.value = pendingCallNumber;
         updateUI();
 
         setTimeout(() => {
             findAndDisplayLocation();
-        }, 150);
+        }, 200);
 
+        // limpiar estado
         pendingCallNumber = null;
+        pendingLibrary = null;
+
         return;
     }
 
-    // 🔁 comportamiento normal
+    // 🔁 flujo normal
     const signature = signatureInput.value.trim();
     if (signature) {
         setTimeout(() => {
@@ -1005,7 +1019,11 @@
             
             // Limpiar cuadro de texto
             const signatureInput = document.getElementById('signature');
-            signatureInput.value = '';
+            // ⚠️ SOLO limpiar si NO viene desde URL
+if (!pendingCallNumber) {
+    signatureInput.value = '';
+}
+
             
             // Actualizar biblioteca seleccionada
             selectedLibrary = libraryId;
