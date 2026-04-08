@@ -850,44 +850,32 @@ isMapLoading = false;
 const signatureInput = document.getElementById('signature');
 
 // 🚀 CASO URL (flujo automático)
-    if (pendingCallNumber) {
-        console.log("🚀 Ejecutando flujo desde URL");
-   if (pendingCallNumber) {
-    console.log("🚀 Ejecutando flujo desde URL");
+if (pendingCallNumber) {
+console.log("🚀 Ejecutando flujo desde URL");
 
-        signatureInput.value = pendingCallNumber;
-        updateUI();
-    signatureInput.value = pendingCallNumber;
+signatureInput.value = pendingCallNumber;
 
-        setTimeout(() => {
-            findAndDisplayLocation();
-        }, 200);
-    // 🔓 aseguramos que el usuario pueda escribir después
-    signatureInput.disabled = false;
+// 🔓 aseguramos que el usuario pueda escribir después
+signatureInput.disabled = false;
 
-        // limpiar estado
-        pendingCallNumber = null;
-        pendingLibrary = null;
-    updateUI();
+updateUI();
 
-    setTimeout(() => {
-        findAndDisplayLocation();
-    }, 200);
+setTimeout(() => {
+findAndDisplayLocation();
+}, 200);
 
-       setTimeout(() => {
-        signatureInput.focus();
-        signatureInput.select();
-    }, 300);
+setTimeout(() => {
+signatureInput.focus();
+signatureInput.select();
+}, 300);
 
-    // limpiar estado
-    pendingCallNumber = null;
-    pendingLibrary = null;
+// limpiar estado
+pendingCallNumber = null;
+pendingLibrary = null;
 
-    return;
+return;
 }
 
-        return;
-    }
 
 // 🔁 flujo normal
 const signature = signatureInput.value.trim();
@@ -896,6 +884,11 @@ setTimeout(() => {
 findAndDisplayLocation();
 }, 100);
 }
+
+                    // 🔓 GARANTIZAR que el input siempre quede habilitado
+const signatureInput = document.getElementById('signature');
+signatureInput.disabled = false;
+
 };
 
 
