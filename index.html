@@ -8,65 +8,274 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; color: #333; padding: 20px; }
         .container { max-width: 1200px; margin: 0 auto; }
-        .header { background: linear-gradient(135deg, #2c3e50, #4a6491); color: white; padding: 25px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        
+        /* Header */
+        .header { 
+            background: linear-gradient(135deg, #2c3e50, #4a6491); 
+            color: white; padding: 25px; border-radius: 10px; 
+            margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
         h1 { font-size: 28px; display: flex; align-items: center; gap: 12px; }
         .subtitle { font-size: 16px; opacity: 0.9; margin-top: 5px; }
+        
+        /* Main Content */
         .main-content { display: grid; grid-template-columns: 1fr 2fr; gap: 25px; }
         @media (max-width: 900px) { .main-content { grid-template-columns: 1fr; } }
+        
+        /* Controls Panel */
         .controls-panel { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        
+        /* Biblioteca Section */
         .library-section { margin-bottom: 30px; }
-        .section-title { font-size: 18px; color: #2c3e50; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #eee; display: flex; align-items: center; gap: 10px; }
+        .section-title { 
+            font-size: 18px; color: #2c3e50; margin-bottom: 15px; padding-bottom: 10px; 
+            border-bottom: 2px solid #eee; display: flex; align-items: center; gap: 10px;
+        }
+        
+        /* Library Buttons - REORGANIZADO */
         .library-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
-        .library-btn { padding: 16px; background: white; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; font-weight: 500; color: #555; cursor: pointer; transition: all 0.3s; text-align: left; display: flex; align-items: center; gap: 12px; }
+        .library-btn { 
+            padding: 16px; background: white; border: 2px solid #ddd; border-radius: 8px; 
+            font-size: 16px; font-weight: 500; color: #555; cursor: pointer; transition: all 0.3s;
+            text-align: left; display: flex; align-items: center; gap: 12px;
+        }
         .library-btn:hover { border-color: #3498db; background: #f0f8ff; }
         .library-btn.selected { border-color: #3498db; background: #e3f2fd; color: #2c3e50; }
         .library-icon { font-size: 22px; width: 30px; }
-        .divider { height: 1px; background: #e0e0e0; margin: 25px 0; width: 100%; }
+        
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: #e0e0e0;
+            margin: 25px 0;
+            width: 100%;
+        }
+        
+        /* Signatura Section - REORGANIZADO */
         .signature-section { margin-bottom: 30px; }
-        .signature-title { font-size: 18px; color: #2c3e50; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .required-field::after { content: " *"; color: #e74c3c; }
+        .signature-title { 
+            font-size: 18px; color: #2c3e50; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .required-field::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
         .signature-box { margin-top: 10px; }
         .signature-label { display: block; margin-bottom: 8px; font-weight: 500; color: #555; font-size: 14px; }
-        .signature-input { width: 100%; padding: 16px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; font-family: monospace; transition: all 0.3s; }
-        .signature-input:required { border-left: 4px solid #3498db; }
+        .signature-input { 
+            width: 100%; padding: 16px; border: 2px solid #ddd; border-radius: 8px; 
+            font-size: 16px; font-family: monospace; transition: all 0.3s;
+        }
+        .signature-input:required {
+            border-left: 4px solid #3498db;
+        }
         .signature-input:focus { outline: none; border-color: #3498db; box-shadow: 0 0 0 3px rgba(52,152,219,0.2); }
-        .signature-input:disabled { background-color: #f5f5f5; cursor: not-allowed; opacity: 0.6; }
-        .help-text { font-size: 12px; color: #666; margin-top: 5px; font-style: italic; line-height: 1.5; }
+        .signature-input:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .help-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+            line-height: 1.5;
+        }
+        
+        /* Otros Materiales Section - REORGANIZADO */
         .other-materials-section { margin-bottom: 20px; }
+        
+        /* Material Buttons - MANTENIDO PERO REORGANIZADO */
         .material-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
-        .material-btn { padding: 14px 10px; background: white; border: 2px solid #ddd; border-radius: 6px; font-size: 14px; font-weight: 500; color: #555; cursor: pointer; transition: all 0.3s; }
+        .material-btn { 
+            padding: 14px 10px; background: white; border: 2px solid #ddd; border-radius: 6px; 
+            font-size: 14px; font-weight: 500; color: #555; cursor: pointer; transition: all 0.3s;
+        }
         .material-btn:hover { border-color: #f39c12; background: #fff9e6; }
         .material-btn.selected { border-color: #f39c12; background: #fff3cd; color: #856404; }
-        .material-btn:disabled { background-color: #f5f5f5; cursor: not-allowed; opacity: 0.6; }
+        .material-btn:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        /* Map Panel (NO MODIFICADO) */
         .map-panel { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; }
-        .selection-info { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #3498db; }
-        .selection-info h3 { font-size: 16px; margin-bottom: 10px; color: #2c3e50; display: flex; align-items: center; gap: 8px; }
-        .selection-details { display: flex; flex-wrap: wrap; gap: 15px; }
-        .detail-item { flex: 1; min-width: 150px; }
-        .detail-label { font-size: 12px; color: #666; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .detail-value { font-size: 14px; font-weight: 600; color: #2c3e50; word-break: break-word; }
-        .location-info-panel { background: #e8f6ef; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; border-left: 4px solid #27ae60; }
-        .location-info-panel.active { display: block; }
-        .location-info-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #2c3e50; display: flex; align-items: center; gap: 8px; }
-        .location-info-text { font-size: 14px; line-height: 1.6; color: #555; }
-        .map-container { flex: 1; position: relative; background: #f8f9fa; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0; min-height: 500px; margin-bottom: 20px; }
-        .initial-state { display: flex; align-items: center; justify-content: center; height: 100%; color: #999; font-size: 18px; text-align: center; padding: 40px; }
-        .loading-state { display: flex; align-items: center; justify-content: center; height: 100%; background: #f8f9fa; color: #6c757d; font-size: 18px; text-align: center; padding: 40px; }
-        .loading-spinner { border: 5px solid #f3f3f3; border-top: 5px solid #3498db; border-radius: 50%; width: 50px; height: 50px; animation: spin 2s linear infinite; margin: 0 auto 20px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .legend-panel { background: white; padding: 12px 15px; border-radius: 6px; display: none; border: 1px solid #e0e0e0; }
-        .legend-panel.active { display: flex; align-items: center; gap: 10px; }
-        .legend-color { width: 16px; height: 16px; background: rgba(255, 215, 0, 0.7); border: 2px solid #e67e22; border-radius: 2px; flex-shrink: 0; }
-        .legend-text { font-size: 14px; color: #555; }
-        .no-map-state { display: flex; align-items: center; justify-content: center; height: 100%; background: linear-gradient(135deg, #f8f9fa, #e9ecef); color: #6c757d; font-size: 18px; text-align: center; padding: 40px; }
-        .no-map-state i { font-size: 64px; margin-bottom: 20px; opacity: 0.5; color: #adb5bd; }
-        .no-map-state h3 { font-size: 20px; margin-bottom: 10px; color: #495057; }
-        .no-map-state p { font-size: 14px; opacity: 0.8; max-width: 400px; margin: 0 auto; }
+        
+        /* Compact Selection Info */
+        .selection-info { 
+            background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; 
+            border-left: 4px solid #3498db;
+        }
+        .selection-info h3 { 
+            font-size: 16px; margin-bottom: 10px; color: #2c3e50; 
+            display: flex; align-items: center; gap: 8px;
+        }
+        .selection-details { 
+            display: flex; 
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .detail-item { 
+            flex: 1;
+            min-width: 150px;
+        }
+        .detail-label { 
+            font-size: 12px; 
+            color: #666; 
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .detail-value { 
+            font-size: 14px; 
+            font-weight: 600; 
+            color: #2c3e50;
+            word-break: break-word;
+        }
+        
+        /* Location Info Panel */
+        .location-info-panel {
+            background: #e8f6ef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            border-left: 4px solid #27ae60;
+        }
+        .location-info-panel.active {
+            display: block;
+        }
+        .location-info-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .location-info-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        /* Map Container */
+        .map-container { 
+            flex: 1; position: relative; background: #f8f9fa; border-radius: 8px; 
+            overflow: hidden; border: 1px solid #e0e0e0; min-height: 500px;
+            margin-bottom: 20px;
+        }
+        .initial-state { 
+            display: flex; align-items: center; justify-content: center; height: 100%; 
+            color: #999; font-size: 18px; text-align: center; padding: 40px;
+        }
+        .initial-state i { font-size: 48px; margin-bottom: 20px; opacity: 0.5; }
+        
+        /* Loading State */
+        .loading-state {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: #f8f9fa;
+            color: #6c757d;
+            font-size: 18px;
+            text-align: center;
+            padding: 40px;
+        }
+        .loading-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Legend Panel */
+        .legend-panel {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 6px;
+            display: none;
+            border: 1px solid #e0e0e0;
+        }
+        .legend-panel.active {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            background: rgba(255, 215, 0, 0.7);
+            border: 2px solid #e67e22;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+        .legend-text {
+            font-size: 14px;
+            color: #555;
+        }
+        
+        /* No Map Available State */
+        .no-map-state {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            color: #6c757d;
+            font-size: 18px;
+            text-align: center;
+            padding: 40px;
+        }
+        .no-map-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+            color: #adb5bd;
+        }
+        .no-map-state h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #495057;
+        }
+        .no-map-state p {
+            font-size: 14px;
+            opacity: 0.8;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        /* Message styles */
         .message { padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; }
         .message-error { background: #fdecea; border-left: 4px solid #e74c3c; color: #c0392b; }
         .message-warning { background: #fff3cd; border-left: 4px solid #f39c12; color: #856404; }
         .message-success { background: #e8f6ef; border-left: 4px solid #27ae60; color: #27ae60; }
-        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+        
+        /* For screen readers only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
     </style>
 </head>
 <body>
@@ -75,60 +284,115 @@
             <h1><span aria-hidden="true">🗺️</span> Sistema de Mapas de Biblioteca</h1>
             <div class="subtitle">Selecciona la Biblioteca de tu interés y localiza los materiales en el mapa de cada Biblioteca. Puede realizar la búsqueda mediante el código de clasificación (localización en estantería) o por tipo de material.</div>
         </div>
+        
         <div class="main-content">
+            <!-- Controls Panel - REORGANIZADO -->
             <div class="controls-panel">
+                <!-- Biblioteca Section -->
                 <div class="library-section">
                     <h2 class="section-title"><span aria-hidden="true">🏛️</span>Biblioteca</h2>
                     <div class="library-buttons">
-                        <button class="library-btn" id="btn-medellin" onclick="selectLibrary('medellin')" aria-label="Seleccionar biblioteca de Medellín"><span class="library-icon" aria-hidden="true">📚</span> Medellín</button>
-                        <button class="library-btn" id="btn-oriente" onclick="selectLibrary('oriente')" aria-label="Seleccionar Centro Regional Oriente"><span class="library-icon" aria-hidden="true">📚</span> Centro Regional Oriente</button>
-                        <button class="library-btn" id="btn-uraba" onclick="selectLibrary('uraba')" aria-label="Seleccionar Centro Regional Urabá"><span class="library-icon" aria-hidden="true">📚</span> Centro Regional Urabá</button>
+                        <button class="library-btn" id="btn-medellin" onclick="selectLibrary('medellin')"
+                                aria-label="Seleccionar biblioteca de Medellín">
+                            <span class="library-icon" aria-hidden="true">📚</span> Medellín
+                        </button>
+                        <button class="library-btn" id="btn-oriente" onclick="selectLibrary('oriente')"
+                                aria-label="Seleccionar Centro Regional Oriente">
+                            <span class="library-icon" aria-hidden="true">📚</span> Centro Regional Oriente
+                        </button>
+                        <button class="library-btn" id="btn-uraba" onclick="selectLibrary('uraba')"
+                                aria-label="Seleccionar Centro Regional Urabá">
+                            <span class="library-icon" aria-hidden="true">📚</span> Centro Regional Urabá
+                        </button>
                     </div>
                 </div>
+                
+                <!-- Divider -->
                 <div class="divider"></div>
+                
+                <!-- Signatura Section -->
                 <div class="signature-section">
                     <h2 class="signature-title"><span aria-hidden="true">🕮</span> <span class="required-field">Localización de Libros</span></h2>
                     <div class="signature-box">
                         <label class="signature-label" for="signature">Ingrese el número que corresponde a la localización del libro en estantería:</label>
-                        <input type="text" class="signature-input" id="signature" placeholder="123.4 A12 || 512.1 B18" aria-describedby="signature-help" required disabled>
-                        <div id="signature-help" class="help-text">Ingrese el número de localización para ubicar el material en el mapa. Ejemplos: 658.403, 005.1, 900.2, A412, 312 A123.</div>
+                        <input type="text" class="signature-input" id="signature" 
+                               placeholder="123.4 A12 || 512.1 B18" 
+                               aria-describedby="signature-help"
+                               required
+                               disabled>
+                        <div id="signature-help" class="help-text">
+                            Ingrese el número de localización para ubicar el material en el mapa. Ejemplos: 658.403, 005.1, 900.2, A412, 312 A123.
+                        </div>
                     </div>
                 </div>
+                
+                <!-- Divider -->
                 <div class="divider"></div>
+                
+                <!-- Otros Materiales Section -->
                 <div class="other-materials-section">
                     <h2 class="section-title"><span aria-hidden="true">📑</span> Otros Materiales</h2>
                     <div class="material-buttons">
-                        <button class="material-btn" id="btn-tesis" onclick="selectMaterial('tesis')" disabled>TRABAJOS DE GRADO</button>
-                        <button class="material-btn" id="btn-cd" onclick="selectMaterial('cd')" disabled>CD</button>
-                        <button class="material-btn" id="btn-revista" onclick="selectMaterial('revista')" disabled>REVISTAS</button>
-                        <button class="material-btn" id="btn-folleto" onclick="selectMaterial('folleto')" disabled>FOLLETOS</button>
-                        <button class="material-btn" id="btn-norma" onclick="selectMaterial('norma')" disabled>NORMAS</button>
+                        <button class="material-btn" id="btn-tesis" onclick="selectMaterial('tesis')" aria-label="Buscar trabajo de grado" disabled>TRABAJOS DE GRADO</button>
+                        <button class="material-btn" id="btn-cd" onclick="selectMaterial('cd')" aria-label="Buscar CD´S" disabled>CD</button>
+                        <button class="material-btn" id="btn-revista" onclick="selectMaterial('revista')" aria-label="Buscar revista" disabled>REVISTAS</button>
+                        <button class="material-btn" id="btn-folleto" onclick="selectMaterial('folleto')" aria-label="Buscar folleto" disabled>FOLLETOS</button>
+                        <button class="material-btn" id="btn-norma" onclick="selectMaterial('norma')" aria-label="Buscar norma" disabled>NORMAS</button>
                     </div>
                 </div>
             </div>
+            
+            <!-- Map Panel (NO MODIFICADO) -->
             <div class="map-panel">
+                <!-- Messages -->
                 <div class="message message-error" id="message-error" role="alert"></div>
                 <div class="message message-warning" id="message-warning" role="alert"></div>
                 <div class="message message-success" id="message-success" role="alert"></div>
+                
+                <!-- Compact Selection Info -->
                 <div class="selection-info" id="selection-info" style="display: none;">
                     <h3><span aria-hidden="true">📋</span> Selección Actual</h3>
                     <div class="selection-details">
-                        <div class="detail-item"><div class="detail-label">Biblioteca:</div><div class="detail-value" id="current-library">-</div></div>
-                        <div class="detail-item"><div class="detail-label">Tipo de material:</div><div class="detail-value" id="current-material">-</div></div>
-                        <div class="detail-item"><div class="detail-label">Localización:</div><div class="detail-value" id="current-signature">-</div></div>
+                        <div class="detail-item">
+                            <div class="detail-label">Biblioteca:</div>
+                            <div class="detail-value" id="current-library">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Tipo de material:</div>
+                            <div class="detail-value" id="current-material">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Localización:</div>
+                            <div class="detail-value" id="current-signature">-</div>
+                        </div>
                     </div>
                 </div>
+                
+                <!-- Location Info Panel -->
                 <div class="location-info-panel" id="location-info-panel">
                     <div class="location-info-title"><span aria-hidden="true">📍</span> Información de Ubicación</div>
                     <div class="location-info-text" id="location-info-text">Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa</div>
                 </div>
+                
+                <!-- Map Container -->
                 <div class="map-container" id="map-container">
-                    <div class="initial-state" id="initial-state"><div><span aria-hidden="true">🗺️</span><p>Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa</p></div></div>
+                    <div class="initial-state" id="initial-state">
+                        <div>
+                            <span aria-hidden="true">🗺️</span>
+                            <p>Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="legend-panel" id="legend-panel"><div class="legend-color"></div><div class="legend-text">Ubicación aproximada del material</div></div>
+                
+                <!-- Legend Panel -->
+                <div class="legend-panel" id="legend-panel">
+                    <div class="legend-color"></div>
+                    <div class="legend-text">Ubicación aproximada del material</div>
+                </div>
             </div>
         </div>
     </div>
+
     <script>
         // Variables de estado
         let selectedLibrary = null;
@@ -137,102 +401,436 @@
         let searchTimeout = null;
         let currentImageLoadTimeout = null;
         let isMapLoading = false;
+        let pendingCallNumber = null;
+        let pendingLibrary = null;
+
+
         
-        // Configuración de mapas (igual que original)
+        // Configuración de mapas
         const mapData = {
             "MEDELLÍN": {
                 name: "Biblioteca Medellín",
                 floors: {
-                    1: { img: "images/mapa-medellin-piso-1.png", staticLocations: { "REVISTA": { x: 0.0815, y: 0.8564, width: 0.1046, height: 0.0799, message: "Colección de Revistas - Hemeroteca" }, "FOLLETO": { x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088, message: "Colección de Folletos. Consultar en Circulación y Préstamo" }, "TRABAJO DE GRADO": [ { x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088, message: "Colección de trabajos de grado (TDG). Tener presente que los TDG en formato físico se encuentran en el piso 2 de la Biblioteca. Los TDG en CDs se encuentran en el primer piso - Circulación y préstamo" }, { x: 0.8167, y: 0.4356, width: 0.1694, height: 0.2643, message: "DVDs y material audiovisual" } ], "NORMAS": { x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088, message: "Colección de Normas Técnicas. Consultar en Circulación y Préstamo" }, "MULTIMEDIA": { x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088, message: "Colección Multimedia - CDs, DVDs. Consultar en Circulación y Préstamo" } }, stacks: [ { id: "1.1A1.Izquierdo", start: "000.0", end: "005.1", x: 0.6222, y: 0.6770, height: 0.1109, width: 0.0269 }, { id: "1.1A2.Izquierdo", start: "005.101", end: "036.0", x: 0.6222, y: 0.8254, height: 0.1109, width: 0.0269 }, { id: "1.1B2.Derecho", start: "036.01", end: "302.0", x: 0.5944, y: 0.8254, height: 0.1109, width: 0.0269 }, { id: "1.1B1.Derecho", start: "302.01", end: "330.01", x: 0.5944, y: 0.6770, height: 0.1109, width: 0.0269 }, { id: "1.2A1.Izquierdo", start: "330.011", end: "338.5", x: 0.5602, y: 0.6770, height: 0.1109, width: 0.0269 }, { id: "1.2A2.Izquierdo", start: "338.501", end: "373.2", x: 0.5602, y: 0.8254, height: 0.1109, width: 0.0269 }, { id: "1.2B2.Derecho", start: "373.201", end: "512.1", x: 0.5324, y: 0.8254, height: 0.1109, width: 0.0269 }, { id: "1.2B1.Derecho", start: "512.101", end: "515.3", x: 0.5324, y: 0.6770, height: 0.1109, width: 0.0269 }, { id: "1.3A1.Izquierdo", start: "515.301", end: "519.5", x: 0.4963, y: 0.6770, height: 0.1109, width: 0.0269 }, { id: "1.3A2.Izquierdo", start: "519.501", end: "537.0", x: 0.4936, y: 0.8254, height: 0.1109, width: 0.0269 }, { id: "1.3B2.Derecho", start: "537.01", end: "574.5", x: 0.4685, y: 0.8254, height: 0.1109, width: 0.0269 }, { id: "1.3B1.Derecho", start: "574.501", end: "591.0", x: 0.4685, y: 0.6770, height: 0.1109, width: 0.0269 }, { id: "1.4A1.Izquierdo", start: "591.01", end: "612.76", x: 0.4324, y: 0.6770, height: 0.1109, width: 0.0269 }, { id: "1.4A2.Izquierdo", start: "612.7601", end: "612.27", x: 0.4333, y: 0.8254, height: 0.1109, width: 0.0269 }, { id: "1.4B2.Derecho", start: "612.2701", end: "621.4", x: 0.4065, y: 0.8254, height: 0.1109, width: 0.0269 }, { id: "1.4B1.Derecho", start: "621.401", end: "624.18", x: 0.4065, y: 0.6770, height: 0.1109, width: 0.0269 }, { id: "1.5A1.Izquierdo", start: "624.1801", end: "629.8", x: 0.3713, y: 0.6770, height: 0.1109, width: 0.0269 }, { id: "1.5A2.Izquierdo", start: "629.801", end: "634.0", x: 0.3704, y: 0.8254, height: 0.1109, width: 0.0269 }, { id: "1.5B2.Derecho", start: "634.01", end: "657.0", x: 0.3435, y: 0.8254, height: 0.1109, width: 0.0269 }, { id: "1.5B1.Derecho", start: "657.01", end: "657.8", x: 0.3435, y: 0.6770, height: 0.1109, width: 0.0269 }, { id: "1.6A1.Izquierdo", start: "657.801", end: "658.3", x: 0.3074, y: 0.6770, height: 0.1109, width: 0.0269 }, { id: "1.6A2.Izquierdo", start: "658.301", end: "658.5", x: 0.3074, y: 0.8254, height: 0.1109, width: 0.0269 }, { id: "1.6B2.Derecho", start: "658.501", end: "658.85", x: 0.2806, y: 0.8254, height: 0.1109, width: 0.0269 }, { id: "1.6B1.Derecho", start: "658.8501", end: "690.2", x: 0.2806, y: 0.6770, height: 0.1109, width: 0.0269 }, { id: "1.7A1.Izquierdo", start: "690.201", end: "790.2", x: 0.2444, y: 0.6770, height: 0.1109, width: 0.0269 }, { id: "1.7A2.Izquierdo", start: "790.201", end: "799.1", x: 0.2444, y: 0.8254, height: 0.1109, width: 0.0269 }, { id: "1.7B2.Derecho", start: "799.101", end: "899.9", x: 0.2185, y: 0.8254, height: 0.1109, width: 0.0269 }, { id: "1.7B1.Derecho", start: "900", end: "999.9", x: 0.2185, y: 0.6770, height: 0.1109, width: 0.0269 } ] },
-                    2: { img: "images/mapa-medellin-piso-2.png", staticLocations: { "COLECCION ESTATICA": { x:0.0, y:0.0, width:0.0, height:0.0, message: "Colección - Piso 2" } }, stacks: [] }
-                }
+                    1: {
+                        img: "images/mapa-medellin-piso-1.png",
+                        staticLocations: {
+                            "REVISTA": {
+                                x: 0.0815, y: 0.8564, width: 0.1046, height: 0.0799,
+                                message: "Colección de Revistas - Hemeroteca",
+                            },
+                            "FOLLETO": {
+                                x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
+                                message: "Colección de Folletos. Consultar en Circulación y Préstamo",
+                            },
+                            "TRABAJO DE GRADO": [
+                                {
+                                    x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
+                                    message: "Colección de trabajos de grado (TDG). Tener presente que los TDG en formato físico se encuentran en el piso 2 de la Biblioteca. Los TDG en CDs se encuentran en el primer piso - Circulación y préstamo",
+                                },
+                                {
+                                    x: 0.8167, y: 0.4356, width: 0.1694, height: 0.2643,
+                                    message: "DVDs y material audiovisual",
+                                }
+                            ],
+                            "NORMAS": {
+                                x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
+                                message: "Colección de Normas Técnicas. Consultar en Circulación y Préstamo",
+                            },
+                            "MULTIMEDIA": {
+                                x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
+                                message: "Colección Multimedia - CDs, DVDs. Consultar en Circulación y Préstamo",
+                            }
+                        },
+                        stacks: [
+                            { id: "1.1A1.Izquierdo", start: "000.0", end: "005.1", x: 0.6222, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.1A2.Izquierdo", start: "005.101", end: "036.0", x: 0.6222, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.1B2.Derecho", start: "036.01", end: "302.0", x: 0.5944, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.1B1.Derecho", start: "302.01", end: "330.01", x: 0.5944, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.2A1.Izquierdo", start: "330.011", end: "338.5", x: 0.5602, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.2A2.Izquierdo", start: "338.501", end: "373.2", x: 0.5602, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.2B2.Derecho", start: "373.201", end: "512.1", x: 0.5324, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.2B1.Derecho", start: "512.101", end: "515.3", x: 0.5324, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.3A1.Izquierdo", start: "515.301", end: "519.5", x: 0.4963, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.3A2.Izquierdo", start: "519.501", end: "537.0", x: 0.4936, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.3B2.Derecho", start: "537.01", end: "574.5", x: 0.4685, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.3B1.Derecho", start: "574.501", end: "591.0", x: 0.4685, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.4A1.Izquierdo", start: "591.01", end: "612.76", x: 0.4324, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.4A2.Izquierdo", start: "612.7601", end: "612.27", x: 0.4333, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.4B2.Derecho", start: "612.2701", end: "621.4", x: 0.4065, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.4B1.Derecho", start: "621.401", end: "624.18", x: 0.4065, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.5A1.Izquierdo", start: "624.1801", end: "629.8", x: 0.3713, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.5A2.Izquierdo", start: "629.801", end: "634.0", x: 0.3704, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.5B2.Derecho", start: "634.01", end: "657.0", x: 0.3435, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.5B1.Derecho", start: "657.01", end: "657.8", x: 0.3435, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.6A1.Izquierdo", start: "657.801", end: "658.3", x: 0.3074, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.6A2.Izquierdo", start: "658.301", end: "658.5", x: 0.3074, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.6B2.Derecho", start: "658.501", end: "658.85", x: 0.2806, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.6B1.Derecho", start: "658.8501", end: "690.2", x: 0.2806, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.7A1.Izquierdo", start: "690.201", end: "790.2", x: 0.2444, y: 0.6770, height: 0.1109, width: 0.0269 },
+                            { id: "1.7A2.Izquierdo", start: "790.201", end: "799.1", x: 0.2444, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.7B2.Derecho", start: "799.101", end: "899.9", x: 0.2185, y: 0.8254, height: 0.1109, width: 0.0269 },
+                            { id: "1.7B1.Derecho", start: "900", end: "999.9", x: 0.2185, y: 0.6770, height: 0.1109, width: 0.0269 }
+                        ],
+                    },
+                    2: {
+                        img: "images/mapa-medellin-piso-2.png",
+                        staticLocations: {
+                            "COLECCION ESTATICA": {
+                                x:0.0, y:0.0, width:0.0, height:0.0,
+                                message: "Colección - Piso 2",
+                            }
+                        },
+                        stacks: [],
+                    },
+                },
             },
-            "CENTRO REGIONAL ORIENTE": { name: "Biblioteca Centro Regional Oriente", floors: { 1: { img: "https://bibliotecapjic.github.io/images/mapa-oriente-piso-1.png", staticLocations: { "REVISTA": { x: 0.2, y: 0.3, width: 0.1, height: 0.1, message: "Colección de Revistas - Oriente" }, "TRABAJO DE GRADO": { x: 0.4, y: 0.5, width: 0.1, height: 0.1, message: "Colección de Tesis - Oriente" } }, stacks: [] } } },
-            "CENTRO REGIONAL URABÁ": { name: "Biblioteca Centro Regional Urabá", floors: { 1: { img: "https://bibliotecapjic.github.io/images/mapa-uraba-piso-1.png", staticLocations: { "REVISTA": { x: 0.2, y: 0.3, width: 0.1, height: 0.1, message: "Colección de Revistas - Urabá" } }, stacks: [] } } }
+            "CENTRO REGIONAL ORIENTE": {
+                name: "Biblioteca Centro Regional Oriente",
+                floors: {
+                    1: {
+                        img: "https://bibliotecapjic.github.io/images/mapa-oriente-piso-1.png",
+                        staticLocations: {
+                            "REVISTA": {
+                                x: 0.2, y: 0.3, width: 0.1, height: 0.1,
+                                message: "Colección de Revistas - Oriente",
+                            },
+                            "TRABAJO DE GRADO": {
+                                x: 0.4, y: 0.5, width: 0.1, height: 0.1,
+                                message: "Colección de Tesis - Oriente",
+                            }
+                        },
+                        stacks: [],
+                    }
+                },
+            },
+            "CENTRO REGIONAL URABÁ": {
+                name: "Biblioteca Centro Regional Urabá",
+                floors: {
+                    1: {
+                        img: "https://bibliotecapjic.github.io/images/mapa-uraba-piso-1.png",
+                        staticLocations: {
+                            "REVISTA": {
+                                x: 0.2, y: 0.3, width: 0.1, height: 0.1,
+                                message: "Colección de Revistas - Urabá",
+                            }
+                        },
+                        stacks: [],
+                    }
+                },
+            }
         };
 
-        const libraryMap = { 'medellin': 'MEDELLÍN', 'oriente': 'CENTRO REGIONAL ORIENTE', 'uraba': 'CENTRO REGIONAL URABÁ' };
-        const materialMap = { 'tesis': 'TRABAJO DE GRADO', 'cd': 'MULTIMEDIA', 'revista': 'REVISTA', 'folleto': 'FOLLETO', 'norma': 'NORMAS' };
-        const materialDisplayNames = { 'tesis': 'TRABAJO DE GRADO', 'cd': 'CD', 'revista': 'REVISTA', 'folleto': 'FOLLETO', 'norma': 'NORMA' };
+        // Mapeo de selecciones a valores del sistema
+        const libraryMap = {
+            'medellin': 'MEDELLÍN',
+            'oriente': 'CENTRO REGIONAL ORIENTE',
+            'uraba': 'CENTRO REGIONAL URABÁ'
+        };
+        
+        const materialMap = {
+            'tesis': 'TRABAJO DE GRADO',
+            'cd': 'MULTIMEDIA',
+            'revista': 'REVISTA',
+            'folleto': 'FOLLETO',
+            'norma': 'NORMAS'
+        };
+        
+        const materialDisplayNames = {
+            'tesis': 'TRABAJO DE GRADO',
+            'cd': 'CD',
+            'revista': 'REVISTA',
+            'folleto': 'FOLLETO',
+            'norma': 'NORMA'
+        };
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 🔗 NUEVA FUNCIONALIDAD: URL
+    function getURLParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+            library_code: params.get('library_code'),
+            call_number: params.get('call_number')
+        };
+    }
+
+    function mapLibraryCode(externalCode) {
+        const mapping = {
+            'POBLA': 'medellin',
+            'RIONE': 'oriente',
+            'APART': 'uraba'
+        };
+        return mapping[externalCode] || null;
+    }
+
+    function initFromURL() {
+
+    console.log("🚀 initFromURL ejecutándose");
+
+    const url = new URL(window.location.href);
+    const params = url.searchParams;
+
+    console.log("🌐 URL completa:", window.location.href);
+
+    const library_code = params.get('library_code');
+    const call_number = params.get('call_number');
+
+    console.log("🌐 URL detectada:", library_code, call_number);
+
+    const mapping = {
+        'POBLA': 'medellin',
+        'RIONE': 'oriente',
+        'APART': 'uraba'
+    };
+
+    if (library_code && mapping[library_code]) {
+        pendingLibrary = mapping[library_code];
+    }
+
+    if (call_number) {
+        pendingCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
+    }
+
+    if (pendingLibrary) {
+        selectLibrary(pendingLibrary);
+    }
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+        
+
+        // Función para habilitar/deshabilitar controles
         function toggleControls(enabled) {
             const signatureInput = document.getElementById('signature');
             const materialButtons = document.querySelectorAll('.material-btn');
+            
             signatureInput.disabled = !enabled;
-            materialButtons.forEach(button => button.disabled = !enabled);
-            if (!enabled) { signatureInput.value = ''; selectedMaterial = null; materialButtons.forEach(btn => btn.classList.remove('selected')); }
+            
+            materialButtons.forEach(button => {
+                button.disabled = !enabled;
+            });
+            
+            if (!enabled) {
+                signatureInput.value = '';
+                selectedMaterial = null;
+                materialButtons.forEach(btn => btn.classList.remove('selected'));
+            }
         }
 
+        // FUNCIÓN MEJORADA: Normalizar números Dewey
         function normalizeDewey(callNumber) {
             if (!callNumber) return null;
+            
             try {
                 const original = callNumber.toString().trim();
+                console.log(`🔍 Normalizando signatura: "${original}"`);
+                
                 let match = original.match(/^[A-Z]*(\d+(?:\.\d+)?)/);
-                if (!match) match = original.match(/^(\d+(?:\.\d+)?)/);
-                if (!match) return null;
+                
+                if (!match) {
+                    match = original.match(/^(\d+(?:\.\d+)?)/);
+                }
+                
+                if (!match) {
+                    console.log(`❌ No se pudo extraer parte numérica de: "${original}"`);
+                    return null;
+                }
+                
                 const numericPart = match[1];
                 const numericValue = parseFloat(numericPart);
-                return { original, numericPart: numericValue, fullMatch: match[0], normalized: numericPart };
-            } catch(e) { return null; }
+                
+                console.log(`✅ Signatura "${original}" → Parte numérica: "${numericPart}" → Valor: ${numericValue}`);
+                
+                return {
+                    original: original,
+                    numericPart: numericValue,
+                    fullMatch: match[0],
+                    normalized: numericPart
+                };
+            } catch (e) {
+                console.error("❌ Error normalizando Dewey:", e, callNumber);
+                return null;
+            }
         }
         
-        function validateSignature(signature) { return /^[0-9A-Za-z.,\s-]+$/.test(signature) && signature.length <= 50; }
+        function validateSignature(signature) {
+            const safePattern = /^[0-9A-Za-z.,\s-]+$/;
+            if (!safePattern.test(signature)) {
+                console.log(`❌ Signatura no válida (patrón): "${signature}"`);
+                return false;
+            }
+            
+            if (signature.length > 50) {
+                console.log(`❌ Signatura demasiado larga: "${signature}"`);
+                return false;
+            }
+            
+            console.log(`✅ Signatura válida: "${signature}"`);
+            return true;
+        }
         
         function searchInStacks(libraryMapData, callNumber) {
-            if (!callNumber) return null;
+            if (!callNumber) {
+                console.log("⚠️ No hay signatura para buscar");
+                return null;
+            }
+            
+            console.log(`🔍 Buscando en estantes: "${callNumber}"`);
             let callNumNormalized = normalizeDewey(callNumber);
+            
             if (callNumNormalized && !isNaN(callNumNormalized.numericPart)) {
+                console.log(`📊 Valor numérico para búsqueda: ${callNumNormalized.numericPart}`);
+                
                 for (let floorNum in libraryMapData.floors) {
                     let floor = libraryMapData.floors[floorNum];
-                    if (floor.stacks && floor.stacks.length) {
-                        for (let stack of floor.stacks) {
-                            let startNorm = normalizeDewey(stack.start);
-                            let endNorm = normalizeDewey(stack.end);
-                            if (startNorm && endNorm && callNumNormalized.numericPart >= startNorm.numericPart && callNumNormalized.numericPart <= endNorm.numericPart) {
-                                return { floor: floorNum, x: stack.x, y: stack.y, width: stack.width, height: stack.height, stackInfo: stack.id };
+                    if (floor.stacks && floor.stacks.length > 0) {
+                        console.log(`📚 Revisando piso ${floorNum} con ${floor.stacks.length} estantes`);
+                        
+                        for (let j = 0; j < floor.stacks.length; j++) {
+                            let stack = floor.stacks[j];
+                            try {
+                                let startNormalized = normalizeDewey(stack.start);
+                                let endNormalized = normalizeDewey(stack.end);
+                                
+                                if (startNormalized && endNormalized) {
+                                    console.log(`📖 Estante ${stack.id}: ${startNormalized.numericPart} - ${endNormalized.numericPart}`);
+                                    
+                                    if (callNumNormalized.numericPart >= startNormalized.numericPart && 
+                                        callNumNormalized.numericPart <= endNormalized.numericPart) {
+                                        
+                                        console.log(`✅ ENCONTRADO en estante: ${stack.id}`);
+                                        
+                                        return {
+                                            floor: floorNum,
+                                            x: stack.x,
+                                            y: stack.y,
+                                            width: stack.width,
+                                            height: stack.height,
+                                            stackInfo: stack.id
+                                        };
+                                    }
+                                }
+                            } catch (e) {
+                                console.error("❌ Error en comparación Dewey:", e);
                             }
                         }
                     }
                 }
+            } else {
+                console.log(`❌ No se pudo normalizar o valor no numérico: "${callNumber}"`);
             }
+            
+            console.log(`❌ No encontrado en estantes: "${callNumber}"`);
             return null;
         }
         
         function searchInStaticLocations(libraryMapData, locationType) {
+            console.log(`🔍 Buscando ubicación estática: "${locationType}"`);
+            
             for (let floorNum in libraryMapData.floors) {
                 let floor = libraryMapData.floors[floorNum];
                 if (floor.staticLocations && floor.staticLocations[locationType]) {
                     let staticLoc = floor.staticLocations[locationType];
-                    if (Array.isArray(staticLoc)) return { floor: floorNum, locations: staticLoc, isMultiple: true };
-                    else return { floor: floorNum, x: staticLoc.x, y: staticLoc.y, width: staticLoc.width, height: staticLoc.height, message: staticLoc.message, isMultiple: false };
+                    
+                    console.log(`✅ Encontrada ubicación estática en piso ${floorNum}`);
+                    
+                    if (Array.isArray(staticLoc)) {
+                        return {
+                            floor: floorNum,
+                            locations: staticLoc,
+                            isMultiple: true
+                        };
+                    } else if (typeof staticLoc === 'object') {
+                        return {
+                            floor: floorNum,
+                            x: staticLoc.x,
+                            y: staticLoc.y,
+                            width: staticLoc.width,
+                            height: staticLoc.height,
+                            message: staticLoc.message,
+                            isMultiple: false
+                        };
+                    }
                 }
             }
+            
+            console.log(`❌ No encontrada ubicación estática: "${locationType}"`);
             return null;
         }
 
+        // FUNCIÓN CORREGIDA: Cargar mapa de biblioteca
         function loadLibraryMap(libraryKey) {
             console.log(`🔄 CARGANDO MAPA para: ${libraryKey}`);
-            if (isMapLoading) return false;
+            
+            if (isMapLoading) {
+                console.log(`⏳ Ya se está cargando un mapa, esperando...`);
+                return false;
+            }
+            
             isMapLoading = true;
-            if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
+            
+            if (currentImageLoadTimeout) {
+                clearTimeout(currentImageLoadTimeout);
+                currentImageLoadTimeout = null;
+            }
+            
             const libraryData = mapData[libraryKey];
-            if (!libraryData) { showNoMapAvailable("No se encontraron datos para esta biblioteca"); isMapLoading = false; return false; }
+            if (!libraryData) {
+                console.error(`❌ No hay datos para: ${libraryKey}`);
+                showNoMapAvailable("No se encontraron datos para esta biblioteca");
+                isMapLoading = false;
+                return false;
+            }
+            
             currentLibraryData = libraryData;
+            
             const mapContainer = document.getElementById('map-container');
-            mapContainer.innerHTML = `<div class="loading-state"><div><div class="loading-spinner"></div><p>Cargando mapa de ${libraryData.name}...</p></div></div>`;
+            
+            // Limpiar el contenedor
+            mapContainer.innerHTML = '';
+            
+            // Mostrar estado de carga
+            mapContainer.innerHTML = `
+                <div class="loading-state" id="current-loading-state">
+                    <div>
+                        <div class="loading-spinner"></div>
+                        <p>Cargando mapa de ${libraryData.name}...</p>
+                    </div>
+                </div>
+            `;
+            
+            // Cargar la imagen
             const floorData = libraryData.floors[1];
             const imgPath = floorData.img;
+            
             console.log(`📁 Intentando cargar imagen: ${imgPath}`);
+            
             const img = new Image();
+            
             currentImageLoadTimeout = setTimeout(() => {
-                console.log(`⏰ Timeout: La imagen ${imgPath} tardó demasiado`);
-                if (img && !img.complete) { img.onload = null; img.onerror = null; showNoMapAvailable(`El mapa no se pudo cargar. Tiempo de espera agotado.`); }
-                currentImageLoadTimeout = null; isMapLoading = false;
-            }, 15000); // Aumentado a 15 segundos
+                console.log(`⏰ Timeout: La imagen ${imgPath} está tardando demasiado`);
+                if (img && !img.complete) {
+                    img.onload = null;
+                    img.onerror = null;
+                    showNoMapAvailable(`El mapa no se pudo cargar. Tiempo de espera agotado.`);
+                }
+                currentImageLoadTimeout = null;
+                isMapLoading = false;
+            }, 5000);
             
             img.onload = function() {
                 console.log(`✅ Imagen cargada exitosamente: ${imgPath}`);
-                if (currentImageLoadTimeout) { clearTimeout(currentImageLoadTimeout); currentImageLoadTimeout = null; }
+                
+                if (currentImageLoadTimeout) {
+                    clearTimeout(currentImageLoadTimeout);
+                    currentImageLoadTimeout = null;
+                }
+                
                 const imgElement = document.createElement('img');
                 imgElement.id = 'map-image';
                 imgElement.src = imgPath;
@@ -240,131 +838,393 @@
                 imgElement.style.width = '100%';
                 imgElement.style.height = '100%';
                 imgElement.style.objectFit = 'contain';
+                
                 mapContainer.innerHTML = '';
                 mapContainer.appendChild(imgElement);
                 clearMapMarkers();
+                
                 imgElement.onload = function() {
-                    console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
-                    isMapLoading = false;
-                    const signature = document.getElementById('signature').value.trim();
-                    if (signature) { setTimeout(() => findAndDisplayLocation(), 100); }
-                };
+    console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
+    isMapLoading = false;
+
+    const signatureInput = document.getElementById('signature');
+
+    // 🚀 CASO URL (flujo automático)
+   if (pendingCallNumber) {
+    console.log("🚀 Ejecutando flujo desde URL");
+
+    signatureInput.value = pendingCallNumber;
+
+    // 🔓 aseguramos que el usuario pueda escribir después
+    signatureInput.disabled = false;
+
+    updateUI();
+
+    setTimeout(() => {
+        findAndDisplayLocation();
+    }, 200);
+
+       setTimeout(() => {
+        signatureInput.focus();
+        signatureInput.select();
+    }, 300);
+
+    // limpiar estado
+    pendingCallNumber = null;
+    pendingLibrary = null;
+
+    return;
+}
+
+
+    // 🔁 flujo normal
+    const signature = signatureInput.value.trim();
+    if (signature) {
+        setTimeout(() => {
+            findAndDisplayLocation();
+        }, 100);
+    }
+
+                    // 🔓 GARANTIZAR que el input siempre quede habilitado
+const signatureInput = document.getElementById('signature');
+signatureInput.disabled = false;
+
+};
+
+                
                 imgElement.onerror = function() {
                     console.error(`❌ Error renderizando imagen en DOM: ${imgPath}`);
                     showNoMapAvailable(`Error al mostrar el mapa de ${libraryData.name}`);
                     isMapLoading = false;
                 };
             };
+            
             img.onerror = function() {
                 console.error(`❌ Error cargando imagen: ${imgPath}`);
-                if (currentImageLoadTimeout) { clearTimeout(currentImageLoadTimeout); currentImageLoadTimeout = null; }
+                
+                if (currentImageLoadTimeout) {
+                    clearTimeout(currentImageLoadTimeout);
+                    currentImageLoadTimeout = null;
+                }
+                
                 showNoMapAvailable(`No se pudo cargar el mapa de ${libraryData.name}.`);
                 isMapLoading = false;
+                return false;
             };
+            
             img.src = imgPath;
+            
             return true;
         }
 
-        function showNoMapAvailable(message) {
+        // FUNCIÓN MEJORADA: Mostrar estado "mapa no disponible"
+        function showNoMapAvailable(message = "El mapa para esta selección no está disponible en el sistema.") {
             const mapContainer = document.getElementById('map-container');
-            if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
-            mapContainer.innerHTML = `<div class="no-map-state"><div><span aria-hidden="true">🚫</span><h3>Mapa no disponible</h3><p>${message}</p><p style="margin-top:10px;font-size:12px;">Seleccione otra biblioteca o consulte con el personal.</p></div></div>`;
+            
+            if (currentImageLoadTimeout) {
+                clearTimeout(currentImageLoadTimeout);
+                currentImageLoadTimeout = null;
+            }
+            
+            mapContainer.innerHTML = `
+                <div class="no-map-state">
+                    <div>
+                        <span aria-hidden="true">🚫</span>
+                        <h3>Mapa no disponible</h3>
+                        <p>${message}</p>
+                        <p style="margin-top: 10px; font-size: 12px; color: #6c757d;">
+                            Seleccione otra biblioteca o consulte con el personal de la biblioteca.
+                        </p>
+                    </div>
+                </div>
+            `;
+            
             clearMapMarkers();
             document.getElementById('location-info-panel').classList.remove('active');
             document.getElementById('legend-panel').classList.remove('active');
+
+
+            // 🧠 Aunque no haya mapa, permitir mostrar información de ubicación
+if (selectedLibrary) {
+    const signature = document.getElementById('signature').value.trim();
+
+    if (signature) {
+        const libraryKey = libraryMap[selectedLibrary];
+        const libraryData = mapData[libraryKey];
+
+        const locationResult = searchInStacks(libraryData, signature);
+
+        let locationMessage;
+
+        if (locationResult) {
+            const parts = locationResult.stackInfo.split('.');
+            locationMessage = `Este material puede encontrarse en el piso ${locationResult.floor} de la ${libraryData.name}, estante ${parts[1]} lado ${parts[2]}. (Mapa no disponible)`;
+        } else {
+            locationMessage = `Material disponible en ${libraryData.name}. (Mapa no disponible). Consulte con el personal para ubicación exacta.`;
         }
 
+        showLocationInfo(locationMessage);
+    }
+}
+
+        }
+
+        // FUNCIÓN CORREGIDA: Buscar y mostrar ubicación
         function findAndDisplayLocation() {
-            if (!selectedLibrary) return;
+            if (!selectedLibrary) {
+                console.log("❌ No hay biblioteca seleccionada");
+                return;
+            }
+            
             const signature = document.getElementById('signature').value.trim();
-            if (!signature) return;
+            if (!signature) {
+                console.log("❌ No hay signatura ingresada");
+                return;
+            }
+            
             const libraryKey = libraryMap[selectedLibrary];
             const libraryData = mapData[libraryKey];
-            if (!libraryData) return;
+            
+            if (!libraryData) {
+                console.error("❌ No hay datos para la biblioteca:", libraryKey);
+                return;
+            }
+            
+            // Verificar que el mapa esté cargado
             const mapContainer = document.getElementById('map-container');
             const mapImage = mapContainer.querySelector('img#map-image');
             const noMapState = mapContainer.querySelector('.no-map-state');
-            if (noMapState) return;
+            
+           if (noMapState) {
+    console.log("⏹️ Ya se mostró que no hay mapa disponible, deteniendo búsqueda");
+    return;
+}
+
+
+            
             if (!mapImage) {
-                document.getElementById('location-info-text').textContent = `Material disponible en ${libraryData.name}. Espere a que cargue el mapa.`;
-                document.getElementById('location-info-panel').classList.add('active');
+                console.log("⚠️ El mapa no está cargado. Mostrando mensaje informativo.");
+                
+                const locationInfoPanel = document.getElementById('location-info-panel');
+                const locationInfoText = document.getElementById('location-info-text');
+                
+                locationInfoText.textContent = `Material disponible en ${libraryData.name}. Seleccione primero una biblioteca para ver el mapa.`;
+                locationInfoPanel.classList.add('active');
                 return;
             }
+            
+            console.log(`🔍 Buscando ubicación en ${libraryData.name} para signatura: ${signature}`);
+            
+            // Validar la signatura
             if (!validateSignature(signature)) {
-                document.getElementById('location-info-text').textContent = `Signatura no válida.`;
-                document.getElementById('location-info-panel').classList.add('active');
+                const locationInfoPanel = document.getElementById('location-info-panel');
+                const locationInfoText = document.getElementById('location-info-text');
+                locationInfoText.textContent = `Signatura no válida. Por favor ingrese una signatura válida.`;
+                locationInfoPanel.classList.add('active');
                 clearMapMarkers();
                 return;
             }
+            
+            // Buscar en los estantes (para libros)
             const locationResult = searchInStacks(libraryData, signature);
-            let locationMessage = locationResult ? `Este material puede encontrarse en el piso ${locationResult.floor} de ${libraryData.name}, estante ${locationResult.stackInfo.split('.')[1]} lado ${locationResult.stackInfo.split('.')[2]}. Esta es una referencia aproximada.` : `Material disponible en ${libraryData.name} (Colección General). Consulte con el personal.`;
-            if (locationResult) { drawLocation(locationResult); showLocationInfo(locationMessage); }
-            else { clearMapMarkers(); showLocationInfo(locationMessage); }
+            let locationMessage;
+            
+            if (locationResult) {
+                const parts = locationResult.stackInfo.split('.');
+                locationMessage = `Este material puede encontrarse en el piso ${locationResult.floor} de la ${libraryData.name}, estante ${parts[1]} lado ${parts[2]}. Esta es una referencia aproximada.`;
+                console.log(`✅ Ubicación encontrada: ${locationMessage}`);
+            } else {
+                locationMessage = `Material disponible en ${libraryData.name} (Colección General). Consulte con el personal para ubicación exacta.`;
+                console.log(`ℹ️ Ubicación general: ${locationMessage}`);
+            }
+            
+            if (locationResult) {
+                drawLocation(locationResult);
+                showLocationInfo(locationMessage);
+            } else {
+                clearMapMarkers();
+                showLocationInfo(locationMessage);
+            }
         }
         
         function selectLibrary(libraryId) {
-            console.log(`🎯 selectLibrary(${libraryId})`);
-            if (selectedLibrary === libraryId) return;
-            if (selectedLibrary) document.getElementById(`btn-${selectedLibrary}`).classList.remove('selected');
-            if (selectedMaterial) { document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected'); selectedMaterial = null; }
-            document.getElementById('signature').value = '';
+            console.log(`🎯 SELECT LIBRARY llamado con: ${libraryId}`);
+            
+            if (selectedLibrary === libraryId) {
+                console.log(`📌 Ya está seleccionada: ${libraryId}`);
+                return;
+            }
+            
+            // Limpiar selección anterior
+            if (selectedLibrary) {
+                document.getElementById(`btn-${selectedLibrary}`).classList.remove('selected');
+            }
+            
+            // Limpiar selección de material
+            if (selectedMaterial) {
+                document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
+                selectedMaterial = null;
+            }
+            
+            // Limpiar cuadro de texto
+            const signatureInput = document.getElementById('signature');
+            // ⚠️ SOLO limpiar si NO viene desde URL
+if (!pendingCallNumber) {
+    signatureInput.value = '';
+}
+
+            
+            // Actualizar biblioteca seleccionada
             selectedLibrary = libraryId;
             document.getElementById(`btn-${libraryId}`).classList.add('selected');
+            
+            // Habilitar controles
             toggleControls(true);
+            
+            // Resetear estado de carga
             isMapLoading = false;
+            
+            // Cargar el mapa
             const libraryKey = libraryMap[libraryId];
-            if (libraryKey) loadLibraryMap(libraryKey);
+            console.log(`🗺️ Cargando mapa para clave: ${libraryKey}`);
+            
+            if (libraryKey) {
+                loadLibraryMap(libraryKey);
+            }
+            
             updateUI();
+            
+            // Limpiar marcadores y paneles de información
             clearMapMarkers();
             document.getElementById('location-info-panel').classList.remove('active');
             document.getElementById('legend-panel').classList.remove('active');
         }
         
         function selectMaterial(materialId) {
-            if (selectedMaterial) document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
+            console.log(`📑 SELECT MATERIAL llamado con: ${materialId}`);
+            
+            if (selectedMaterial) {
+                document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
+            }
             selectedMaterial = materialId;
             document.getElementById(`btn-${materialId}`).classList.add('selected');
-            document.getElementById('signature').value = '';
+            
+            // Borrar signatura si hay datos en el campo
+            const signatureInput = document.getElementById('signature');
+            if (signatureInput.value.trim()) {
+                console.log(`🧹 Borrando signatura porque se seleccionó: ${materialId}`);
+                signatureInput.value = '';
+            }
+            
             updateUI();
-            if (selectedLibrary) findAndDisplayLocationForMaterial(materialId);
+            
+            // Si hay biblioteca seleccionada, buscar ubicación para este material
+            if (selectedLibrary) {
+                console.log(`🔍 Buscando ubicación para material: ${materialId}`);
+                findAndDisplayLocationForMaterial(materialId);
+            } else {
+                console.log("⚠️ No hay biblioteca seleccionada, no se puede buscar ubicación");
+            }
         }
         
         function findAndDisplayLocationForMaterial(materialId) {
-            if (!selectedLibrary) return;
+            if (!selectedLibrary) {
+                console.log("❌ No hay biblioteca seleccionada");
+                return;
+            }
+            
             const libraryKey = libraryMap[selectedLibrary];
             const locationType = materialMap[materialId];
             const libraryData = mapData[libraryKey];
-            if (!libraryData) return;
-            const mapImage = document.getElementById('map-container').querySelector('img#map-image');
-            if (!mapImage) return;
+            
+            if (!libraryData) {
+                console.error("❌ No hay datos para la biblioteca:", libraryKey);
+                return;
+            }
+            
+            // Verificar que el mapa esté cargado
+            const mapContainer = document.getElementById('map-container');
+            const mapImage = mapContainer.querySelector('img#map-image');
+            const noMapState = mapContainer.querySelector('.no-map-state');
+            
+            if (noMapState) {
+                console.log("⏹️ Ya se mostró que no hay mapa disponible, deteniendo búsqueda");
+                return;
+            }
+            
+            if (!mapImage) {
+                console.log("⚠️ El mapa no está cargado.");
+                return;
+            }
+            
+            console.log(`🔍 Buscando ubicación en ${libraryData.name} para: ${locationType}`);
+            
             const locationResult = searchInStaticLocations(libraryData, locationType);
-            let locationMessage = locationResult ? (locationResult.isMultiple ? locationResult.locations[0].message : locationResult.message) : `Material disponible en ${libraryData.name} (${materialDisplayNames[materialId]}). Consulte con el personal.`;
-            if (locationResult) drawLocation(locationResult);
-            else clearMapMarkers();
-            showLocationInfo(locationMessage);
+            let locationMessage;
+            
+            if (locationResult) {
+                if (locationResult.isMultiple) {
+                    locationMessage = locationResult.locations[0].message;
+                } else {
+                    locationMessage = locationResult.message;
+                }
+                console.log(`✅ Ubicación estática encontrada: ${locationMessage}`);
+            } else {
+                locationMessage = `Material disponible en ${libraryData.name} (${materialDisplayNames[materialId]}). Consulte con el personal para ubicación exacta.`;
+                console.log(`ℹ️ Ubicación general: ${locationMessage}`);
+            }
+            
+            if (locationResult) {
+                drawLocation(locationResult);
+                showLocationInfo(locationMessage);
+            } else {
+                clearMapMarkers();
+                showLocationInfo(locationMessage);
+            }
         }
         
         function updateUI() {
-            const signatureValue = document.getElementById('signature').value.trim();
+            const signature = document.getElementById('signature');
+            const signatureValue = signature.value.trim();
+            
+            // Actualizar información de selección
             if (selectedLibrary || selectedMaterial || signatureValue) {
                 document.getElementById('selection-info').style.display = 'block';
-                document.getElementById('current-library').textContent = selectedLibrary ? libraryMap[selectedLibrary] : '-';
-                document.getElementById('current-material').textContent = selectedMaterial ? materialDisplayNames[selectedMaterial] : (signatureValue ? 'LIBRO' : '-');
+                document.getElementById('current-library').textContent = selectedLibrary ? 
+                    libraryMap[selectedLibrary] : '-';
+                document.getElementById('current-material').textContent = selectedMaterial ? 
+                    materialDisplayNames[selectedMaterial] : (signatureValue ? 'LIBRO' : '-');
                 document.getElementById('current-signature').textContent = signatureValue || '-';
-            } else { document.getElementById('selection-info').style.display = 'none'; }
+            } else {
+                document.getElementById('selection-info').style.display = 'none';
+            }
         }
         
         function showLocationInfo(locationMessage) {
-            document.getElementById('location-info-text').textContent = locationMessage;
-            document.getElementById('location-info-panel').classList.add('active');
+            const locationInfoPanel = document.getElementById('location-info-panel');
+            const locationInfoText = document.getElementById('location-info-text');
+            
+            locationInfoText.textContent = locationMessage;
+            locationInfoPanel.classList.add('active');
             document.getElementById('legend-panel').classList.add('active');
         }
         
         function drawLocation(locationResult) {
+            const mapContainer = document.getElementById('map-container');
+            
             clearMapMarkers();
+            
             if (locationResult) {
-                if (locationResult.isMultiple && locationResult.locations) locationResult.locations.forEach((loc, idx) => { const marker = createMarker(loc.x, loc.y, loc.width, loc.height, idx); document.getElementById('map-container').appendChild(marker); });
-                else if (!locationResult.isMultiple && locationResult.x !== undefined) { const marker = createMarker(locationResult.x, locationResult.y, locationResult.width, locationResult.height); document.getElementById('map-container').appendChild(marker); }
+                if (locationResult.isMultiple && locationResult.locations) {
+                    locationResult.locations.forEach((loc, index) => {
+                        const marker = createMarker(loc.x, loc.y, loc.width, loc.height, index);
+                        mapContainer.appendChild(marker);
+                    });
+                } else if (!locationResult.isMultiple && locationResult.x !== undefined) {
+                    const marker = createMarker(locationResult.x, locationResult.y, locationResult.width, locationResult.height);
+                    mapContainer.appendChild(marker);
+                }
+                
                 setTimeout(adjustMarkersPosition, 100);
             }
         }
@@ -385,15 +1245,23 @@
             marker.style.boxShadow = '0 0 15px rgba(230, 126, 34, 0.8)';
             marker.style.zIndex = '10';
             marker.style.display = 'none';
-            const icon = document.createElement('div');
-            icon.textContent = '📍';
-            icon.style.position = 'absolute';
-            icon.style.top = '50%';
-            icon.style.left = '50%';
-            icon.style.transform = 'translate(-50%, -50%)';
-            icon.style.fontSize = index > 0 ? '20px' : '24px';
-            icon.style.textShadow = '2px 2px 4px rgba(0,0,0,0.3)';
-            marker.appendChild(icon);
+            
+            const markerIcon = document.createElement('div');
+            markerIcon.style.color = '#2c3e50';
+            markerIcon.style.fontWeight = 'bold';
+            markerIcon.style.textAlign = 'center';
+            markerIcon.style.position = 'absolute';
+            markerIcon.style.top = '50%';
+            markerIcon.style.left = '50%';
+            markerIcon.style.transform = 'translate(-50%, -50%)';
+            markerIcon.style.fontSize = index > 0 ? '20px' : '24px';
+            markerIcon.style.textShadow = '2px 2px 4px rgba(0,0,0,0.3)';
+            markerIcon.style.zIndex = '11';
+            markerIcon.textContent = '📍';
+            markerIcon.setAttribute('aria-hidden', 'true');
+            
+            marker.appendChild(markerIcon);
+            
             return marker;
         }
         
@@ -401,61 +1269,104 @@
             const mapContainer = document.getElementById('map-container');
             const mapImage = mapContainer.querySelector('img#map-image');
             const markers = mapContainer.querySelectorAll('.map-marker');
+            
             if (!mapImage || markers.length === 0) return;
-            if (mapImage.naturalWidth === 0 || mapImage.naturalHeight === 0) { setTimeout(adjustMarkersPosition, 100); return; }
-            const containerWidth = mapContainer.clientWidth, containerHeight = mapContainer.clientHeight;
-            const naturalWidth = mapImage.naturalWidth, naturalHeight = mapImage.naturalHeight;
-            const containerAspect = containerWidth / containerHeight, imageAspect = naturalWidth / naturalHeight;
+            
+            if (mapImage.naturalWidth === 0 || mapImage.naturalHeight === 0) {
+                setTimeout(adjustMarkersPosition, 100);
+                return;
+            }
+            
+            const containerWidth = mapContainer.clientWidth;
+            const containerHeight = mapContainer.clientHeight;
+            const naturalWidth = mapImage.naturalWidth;
+            const naturalHeight = mapImage.naturalHeight;
+            
+            const containerAspectRatio = containerWidth / containerHeight;
+            const imageAspectRatio = naturalWidth / naturalHeight;
+            
             let displayWidth, displayHeight, offsetX, offsetY;
-            if (containerAspect > imageAspect) { displayHeight = containerHeight; displayWidth = naturalWidth * (containerHeight / naturalHeight); offsetX = (containerWidth - displayWidth) / 2; offsetY = 0; }
-            else { displayWidth = containerWidth; displayHeight = naturalHeight * (containerWidth / naturalWidth); offsetX = 0; offsetY = (containerHeight - displayHeight) / 2; }
-            markers.forEach(m => {
-                const relX = parseFloat(m.getAttribute('data-relative-x')), relY = parseFloat(m.getAttribute('data-relative-y'));
-                const relW = parseFloat(m.getAttribute('data-relative-width')), relH = parseFloat(m.getAttribute('data-relative-height'));
-                m.style.left = `${offsetX + relX * displayWidth}px`;
-                m.style.top = `${offsetY + relY * displayHeight}px`;
-                m.style.width = `${relW * displayWidth}px`;
-                m.style.height = `${relH * displayHeight}px`;
-                m.style.display = 'block';
+            
+            if (containerAspectRatio > imageAspectRatio) {
+                displayHeight = containerHeight;
+                displayWidth = naturalWidth * (containerHeight / naturalHeight);
+                offsetX = (containerWidth - displayWidth) / 2;
+                offsetY = 0;
+            } else {
+                displayWidth = containerWidth;
+                displayHeight = naturalHeight * (containerWidth / naturalWidth);
+                offsetX = 0;
+                offsetY = (containerHeight - displayHeight) / 2;
+            }
+            
+            markers.forEach(marker => {
+                const relX = parseFloat(marker.getAttribute('data-relative-x'));
+                const relY = parseFloat(marker.getAttribute('data-relative-y'));
+                const relWidth = parseFloat(marker.getAttribute('data-relative-width'));
+                const relHeight = parseFloat(marker.getAttribute('data-relative-height'));
+                
+                const markerLeft = offsetX + (relX * displayWidth);
+                const markerTop = offsetY + (relY * displayHeight);
+                const markerWidth = relWidth * displayWidth;
+                const markerHeight = relHeight * displayHeight;
+                
+                marker.style.left = `${markerLeft}px`;
+                marker.style.top = `${markerTop}px`;
+                marker.style.width = `${markerWidth}px`;
+                marker.style.height = `${markerHeight}px`;
+                marker.style.display = 'block';
             });
         }
         
-        function clearMapMarkers() { document.querySelectorAll('#map-container .map-marker').forEach(m => m.remove()); }
+        function clearMapMarkers() {
+            const mapContainer = document.getElementById('map-container');
+            const markers = mapContainer.querySelectorAll('.map-marker');
+            markers.forEach(marker => marker.remove());
+        }
         
+        // Redimensionamiento
         let resizeTimeout;
-        window.addEventListener('resize', () => { clearTimeout(resizeTimeout); resizeTimeout = setTimeout(() => { if (selectedLibrary) adjustMarkersPosition(); }, 250); });
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            const signatureInput = document.getElementById('signature');
-            toggleControls(false);
-            signatureInput.addEventListener('input', function() {
-                updateUI();
-                if (selectedMaterial && this.value.trim() !== '') { document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected'); selectedMaterial = null; }
-                if (selectedLibrary) { clearTimeout(searchTimeout); searchTimeout = setTimeout(() => findAndDisplayLocation(), 500); }
-            });
-            signatureInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') { e.preventDefault(); clearTimeout(searchTimeout); if (selectedLibrary) findAndDisplayLocation(); } });
-            updateUI();
-            
-            // Leer parámetros URL
-            const urlParams = new URLSearchParams(window.location.search);
-            let libraryCode = urlParams.get('library_code');
-            let callNumber = urlParams.get('call_number');
-            const codeToLibraryId = { 'POBLA': 'medellin', 'RIONE': 'oriente', 'APART': 'uraba' };
-            if (libraryCode && codeToLibraryId[libraryCode]) {
-                const libraryId = codeToLibraryId[libraryCode];
-                console.log(`🌐 URL detectada: library_code=${libraryCode} → seleccionar ${libraryId}`);
-                selectLibrary(libraryId);
-                if (callNumber) {
-                    let decodedCallNumber = callNumber.replace(/\+/g, ' ');
-                    console.log(`📖 call_number: "${callNumber}" → decodificado: "${decodedCallNumber}"`);
-                    // Esperar un poco para que el mapa comience a cargarse y luego asignar
-                    setTimeout(() => {
-                        signatureInput.value = decodedCallNumber;
-                        signatureInput.dispatchEvent(new Event('input'));
-                    }, 300);
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                if (selectedLibrary) {
+                    adjustMarkersPosition();
                 }
-            } else if (libraryCode) { console.warn(`⚠️ library_code desconocido: ${libraryCode}`); }
+            }, 250);
         });
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+
+    console.log("🔥 DOM cargado");
+
+    initFromURL(); // 👈 ESTO ES CRÍTICO
+
+    const signatureInput = document.getElementById('signature');
+
+    toggleControls(false);
+
+    signatureInput.addEventListener('input', function() {
+        updateUI();
+
+        if (selectedMaterial && this.value.trim() !== '') {
+            document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
+            selectedMaterial = null;
+        }
+
+        if (selectedLibrary) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                findAndDisplayLocation();
+            }, 500);
+        }
+    });
+
+    updateUI();
+
+    console.log('✅ Sistema inicializado con soporte de URL');
+});
+
     </script>
 </body>
 </html>
