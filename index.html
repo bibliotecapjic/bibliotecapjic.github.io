@@ -8,7 +8,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; color: #333; padding: 20px; }
         .container { max-width: 1200px; margin: 0 auto; }
-        
+
         /* Header */
         .header { 
             background: linear-gradient(135deg, #2c3e50, #4a6491); 
@@ -17,21 +17,21 @@
         }
         h1 { font-size: 28px; display: flex; align-items: center; gap: 12px; }
         .subtitle { font-size: 16px; opacity: 0.9; margin-top: 5px; }
-        
+
         /* Main Content */
         .main-content { display: grid; grid-template-columns: 1fr 2fr; gap: 25px; }
         @media (max-width: 900px) { .main-content { grid-template-columns: 1fr; } }
-        
+
         /* Controls Panel */
         .controls-panel { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        
+
         /* Biblioteca Section */
         .library-section { margin-bottom: 30px; }
         .section-title { 
             font-size: 18px; color: #2c3e50; margin-bottom: 15px; padding-bottom: 10px; 
             border-bottom: 2px solid #eee; display: flex; align-items: center; gap: 10px;
         }
-        
+
         /* Library Buttons - REORGANIZADO */
         .library-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
         .library-btn { 
@@ -42,7 +42,7 @@
         .library-btn:hover { border-color: #3498db; background: #f0f8ff; }
         .library-btn.selected { border-color: #3498db; background: #e3f2fd; color: #2c3e50; }
         .library-icon { font-size: 22px; width: 30px; }
-        
+
         /* Divider */
         .divider {
             height: 1px;
@@ -50,7 +50,7 @@
             margin: 25px 0;
             width: 100%;
         }
-        
+
         /* Signatura Section - REORGANIZADO */
         .signature-section { margin-bottom: 30px; }
         .signature-title { 
@@ -61,7 +61,7 @@
             content: " *";
             color: #e74c3c;
         }
-        
+
         .signature-box { margin-top: 10px; }
         .signature-label { display: block; margin-bottom: 8px; font-weight: 500; color: #555; font-size: 14px; }
         .signature-input { 
@@ -84,10 +84,10 @@
             font-style: italic;
             line-height: 1.5;
         }
-        
+
         /* Otros Materiales Section - REORGANIZADO */
         .other-materials-section { margin-bottom: 20px; }
-        
+
         /* Material Buttons - MANTENIDO PERO REORGANIZADO */
         .material-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
         .material-btn { 
@@ -101,10 +101,10 @@
             cursor: not-allowed;
             opacity: 0.6;
         }
-        
+
         /* Map Panel (NO MODIFICADO) */
         .map-panel { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; }
-        
+
         /* Compact Selection Info */
         .selection-info { 
             background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; 
@@ -136,7 +136,7 @@
             color: #2c3e50;
             word-break: break-word;
         }
-        
+
         /* Location Info Panel */
         .location-info-panel {
             background: #e8f6ef;
@@ -163,7 +163,7 @@
             line-height: 1.6;
             color: #555;
         }
-        
+
         /* Map Container */
         .map-container { 
             flex: 1; position: relative; background: #f8f9fa; border-radius: 8px; 
@@ -175,7 +175,7 @@
             color: #999; font-size: 18px; text-align: center; padding: 40px;
         }
         .initial-state i { font-size: 48px; margin-bottom: 20px; opacity: 0.5; }
-        
+
         /* Loading State */
         .loading-state {
             display: flex;
@@ -201,7 +201,7 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
+
         /* Legend Panel */
         .legend-panel {
             background: white;
@@ -227,7 +227,7 @@
             font-size: 14px;
             color: #555;
         }
-        
+
         /* No Map Available State */
         .no-map-state {
             display: flex;
@@ -257,13 +257,13 @@
             max-width: 400px;
             margin: 0 auto;
         }
-        
+
         /* Message styles */
         .message { padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; }
         .message-error { background: #fdecea; border-left: 4px solid #e74c3c; color: #c0392b; }
         .message-warning { background: #fff3cd; border-left: 4px solid #f39c12; color: #856404; }
         .message-success { background: #e8f6ef; border-left: 4px solid #27ae60; color: #27ae60; }
-        
+
         /* For screen readers only */
         .sr-only {
             position: absolute;
@@ -284,7 +284,7 @@
             <h1><span aria-hidden="true">🗺️</span> Sistema de Mapas de Biblioteca</h1>
             <div class="subtitle">Selecciona la Biblioteca de tu interés y localiza los materiales en el mapa de cada Biblioteca. Puede realizar la búsqueda mediante el código de clasificación (localización en estantería) o por tipo de material.</div>
         </div>
-        
+
         <div class="main-content">
             <!-- Controls Panel - REORGANIZADO -->
             <div class="controls-panel">
@@ -306,10 +306,10 @@
                         </button>
                     </div>
                 </div>
-                
+
                 <!-- Divider -->
                 <div class="divider"></div>
-                
+
                 <!-- Signatura Section -->
                 <div class="signature-section">
                     <h2 class="signature-title"><span aria-hidden="true">🕮</span> <span class="required-field">Localización de Libros</span></h2>
@@ -325,10 +325,10 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Divider -->
                 <div class="divider"></div>
-                
+
                 <!-- Otros Materiales Section -->
                 <div class="other-materials-section">
                     <h2 class="section-title"><span aria-hidden="true">📑</span> Otros Materiales</h2>
@@ -341,14 +341,14 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Map Panel (NO MODIFICADO) -->
             <div class="map-panel">
                 <!-- Messages -->
                 <div class="message message-error" id="message-error" role="alert"></div>
                 <div class="message message-warning" id="message-warning" role="alert"></div>
                 <div class="message message-success" id="message-success" role="alert"></div>
-                
+
                 <!-- Compact Selection Info -->
                 <div class="selection-info" id="selection-info" style="display: none;">
                     <h3><span aria-hidden="true">📋</span> Selección Actual</h3>
@@ -367,13 +367,13 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Location Info Panel -->
                 <div class="location-info-panel" id="location-info-panel">
                     <div class="location-info-title"><span aria-hidden="true">📍</span> Información de Ubicación</div>
                     <div class="location-info-text" id="location-info-text">Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa</div>
                 </div>
-                
+
                 <!-- Map Container -->
                 <div class="map-container" id="map-container">
                     <div class="initial-state" id="initial-state">
@@ -383,7 +383,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Legend Panel -->
                 <div class="legend-panel" id="legend-panel">
                     <div class="legend-color"></div>
@@ -401,7 +401,8 @@
         let searchTimeout = null;
         let currentImageLoadTimeout = null;
         let isMapLoading = false;
-        
+        let pendingCallNumber = null;
+
         // Configuración de mapas
         const mapData = {
             "MEDELLÍN": {
@@ -522,7 +523,7 @@
             'oriente': 'CENTRO REGIONAL ORIENTE',
             'uraba': 'CENTRO REGIONAL URABÁ'
         };
-        
+
         const materialMap = {
             'tesis': 'TRABAJO DE GRADO',
             'cd': 'MULTIMEDIA',
@@ -530,7 +531,7 @@
             'folleto': 'FOLLETO',
             'norma': 'NORMAS'
         };
-        
+
         const materialDisplayNames = {
             'tesis': 'TRABAJO DE GRADO',
             'cd': 'CD',
@@ -574,15 +575,15 @@
         if (call_number) {
             const cleanCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
             const signatureInput = document.getElementById('signature');
-
             setTimeout(() => {
                 signatureInput.value = cleanCallNumber;
                 updateUI();
-
                 if (selectedLibrary) {
                     findAndDisplayLocation();
                 }
             }, 600);
+    pendingCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
+    console.log("📚 Signatura en espera:", pendingCallNumber);
         }
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -590,19 +591,19 @@
 
 
 
-        
+
 
         // Función para habilitar/deshabilitar controles
         function toggleControls(enabled) {
             const signatureInput = document.getElementById('signature');
             const materialButtons = document.querySelectorAll('.material-btn');
-            
+
             signatureInput.disabled = !enabled;
-            
+
             materialButtons.forEach(button => {
                 button.disabled = !enabled;
             });
-            
+
             if (!enabled) {
                 signatureInput.value = '';
                 selectedMaterial = null;
@@ -613,27 +614,27 @@
         // FUNCIÓN MEJORADA: Normalizar números Dewey
         function normalizeDewey(callNumber) {
             if (!callNumber) return null;
-            
+
             try {
                 const original = callNumber.toString().trim();
                 console.log(`🔍 Normalizando signatura: "${original}"`);
-                
+
                 let match = original.match(/^[A-Z]*(\d+(?:\.\d+)?)/);
-                
+
                 if (!match) {
                     match = original.match(/^(\d+(?:\.\d+)?)/);
                 }
-                
+
                 if (!match) {
                     console.log(`❌ No se pudo extraer parte numérica de: "${original}"`);
                     return null;
                 }
-                
+
                 const numericPart = match[1];
                 const numericValue = parseFloat(numericPart);
-                
+
                 console.log(`✅ Signatura "${original}" → Parte numérica: "${numericPart}" → Valor: ${numericValue}`);
-                
+
                 return {
                     original: original,
                     numericPart: numericValue,
@@ -645,54 +646,54 @@
                 return null;
             }
         }
-        
+
         function validateSignature(signature) {
             const safePattern = /^[0-9A-Za-z.,\s-]+$/;
             if (!safePattern.test(signature)) {
                 console.log(`❌ Signatura no válida (patrón): "${signature}"`);
                 return false;
             }
-            
+
             if (signature.length > 50) {
                 console.log(`❌ Signatura demasiado larga: "${signature}"`);
                 return false;
             }
-            
+
             console.log(`✅ Signatura válida: "${signature}"`);
             return true;
         }
-        
+
         function searchInStacks(libraryMapData, callNumber) {
             if (!callNumber) {
                 console.log("⚠️ No hay signatura para buscar");
                 return null;
             }
-            
+
             console.log(`🔍 Buscando en estantes: "${callNumber}"`);
             let callNumNormalized = normalizeDewey(callNumber);
-            
+
             if (callNumNormalized && !isNaN(callNumNormalized.numericPart)) {
                 console.log(`📊 Valor numérico para búsqueda: ${callNumNormalized.numericPart}`);
-                
+
                 for (let floorNum in libraryMapData.floors) {
                     let floor = libraryMapData.floors[floorNum];
                     if (floor.stacks && floor.stacks.length > 0) {
                         console.log(`📚 Revisando piso ${floorNum} con ${floor.stacks.length} estantes`);
-                        
+
                         for (let j = 0; j < floor.stacks.length; j++) {
                             let stack = floor.stacks[j];
                             try {
                                 let startNormalized = normalizeDewey(stack.start);
                                 let endNormalized = normalizeDewey(stack.end);
-                                
+
                                 if (startNormalized && endNormalized) {
                                     console.log(`📖 Estante ${stack.id}: ${startNormalized.numericPart} - ${endNormalized.numericPart}`);
-                                    
+
                                     if (callNumNormalized.numericPart >= startNormalized.numericPart && 
                                         callNumNormalized.numericPart <= endNormalized.numericPart) {
-                                        
+
                                         console.log(`✅ ENCONTRADO en estante: ${stack.id}`);
-                                        
+
                                         return {
                                             floor: floorNum,
                                             x: stack.x,
@@ -712,21 +713,21 @@
             } else {
                 console.log(`❌ No se pudo normalizar o valor no numérico: "${callNumber}"`);
             }
-            
+
             console.log(`❌ No encontrado en estantes: "${callNumber}"`);
             return null;
         }
-        
+
         function searchInStaticLocations(libraryMapData, locationType) {
             console.log(`🔍 Buscando ubicación estática: "${locationType}"`);
-            
+
             for (let floorNum in libraryMapData.floors) {
                 let floor = libraryMapData.floors[floorNum];
                 if (floor.staticLocations && floor.staticLocations[locationType]) {
                     let staticLoc = floor.staticLocations[locationType];
-                    
+
                     console.log(`✅ Encontrada ubicación estática en piso ${floorNum}`);
-                    
+
                     if (Array.isArray(staticLoc)) {
                         return {
                             floor: floorNum,
@@ -746,7 +747,7 @@
                     }
                 }
             }
-            
+
             console.log(`❌ No encontrada ubicación estática: "${locationType}"`);
             return null;
         }
@@ -754,19 +755,19 @@
         // FUNCIÓN CORREGIDA: Cargar mapa de biblioteca
         function loadLibraryMap(libraryKey) {
             console.log(`🔄 CARGANDO MAPA para: ${libraryKey}`);
-            
+
             if (isMapLoading) {
                 console.log(`⏳ Ya se está cargando un mapa, esperando...`);
                 return false;
             }
-            
+
             isMapLoading = true;
-            
+
             if (currentImageLoadTimeout) {
                 clearTimeout(currentImageLoadTimeout);
                 currentImageLoadTimeout = null;
             }
-            
+
             const libraryData = mapData[libraryKey];
             if (!libraryData) {
                 console.error(`❌ No hay datos para: ${libraryKey}`);
@@ -774,14 +775,14 @@
                 isMapLoading = false;
                 return false;
             }
-            
+
             currentLibraryData = libraryData;
-            
+
             const mapContainer = document.getElementById('map-container');
-            
+
             // Limpiar el contenedor
             mapContainer.innerHTML = '';
-            
+
             // Mostrar estado de carga
             mapContainer.innerHTML = `
                 <div class="loading-state" id="current-loading-state">
@@ -791,15 +792,15 @@
                     </div>
                 </div>
             `;
-            
+
             // Cargar la imagen
             const floorData = libraryData.floors[1];
             const imgPath = floorData.img;
-            
+
             console.log(`📁 Intentando cargar imagen: ${imgPath}`);
-            
+
             const img = new Image();
-            
+
             currentImageLoadTimeout = setTimeout(() => {
                 console.log(`⏰ Timeout: La imagen ${imgPath} está tardando demasiado`);
                 if (img && !img.complete) {
@@ -810,15 +811,15 @@
                 currentImageLoadTimeout = null;
                 isMapLoading = false;
             }, 5000);
-            
+
             img.onload = function() {
                 console.log(`✅ Imagen cargada exitosamente: ${imgPath}`);
-                
+
                 if (currentImageLoadTimeout) {
                     clearTimeout(currentImageLoadTimeout);
                     currentImageLoadTimeout = null;
                 }
-                
+
                 const imgElement = document.createElement('img');
                 imgElement.id = 'map-image';
                 imgElement.src = imgPath;
@@ -826,11 +827,11 @@
                 imgElement.style.width = '100%';
                 imgElement.style.height = '100%';
                 imgElement.style.objectFit = 'contain';
-                
+
                 mapContainer.innerHTML = '';
                 mapContainer.appendChild(imgElement);
                 clearMapMarkers();
-                
+
                 imgElement.onload = function() {
                     console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
                     isMapLoading = false;
@@ -843,41 +844,63 @@
                         }, 100);
                     }
                 };
-                
+    console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
+    isMapLoading = false;
+    const signatureInput = document.getElementById('signature');
+    // 🚀 Si viene desde URL
+    if (pendingCallNumber) {
+        console.log("🚀 Aplicando signatura desde URL:", pendingCallNumber);
+        signatureInput.value = pendingCallNumber;
+        updateUI();
+        setTimeout(() => {
+            findAndDisplayLocation();
+        }, 150);
+        pendingCallNumber = null;
+        return;
+    }
+    // 🔁 comportamiento normal
+    const signature = signatureInput.value.trim();
+    if (signature) {
+        setTimeout(() => {
+            findAndDisplayLocation();
+        }, 100);
+    }
+};
+
                 imgElement.onerror = function() {
                     console.error(`❌ Error renderizando imagen en DOM: ${imgPath}`);
                     showNoMapAvailable(`Error al mostrar el mapa de ${libraryData.name}`);
                     isMapLoading = false;
                 };
             };
-            
+
             img.onerror = function() {
                 console.error(`❌ Error cargando imagen: ${imgPath}`);
-                
+
                 if (currentImageLoadTimeout) {
                     clearTimeout(currentImageLoadTimeout);
                     currentImageLoadTimeout = null;
                 }
-                
+
                 showNoMapAvailable(`No se pudo cargar el mapa de ${libraryData.name}.`);
                 isMapLoading = false;
                 return false;
             };
-            
+
             img.src = imgPath;
-            
+
             return true;
         }
 
         // FUNCIÓN MEJORADA: Mostrar estado "mapa no disponible"
         function showNoMapAvailable(message = "El mapa para esta selección no está disponible en el sistema.") {
             const mapContainer = document.getElementById('map-container');
-            
+
             if (currentImageLoadTimeout) {
                 clearTimeout(currentImageLoadTimeout);
                 currentImageLoadTimeout = null;
             }
-            
+
             mapContainer.innerHTML = `
                 <div class="no-map-state">
                     <div>
@@ -890,7 +913,7 @@
                     </div>
                 </div>
             `;
-            
+
             clearMapMarkers();
             document.getElementById('location-info-panel').classList.remove('active');
             document.getElementById('legend-panel').classList.remove('active');
@@ -902,44 +925,44 @@
                 console.log("❌ No hay biblioteca seleccionada");
                 return;
             }
-            
+
             const signature = document.getElementById('signature').value.trim();
             if (!signature) {
                 console.log("❌ No hay signatura ingresada");
                 return;
             }
-            
+
             const libraryKey = libraryMap[selectedLibrary];
             const libraryData = mapData[libraryKey];
-            
+
             if (!libraryData) {
                 console.error("❌ No hay datos para la biblioteca:", libraryKey);
                 return;
             }
-            
+
             // Verificar que el mapa esté cargado
             const mapContainer = document.getElementById('map-container');
             const mapImage = mapContainer.querySelector('img#map-image');
             const noMapState = mapContainer.querySelector('.no-map-state');
-            
+
             if (noMapState) {
                 console.log("⏹️ Ya se mostró que no hay mapa disponible, deteniendo búsqueda");
                 return;
             }
-            
+
             if (!mapImage) {
                 console.log("⚠️ El mapa no está cargado. Mostrando mensaje informativo.");
-                
+
                 const locationInfoPanel = document.getElementById('location-info-panel');
                 const locationInfoText = document.getElementById('location-info-text');
-                
+
                 locationInfoText.textContent = `Material disponible en ${libraryData.name}. Seleccione primero una biblioteca para ver el mapa.`;
                 locationInfoPanel.classList.add('active');
                 return;
             }
-            
+
             console.log(`🔍 Buscando ubicación en ${libraryData.name} para signatura: ${signature}`);
-            
+
             // Validar la signatura
             if (!validateSignature(signature)) {
                 const locationInfoPanel = document.getElementById('location-info-panel');
@@ -949,11 +972,11 @@
                 clearMapMarkers();
                 return;
             }
-            
+
             // Buscar en los estantes (para libros)
             const locationResult = searchInStacks(libraryData, signature);
             let locationMessage;
-            
+
             if (locationResult) {
                 const parts = locationResult.stackInfo.split('.');
                 locationMessage = `Este material puede encontrarse en el piso ${locationResult.floor} de la ${libraryData.name}, estante ${parts[1]} lado ${parts[2]}. Esta es una referencia aproximada.`;
@@ -962,7 +985,7 @@
                 locationMessage = `Material disponible en ${libraryData.name} (Colección General). Consulte con el personal para ubicación exacta.`;
                 console.log(`ℹ️ Ubicación general: ${locationMessage}`);
             }
-            
+
             if (locationResult) {
                 drawLocation(locationResult);
                 showLocationInfo(locationMessage);
@@ -971,74 +994,74 @@
                 showLocationInfo(locationMessage);
             }
         }
-        
+
         function selectLibrary(libraryId) {
             console.log(`🎯 SELECT LIBRARY llamado con: ${libraryId}`);
-            
+
             if (selectedLibrary === libraryId) {
                 console.log(`📌 Ya está seleccionada: ${libraryId}`);
                 return;
             }
-            
+
             // Limpiar selección anterior
             if (selectedLibrary) {
                 document.getElementById(`btn-${selectedLibrary}`).classList.remove('selected');
             }
-            
+
             // Limpiar selección de material
             if (selectedMaterial) {
                 document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
                 selectedMaterial = null;
             }
-            
+
             // Limpiar cuadro de texto
             const signatureInput = document.getElementById('signature');
             signatureInput.value = '';
-            
+
             // Actualizar biblioteca seleccionada
             selectedLibrary = libraryId;
             document.getElementById(`btn-${libraryId}`).classList.add('selected');
-            
+
             // Habilitar controles
             toggleControls(true);
-            
+
             // Resetear estado de carga
             isMapLoading = false;
-            
+
             // Cargar el mapa
             const libraryKey = libraryMap[libraryId];
             console.log(`🗺️ Cargando mapa para clave: ${libraryKey}`);
-            
+
             if (libraryKey) {
                 loadLibraryMap(libraryKey);
             }
-            
+
             updateUI();
-            
+
             // Limpiar marcadores y paneles de información
             clearMapMarkers();
             document.getElementById('location-info-panel').classList.remove('active');
             document.getElementById('legend-panel').classList.remove('active');
         }
-        
+
         function selectMaterial(materialId) {
             console.log(`📑 SELECT MATERIAL llamado con: ${materialId}`);
-            
+
             if (selectedMaterial) {
                 document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
             }
             selectedMaterial = materialId;
             document.getElementById(`btn-${materialId}`).classList.add('selected');
-            
+
             // Borrar signatura si hay datos en el campo
             const signatureInput = document.getElementById('signature');
             if (signatureInput.value.trim()) {
                 console.log(`🧹 Borrando signatura porque se seleccionó: ${materialId}`);
                 signatureInput.value = '';
             }
-            
+
             updateUI();
-            
+
             // Si hay biblioteca seleccionada, buscar ubicación para este material
             if (selectedLibrary) {
                 console.log(`🔍 Buscando ubicación para material: ${materialId}`);
@@ -1047,42 +1070,42 @@
                 console.log("⚠️ No hay biblioteca seleccionada, no se puede buscar ubicación");
             }
         }
-        
+
         function findAndDisplayLocationForMaterial(materialId) {
             if (!selectedLibrary) {
                 console.log("❌ No hay biblioteca seleccionada");
                 return;
             }
-            
+
             const libraryKey = libraryMap[selectedLibrary];
             const locationType = materialMap[materialId];
             const libraryData = mapData[libraryKey];
-            
+
             if (!libraryData) {
                 console.error("❌ No hay datos para la biblioteca:", libraryKey);
                 return;
             }
-            
+
             // Verificar que el mapa esté cargado
             const mapContainer = document.getElementById('map-container');
             const mapImage = mapContainer.querySelector('img#map-image');
             const noMapState = mapContainer.querySelector('.no-map-state');
-            
+
             if (noMapState) {
                 console.log("⏹️ Ya se mostró que no hay mapa disponible, deteniendo búsqueda");
                 return;
             }
-            
+
             if (!mapImage) {
                 console.log("⚠️ El mapa no está cargado.");
                 return;
             }
-            
+
             console.log(`🔍 Buscando ubicación en ${libraryData.name} para: ${locationType}`);
-            
+
             const locationResult = searchInStaticLocations(libraryData, locationType);
             let locationMessage;
-            
+
             if (locationResult) {
                 if (locationResult.isMultiple) {
                     locationMessage = locationResult.locations[0].message;
@@ -1094,7 +1117,7 @@
                 locationMessage = `Material disponible en ${libraryData.name} (${materialDisplayNames[materialId]}). Consulte con el personal para ubicación exacta.`;
                 console.log(`ℹ️ Ubicación general: ${locationMessage}`);
             }
-            
+
             if (locationResult) {
                 drawLocation(locationResult);
                 showLocationInfo(locationMessage);
@@ -1103,11 +1126,11 @@
                 showLocationInfo(locationMessage);
             }
         }
-        
+
         function updateUI() {
             const signature = document.getElementById('signature');
             const signatureValue = signature.value.trim();
-            
+
             // Actualizar información de selección
             if (selectedLibrary || selectedMaterial || signatureValue) {
                 document.getElementById('selection-info').style.display = 'block';
@@ -1120,21 +1143,21 @@
                 document.getElementById('selection-info').style.display = 'none';
             }
         }
-        
+
         function showLocationInfo(locationMessage) {
             const locationInfoPanel = document.getElementById('location-info-panel');
             const locationInfoText = document.getElementById('location-info-text');
-            
+
             locationInfoText.textContent = locationMessage;
             locationInfoPanel.classList.add('active');
             document.getElementById('legend-panel').classList.add('active');
         }
-        
+
         function drawLocation(locationResult) {
             const mapContainer = document.getElementById('map-container');
-            
+
             clearMapMarkers();
-            
+
             if (locationResult) {
                 if (locationResult.isMultiple && locationResult.locations) {
                     locationResult.locations.forEach((loc, index) => {
@@ -1145,11 +1168,11 @@
                     const marker = createMarker(locationResult.x, locationResult.y, locationResult.width, locationResult.height);
                     mapContainer.appendChild(marker);
                 }
-                
+
                 setTimeout(adjustMarkersPosition, 100);
             }
         }
-        
+
         function createMarker(x, y, width, height, index = 0) {
             const marker = document.createElement('div');
             marker.className = 'map-marker';
@@ -1166,7 +1189,7 @@
             marker.style.boxShadow = '0 0 15px rgba(230, 126, 34, 0.8)';
             marker.style.zIndex = '10';
             marker.style.display = 'none';
-            
+
             const markerIcon = document.createElement('div');
             markerIcon.style.color = '#2c3e50';
             markerIcon.style.fontWeight = 'bold';
@@ -1180,34 +1203,34 @@
             markerIcon.style.zIndex = '11';
             markerIcon.textContent = '📍';
             markerIcon.setAttribute('aria-hidden', 'true');
-            
+
             marker.appendChild(markerIcon);
-            
+
             return marker;
         }
-        
+
         function adjustMarkersPosition() {
             const mapContainer = document.getElementById('map-container');
             const mapImage = mapContainer.querySelector('img#map-image');
             const markers = mapContainer.querySelectorAll('.map-marker');
-            
+
             if (!mapImage || markers.length === 0) return;
-            
+
             if (mapImage.naturalWidth === 0 || mapImage.naturalHeight === 0) {
                 setTimeout(adjustMarkersPosition, 100);
                 return;
             }
-            
+
             const containerWidth = mapContainer.clientWidth;
             const containerHeight = mapContainer.clientHeight;
             const naturalWidth = mapImage.naturalWidth;
             const naturalHeight = mapImage.naturalHeight;
-            
+
             const containerAspectRatio = containerWidth / containerHeight;
             const imageAspectRatio = naturalWidth / naturalHeight;
-            
+
             let displayWidth, displayHeight, offsetX, offsetY;
-            
+
             if (containerAspectRatio > imageAspectRatio) {
                 displayHeight = containerHeight;
                 displayWidth = naturalWidth * (containerHeight / naturalHeight);
@@ -1219,18 +1242,18 @@
                 offsetX = 0;
                 offsetY = (containerHeight - displayHeight) / 2;
             }
-            
+
             markers.forEach(marker => {
                 const relX = parseFloat(marker.getAttribute('data-relative-x'));
                 const relY = parseFloat(marker.getAttribute('data-relative-y'));
                 const relWidth = parseFloat(marker.getAttribute('data-relative-width'));
                 const relHeight = parseFloat(marker.getAttribute('data-relative-height'));
-                
+
                 const markerLeft = offsetX + (relX * displayWidth);
                 const markerTop = offsetY + (relY * displayHeight);
                 const markerWidth = relWidth * displayWidth;
                 const markerHeight = relHeight * displayHeight;
-                
+
                 marker.style.left = `${markerLeft}px`;
                 marker.style.top = `${markerTop}px`;
                 marker.style.width = `${markerWidth}px`;
@@ -1238,13 +1261,13 @@
                 marker.style.display = 'block';
             });
         }
-        
+
         function clearMapMarkers() {
             const mapContainer = document.getElementById('map-container');
             const markers = mapContainer.querySelectorAll('.map-marker');
             markers.forEach(marker => marker.remove());
         }
-        
+
         // Redimensionamiento
         let resizeTimeout;
         window.addEventListener('resize', function() {
@@ -1255,26 +1278,26 @@
                 }
             }, 250);
         });
-        
+
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
             const signatureInput = document.getElementById('signature');
-            
+
             // Deshabilitar controles inicialmente (ninguna biblioteca seleccionada)
             toggleControls(false);
-            
+
             // NINGUNA BIBLIOTECA SELECCIONADA POR DEFECTO
             // El mapa mostrará el estado inicial sin selección
-            
+
             signatureInput.addEventListener('input', function() {
                 updateUI();
-                
+
                 // Si hay material seleccionado, limpiarlo cuando se empiece a escribir
                 if (selectedMaterial && this.value.trim() !== '') {
                     document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
                     selectedMaterial = null;
                 }
-                
+
                 if (selectedLibrary) {
                     clearTimeout(searchTimeout);
                     searchTimeout = setTimeout(() => {
@@ -1282,7 +1305,7 @@
                     }, 500);
                 }
             });
-            
+
             signatureInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
@@ -1292,10 +1315,17 @@
                     }
                 }
             });
-            
+
             updateUI();
             console.log('✅ Sistema inicializado - Ninguna biblioteca seleccionada por defecto');
         });
     </script>
 </body>
 </html>
+0 commit comments
+Comments
+0
+ (0)
+Comment
+You're not receiving notifications from this thread.
+
