@@ -971,9 +971,22 @@ signatureInput.disabled = false;
             const noMapState = mapContainer.querySelector('.no-map-state');
             
             if (noMapState) {
-                console.log("⏹️ Ya se mostró que no hay mapa disponible, deteniendo búsqueda");
-                return;
-            }
+    console.log("⚠️ No hay mapa, pero se continuará con la búsqueda lógica");
+
+    const locationResult = searchInStacks(libraryData, signature);
+    let locationMessage;
+
+    if (locationResult) {
+        const parts = locationResult.stackInfo.split('.');
+        locationMessage = `Este material puede encontrarse en el piso ${locationResult.floor} de la ${libraryData.name}, estante ${parts[1]} lado ${parts[2]}. (Mapa no disponible, consulte con el personal para ubicación visual).`;
+    } else {
+        locationMessage = `Material disponible en ${libraryData.name}. (Mapa no disponible). Consulte con el personal para ubicación exacta.`;
+    }
+
+    showLocationInfo(locationMessage);
+    return;
+}
+
             
             if (!mapImage) {
                 console.log("⚠️ El mapa no está cargado. Mostrando mensaje informativo.");
