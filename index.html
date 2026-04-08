@@ -401,7 +401,9 @@ let currentLibraryData = null;
 let searchTimeout = null;
 let currentImageLoadTimeout = null;
 let isMapLoading = false;
-        let pendingCallNumber = null;
+let pendingCallNumber = null;
+        let pendingLibrary = null;
+
 
 
 // Configuración de mapas
@@ -561,35 +563,45 @@ return mapping[externalCode] || null;
 }
 
 function initFromURL() {
-const { library_code, call_number } = getURLParams();
+        const { library_code, call_number } = getURLParams();
+    const params = new URLSearchParams(window.location.search);
 
-console.log("🌐 Parámetros URL:", library_code, call_number);
+        console.log("🌐 Parámetros URL:", library_code, call_number);
+    const library_code = params.get('library_code');
+    const call_number = params.get('call_number');
 
-if (library_code) {
-const mappedLibrary = mapLibraryCode(library_code);
+        if (library_code) {
+            const mappedLibrary = mapLibraryCode(library_code);
+    console.log("🌐 URL detectada:", library_code, call_number);
 
-if (mappedLibrary) {
-selectLibrary(mappedLibrary);
-}
-}
+            if (mappedLibrary) {
+                selectLibrary(mappedLibrary);
+            }
+        }
+    if (library_code) {
+        const mapping = {
+            'POBLA': 'medellin',
+            'RIONE': 'oriente',
+            'APART': 'uraba'
+        };
 
-if (call_number) {
-            const cleanCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
-            const signatureInput = document.getElementById('signature');
-
-            setTimeout(() => {
-                signatureInput.value = cleanCallNumber;
-                updateUI();
-
-                if (selectedLibrary) {
-                    findAndDisplayLocation();
-                }
-            }, 600);
+        if (call_number) {
     pendingCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
     console.log("📚 Signatura en espera:", pendingCallNumber);
+        }
+        pendingLibrary = mapping[library_code] || null;
+    }
+
+    if (call_number) {
+        pendingCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
+    }
+
+    // 🚀 Ejecutar selección SOLO si hay biblioteca
+    if (pendingLibrary) {
+        selectLibrary(pendingLibrary);
+}
 }
 
-}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -837,44 +849,40 @@ mapContainer.appendChild(imgElement);
 clearMapMarkers();
 
 imgElement.onload = function() {
-                    console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
-                    isMapLoading = false;
-                    
-                    // Si hay signatura ingresada, buscar ubicación
-                    const signature = document.getElementById('signature').value.trim();
-                    if (signature) {
-                        setTimeout(() => {
-                            findAndDisplayLocation();
-                        }, 100);
-                    }
-                };
-    console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
-    isMapLoading = false;
+console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
+isMapLoading = false;
 
-    const signatureInput = document.getElementById('signature');
+const signatureInput = document.getElementById('signature');
 
     // 🚀 Si viene desde URL
-    if (pendingCallNumber) {
+    // 🚀 CASO URL (flujo automático)
+if (pendingCallNumber) {
         console.log("🚀 Aplicando signatura desde URL:", pendingCallNumber);
+        console.log("🚀 Ejecutando flujo desde URL");
 
-        signatureInput.value = pendingCallNumber;
-        updateUI();
+signatureInput.value = pendingCallNumber;
+updateUI();
 
-        setTimeout(() => {
-            findAndDisplayLocation();
+setTimeout(() => {
+findAndDisplayLocation();
         }, 150);
+        }, 200);
 
-        pendingCallNumber = null;
-        return;
-    }
+        // limpiar estado
+pendingCallNumber = null;
+        pendingLibrary = null;
+
+return;
+}
 
     // 🔁 comportamiento normal
-    const signature = signatureInput.value.trim();
-    if (signature) {
-        setTimeout(() => {
-            findAndDisplayLocation();
-        }, 100);
-    }
+    // 🔁 flujo normal
+const signature = signatureInput.value.trim();
+if (signature) {
+setTimeout(() => {
+findAndDisplayLocation();
+}, 100);
+}
 };
 
 
@@ -1027,7 +1035,12 @@ selectedMaterial = null;
 
 // Limpiar cuadro de texto
 const signatureInput = document.getElementById('signature');
-signatureInput.value = '';
+            signatureInput.value = '';
+            // ⚠️ SOLO limpiar si NO viene desde URL
+if (!pendingCallNumber) {
+    signatureInput.value = '';
+}
+
 
 // Actualizar biblioteca seleccionada
 selectedLibrary = libraryId;
