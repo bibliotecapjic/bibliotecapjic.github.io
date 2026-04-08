@@ -566,25 +566,26 @@ function initFromURL() {
 
 
             console.log("🚀 initFromURL ejecutándose");
+    console.log("🚀 initFromURL ejecutándose");
 
-    const params = new URLSearchParams(window.location.search);
-
-    console.log("🌐 search:", window.location.search);
-
-    const library_code = params.get('library_code');
-    const call_number = params.get('call_number');
-
-    console.log("🌐 URL detectada:", library_code, call_number);
-
-
-
-        
 const params = new URLSearchParams(window.location.search);
+
+console.log("🌐 search:", window.location.search);
 
 const library_code = params.get('library_code');
 const call_number = params.get('call_number');
 
 console.log("🌐 URL detectada:", library_code, call_number);
+
+
+
+        
+    const params = new URLSearchParams(window.location.search);
+
+    const library_code = params.get('library_code');
+    const call_number = params.get('call_number');
+
+    console.log("🌐 URL detectada:", library_code, call_number);
 
 if (library_code) {
 const mapping = {
@@ -600,11 +601,12 @@ if (call_number) {
 pendingCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
 }
 
-// 🚀 Ejecutar selección SOLO si hay biblioteca
+    // 🚀 Ejecutar selección SOLO si hay biblioteca
 if (pendingLibrary) {
 selectLibrary(pendingLibrary);
 }
 }
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1304,72 +1306,34 @@ adjustMarkersPosition();
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
-            const signatureInput = document.getElementById('signature');
-            
-            // Deshabilitar controles inicialmente (ninguna biblioteca seleccionada)
-            toggleControls(false);
-            
-            // NINGUNA BIBLIOTECA SELECCIONADA POR DEFECTO
-            // El mapa mostrará el estado inicial sin selección
-            
-            signatureInput.addEventListener('input', function() {
-                updateUI();
-                
-                // Si hay material seleccionado, limpiarlo cuando se empiece a escribir
-                if (selectedMaterial && this.value.trim() !== '') {
-                    document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
-                    selectedMaterial = null;
-                }
-                
-                if (selectedLibrary) {
-                    clearTimeout(searchTimeout);
-                    searchTimeout = setTimeout(() => {
-                        findAndDisplayLocation();
-                    }, 500);
-                }
-            });
-            
-            signatureInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    clearTimeout(searchTimeout);
-                    if (selectedLibrary) {
-                        findAndDisplayLocation();
-                    }
-                }
-            });
-            
-            updateUI();
-            console.log('✅ Sistema inicializado - Ninguna biblioteca seleccionada por defecto');
-        });
 
-    console.log("🔥 DOM cargado");
+console.log("🔥 DOM cargado");
 
-    initFromURL(); // 👈 ESTO ES CRÍTICO
+initFromURL(); // 👈 ESTO ES CRÍTICO
 
-    const signatureInput = document.getElementById('signature');
+const signatureInput = document.getElementById('signature');
 
-    toggleControls(false);
+toggleControls(false);
 
-    signatureInput.addEventListener('input', function() {
-        updateUI();
+signatureInput.addEventListener('input', function() {
+updateUI();
 
-        if (selectedMaterial && this.value.trim() !== '') {
-            document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
-            selectedMaterial = null;
-        }
+if (selectedMaterial && this.value.trim() !== '') {
+document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
+selectedMaterial = null;
+}
 
-        if (selectedLibrary) {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                findAndDisplayLocation();
-            }, 500);
-        }
-    });
+if (selectedLibrary) {
+clearTimeout(searchTimeout);
+searchTimeout = setTimeout(() => {
+findAndDisplayLocation();
+}, 500);
+}
+});
 
-    updateUI();
+updateUI();
 
-    console.log('✅ Sistema inicializado con soporte de URL');
+console.log('✅ Sistema inicializado con soporte de URL');
 });
 
 </script>
