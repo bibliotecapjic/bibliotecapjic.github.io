@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapas de Biblioteca</title>
     <style>
-        /* ========== ESTILOS ORIGINALES (sin cambios) ========== */
+        /* Tus estilos originales, intactos */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; color: #333; padding: 20px; }
         .container { max-width: 1200px; margin: 0 auto; }
@@ -138,7 +138,7 @@
         let currentImageLoadTimeout = null;
         let isMapLoading = false;
         let currentMarker = null;
-        let pendingLocation = null;   // Ubicación calculada mientras la imagen carga
+        let pendingLocation = null;
         
         const mapData = {
             "MEDELLÍN": {
@@ -201,104 +201,102 @@
             return null;
         }
 
-        // ======================== MARCADOR SIN PARPADEO ========================
-        function createMarkerElement() {
-            const marker = document.createElement('div');
-            marker.className = 'map-marker';
-            marker.setAttribute('data-relative-x', 0);
-            marker.setAttribute('data-relative-y', 0);
-            marker.setAttribute('data-relative-width', 0);
-            marker.setAttribute('data-relative-height', 0);
-            Object.assign(marker.style, {
-                position: 'absolute',
-                background: 'rgba(255,215,0,0.7)',
-                border: '2px solid #e67e22',
-                pointerEvents: 'none',
-                boxSizing: 'border-box',
-                borderRadius: '4px',
-                boxShadow: '0 0 15px rgba(230,126,34,0.8)',
-                zIndex: '10',
-                display: 'none'
-            });
-            const icon = document.createElement('div');
-            icon.textContent = '📍';
-            Object.assign(icon.style, {
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                fontSize: '24px',
-                textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
-            });
-            marker.appendChild(icon);
-            return marker;
+        // ======================== MARCADOR ÚNICO Y PERSISTENTE ========================
+        function initMarker() {
+            if (!currentMarker) {
+                currentMarker = document.createElement('div');
+                currentMarker.className = 'map-marker';
+                currentMarker.style.position = 'absolute';
+                currentMarker.style.background = 'rgba(255,215,0,0.7)';
+                currentMarker.style.border = '2px solid #e67e22';
+                currentMarker.style.pointerEvents = 'none';
+                currentMarker.style.boxSizing = 'border-box';
+                currentMarker.style.borderRadius = '4px';
+                currentMarker.style.boxShadow = '0 0 15px rgba(230,126,34,0.8)';
+                currentMarker.style.zIndex = '10';
+                currentMarker.style.display = 'none';
+                const icon = document.createElement('div');
+                icon.textContent = '📍';
+                icon.style.position = 'absolute';
+                icon.style.top = '50%';
+                icon.style.left = '50%';
+                icon.style.transform = 'translate(-50%, -50%)';
+                icon.style.fontSize = '24px';
+                icon.style.textShadow = '2px 2px 4px rgba(0,0,0,0.3)';
+                currentMarker.appendChild(icon);
+                document.getElementById('map-container').appendChild(currentMarker);
+            }
         }
 
         function showMarker(location) {
+            initMarker();
             if (!location) {
-                if (currentMarker) currentMarker.style.display = 'none';
+                currentMarker.style.display = 'none';
                 return;
             }
-            if (!currentMarker) {
-                currentMarker = createMarkerElement();
-                document.getElementById('map-container').appendChild(currentMarker);
-            }
-            // Actualizar coordenadas
+            let x, y, w, h;
             if (location.isMultiple && location.locations) {
-                const first = location.locations[0];
-                currentMarker.setAttribute('data-relative-x', first.x);
-                currentMarker.setAttribute('data-relative-y', first.y);
-                currentMarker.setAttribute('data-relative-width', first.width);
-                currentMarker.setAttribute('data-relative-height', first.height);
+                x = location.locations[0].x;
+                y = location.locations[0].y;
+                w = location.locations[0].width;
+                h = location.locations[0].height;
             } else if (location.x !== undefined) {
-                currentMarker.setAttribute('data-relative-x', location.x);
-                currentMarker.setAttribute('data-relative-y', location.y);
-                currentMarker.setAttribute('data-relative-width', location.width);
-                currentMarker.setAttribute('data-relative-height', location.height);
+                x = location.x;
+                y = location.y;
+                w = location.width;
+                h = location.height;
+            } else {
+                currentMarker.style.display = 'none';
+                return;
             }
-            // Mostrar y ajustar posición
+            currentMarker.setAttribute('data-x', x);
+            currentMarker.setAttribute('data-y', y);
+            currentMarker.setAttribute('data-w', w);
+            currentMarker.setAttribute('data-h', h);
             currentMarker.style.display = 'block';
-            adjustMarkersPosition();
+            adjustMarkerPosition();
         }
 
         function hideMarker() {
             if (currentMarker) currentMarker.style.display = 'none';
         }
 
-        function adjustMarkersPosition() {
+        function adjustMarkerPosition() {
+            if (!currentMarker || currentMarker.style.display === 'none') return;
             const container = document.getElementById('map-container');
             const img = container.querySelector('img#map-image');
-            if (!img || !currentMarker || currentMarker.style.display === 'none') return;
-            if (img.naturalWidth === 0) {
-                requestAnimationFrame(() => adjustMarkersPosition());
+            if (!img || img.naturalWidth === 0) {
+                requestAnimationFrame(adjustMarkerPosition);
                 return;
             }
-            const cw = container.clientWidth, ch = container.clientHeight;
-            const nw = img.naturalWidth, nh = img.naturalHeight;
-            const containerRatio = cw / ch, imageRatio = nw / nh;
-            let dw, dh, ox, oy;
-            if (containerRatio > imageRatio) {
-                dh = ch;
-                dw = nw * (ch / nh);
-                ox = (cw - dw) / 2;
-                oy = 0;
-            } else {
-                dw = cw;
-                dh = nh * (cw / nw);
-                ox = 0;
-                oy = (ch - dh) / 2;
-            }
-            const rx = parseFloat(currentMarker.getAttribute('data-relative-x'));
-            const ry = parseFloat(currentMarker.getAttribute('data-relative-y'));
-            const rw = parseFloat(currentMarker.getAttribute('data-relative-width'));
-            const rh = parseFloat(currentMarker.getAttribute('data-relative-height'));
-            currentMarker.style.left = `${ox + rx * dw}px`;
-            currentMarker.style.top = `${oy + ry * dh}px`;
-            currentMarker.style.width = `${rw * dw}px`;
-            currentMarker.style.height = `${rh * dh}px`;
+            const x = parseFloat(currentMarker.getAttribute('data-x'));
+            const y = parseFloat(currentMarker.getAttribute('data-y'));
+            const w = parseFloat(currentMarker.getAttribute('data-w'));
+            const h = parseFloat(currentMarker.getAttribute('data-h'));
+            if (isNaN(x) || isNaN(y) || isNaN(w) || isNaN(h)) return;
+            
+            const containerRect = container.getBoundingClientRect();
+            const imgRect = img.getBoundingClientRect();
+            // Calcular offset de la imagen dentro del contenedor (por object-fit: contain)
+            const containerWidth = containerRect.width;
+            const containerHeight = containerRect.height;
+            const imgWidth = imgRect.width;
+            const imgHeight = imgRect.height;
+            const offsetX = (containerWidth - imgWidth) / 2;
+            const offsetY = (containerHeight - imgHeight) / 2;
+            
+            const left = offsetX + x * imgWidth;
+            const top = offsetY + y * imgHeight;
+            const width = w * imgWidth;
+            const height = h * imgHeight;
+            
+            currentMarker.style.left = `${left}px`;
+            currentMarker.style.top = `${top}px`;
+            currentMarker.style.width = `${width}px`;
+            currentMarker.style.height = `${height}px`;
         }
 
-        // ======================== CARGA DE MAPA OPTIMIZADA (sin parpadeo) ========================
+        // ======================== CARGA DE MAPA SIN PARPADEO ========================
         function loadLibraryMap(libraryKey, callback) {
             if (isMapLoading) return false;
             isMapLoading = true;
@@ -314,10 +312,10 @@
             const mapContainer = document.getElementById('map-container');
             const imgPath = libData.floors[1].img;
             
-            // Ocultar marcador mientras se carga
+            // Ocultar marcador mientras carga
             hideMarker();
             
-            // Mostrar estado de carga (solo texto, sin destruir el marcador)
+            // Mostrar loading (sin overlay que tape el marcador)
             let loadingDiv = document.getElementById('temp-loading');
             if (!loadingDiv) {
                 loadingDiv = document.createElement('div');
@@ -347,11 +345,10 @@
                 currentImageLoadTimeout = null;
                 isMapLoading = false;
                 if (callback) callback(false);
-            }, 8000);
+            }, 10000);
             
             img.onload = () => {
                 if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
-                // Eliminar loading
                 const ld = document.getElementById('temp-loading');
                 if (ld) ld.remove();
                 
@@ -369,10 +366,13 @@
                 
                 imgElement.onload = () => {
                     isMapLoading = false;
-                    // Si hay una ubicación pendiente, mostrarla ahora
+                    // Reajustar marcador si hay uno pendiente
                     if (pendingLocation) {
                         showMarker(pendingLocation);
                         pendingLocation = null;
+                    } else {
+                        // Si no hay pendiente pero hay marcador visible, reajustar
+                        if (currentMarker && currentMarker.style.display === 'block') adjustMarkerPosition();
                     }
                     if (callback) callback(true);
                 };
@@ -420,6 +420,7 @@
             const signature = document.getElementById('signature').value.trim();
             if (!signature) {
                 hideMarker();
+                pendingLocation = null;
                 return;
             }
             const libKey = libraryMap[selectedLibrary];
@@ -433,6 +434,7 @@
             if (!validateSignature(signature)) {
                 showLocationInfo("Signatura no válida.");
                 hideMarker();
+                pendingLocation = null;
                 return;
             }
             const location = searchInStacks(libData, signature);
@@ -440,10 +442,8 @@
             
             if (location) {
                 if (mapImage && mapImage.complete && mapImage.naturalWidth > 0) {
-                    // Mapa ya cargado, mostrar inmediatamente
                     showMarker(location);
                 } else {
-                    // Mapa aún no cargado, guardar para mostrar después
                     pendingLocation = location;
                 }
                 showLocationInfo(message);
@@ -535,7 +535,7 @@
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => {
-                if (selectedLibrary) adjustMarkersPosition();
+                if (selectedLibrary) adjustMarkerPosition();
             }, 100);
         });
 
