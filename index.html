@@ -401,10 +401,6 @@
         let searchTimeout = null;
         let currentImageLoadTimeout = null;
         let isMapLoading = false;
-        let pendingCallNumber = null;
-        let pendingLibrary = null;
-
-
         
         // Configuración de mapas
         const mapData = {
@@ -563,40 +559,32 @@
     }
 
     function initFromURL() {
+        const { library_code, call_number } = getURLParams();
 
-    console.log("🚀 initFromURL ejecutándose");
+        console.log("🌐 Parámetros URL:", library_code, call_number);
 
-    const url = new URL(window.location.href);
-    const params = url.searchParams;
+        if (library_code) {
+            const mappedLibrary = mapLibraryCode(library_code);
 
-    console.log("🌐 URL completa:", window.location.href);
+            if (mappedLibrary) {
+                selectLibrary(mappedLibrary);
+            }
+        }
 
-    const library_code = params.get('library_code');
-    const call_number = params.get('call_number');
+        if (call_number) {
+            const cleanCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
+            const signatureInput = document.getElementById('signature');
 
-    console.log("🌐 URL detectada:", library_code, call_number);
+            setTimeout(() => {
+                signatureInput.value = cleanCallNumber;
+                updateUI();
 
-    const mapping = {
-        'POBLA': 'medellin',
-        'RIONE': 'oriente',
-        'APART': 'uraba'
-    };
-
-    if (library_code && mapping[library_code]) {
-        pendingLibrary = mapping[library_code];
+                if (selectedLibrary) {
+                    findAndDisplayLocation();
+                }
+            }, 600);
+        }
     }
-
-    if (call_number) {
-        pendingCallNumber = decodeURIComponent(call_number).replace(/\+/g, ' ');
-    }
-
-    if (pendingLibrary) {
-        selectLibrary(pendingLibrary);
-    }
-}
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -768,10 +756,9 @@
             console.log(`🔄 CARGANDO MAPA para: ${libraryKey}`);
             
             if (isMapLoading) {
-    console.log("🔁 Forzando recarga de mapa...");
-    isMapLoading = false;
-}
-
+                console.log(`⏳ Ya se está cargando un mapa, esperando...`);
+                return false;
+            }
             
             isMapLoading = true;
             
@@ -825,41 +812,62 @@
             }, 5000);
             
             img.onload = function() {
-    console.log(`✅ Imagen cargada: ${imgPath}`);
-
-    if (currentImageLoadTimeout) {
-        clearTimeout(currentImageLoadTimeout);
-        currentImageLoadTimeout = null;
-    }
-
-    mapContainer.innerHTML = `
-        <img id="map-image" 
-             src="${imgPath}" 
-             style="width:100%;height:100%;object-fit:contain;">
-    `;
-
-    clearMapMarkers();
-    isMapLoading = false;
-
-    // 🔁 Ejecutar búsqueda si hay datos
-    const signatureInput = document.getElementById('signature');
-
-    if (pendingCallNumber) {
-        signatureInput.value = pendingCallNumber;
-        findAndDisplayLocation();
-        pendingCallNumber = null;
-        pendingLibrary = null;
-        return;
-    }
-
-    const signature = signatureInput.value.trim();
-    if (signature) {
-        setTimeout(findAndDisplayLocation, 100);
-    }
-
-    signatureInput.disabled = false;
-};
-
+                console.log(`✅ Imagen cargada exitosamente: ${imgPath}`);
+                
+                if (currentImageLoadTimeout) {
+                    clearTimeout(currentImageLoadTimeout);
+                    currentImageLoadTimeout = null;
+                }
+                
+                const imgElement = document.createElement('img');
+                imgElement.id = 'map-image';
+                imgElement.src = imgPath;
+                imgElement.alt = `Mapa de ${libraryData.name}`;
+                imgElement.style.width = '100%';
+                imgElement.style.height = '100%';
+                imgElement.style.objectFit = 'contain';
+                
+                mapContainer.innerHTML = '';
+                mapContainer.appendChild(imgElement);
+                clearMapMarkers();
+                
+                imgElement.onload = function() {
+                    console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
+                    isMapLoading = false;
+                    
+                    // Si hay signatura ingresada, buscar ubicación
+                    const signature = document.getElementById('signature').value.trim();
+                    if (signature) {
+                        setTimeout(() => {
+                            findAndDisplayLocation();
+                        }, 100);
+                    }
+                };
+                
+                imgElement.onerror = function() {
+                    console.error(`❌ Error renderizando imagen en DOM: ${imgPath}`);
+                    showNoMapAvailable(`Error al mostrar el mapa de ${libraryData.name}`);
+                    isMapLoading = false;
+                };
+            };
+            
+            img.onerror = function() {
+                console.error(`❌ Error cargando imagen: ${imgPath}`);
+                
+                if (currentImageLoadTimeout) {
+                    clearTimeout(currentImageLoadTimeout);
+                    currentImageLoadTimeout = null;
+                }
+                
+                showNoMapAvailable(`No se pudo cargar el mapa de ${libraryData.name}.`);
+                isMapLoading = false;
+                return false;
+            };
+            
+            img.src = imgPath;
+            
+            return true;
+        }
 
         // FUNCIÓN MEJORADA: Mostrar estado "mapa no disponible"
         function showNoMapAvailable(message = "El mapa para esta selección no está disponible en el sistema.") {
@@ -886,35 +894,6 @@
             clearMapMarkers();
             document.getElementById('location-info-panel').classList.remove('active');
             document.getElementById('legend-panel').classList.remove('active');
-
-
-            // 🧠 Aunque no haya mapa, permitir mostrar información de ubicación
-if (selectedLibrary) {
-    const signature = document.getElementById('signature').value.trim();
-
-    if (signature) {
-        const libraryKey = libraryMap[selectedLibrary];
-        const libraryData = mapData[libraryKey];
-
-        const locationResult = searchInStacks(libraryData, signature);
-
-        let locationMessage;
-
-        if (locationResult) {
-            const parts = locationResult.stackInfo.split('.');
-            locationMessage = `Este material puede encontrarse en el piso ${locationResult.floor} de la ${libraryData.name}, estante ${parts[1]} lado ${parts[2]}. (Mapa no disponible)`;
-        } else {
-            locationMessage = `Material disponible en ${libraryData.name}. (Mapa no disponible). Consulte con el personal para ubicación exacta.`;
-        }
-
-        showLocationInfo(locationMessage);
-    }
-}
-
-            // 🔓 SIEMPRE permitir escribir aunque no haya mapa
-const signatureInput = document.getElementById('signature');
-signatureInput.disabled = false;
-
         }
 
         // FUNCIÓN CORREGIDA: Buscar y mostrar ubicación
@@ -943,14 +922,10 @@ signatureInput.disabled = false;
             const mapImage = mapContainer.querySelector('img#map-image');
             const noMapState = mapContainer.querySelector('.no-map-state');
             
-          if (noMapState) {
-    console.log("🔄 Reintentando carga de mapa...");
-    loadLibraryMap(libraryKey);
-    return;
-}
-
-
-
+            if (noMapState) {
+                console.log("⏹️ Ya se mostró que no hay mapa disponible, deteniendo búsqueda");
+                return;
+            }
             
             if (!mapImage) {
                 console.log("⚠️ El mapa no está cargado. Mostrando mensaje informativo.");
@@ -1018,11 +993,7 @@ signatureInput.disabled = false;
             
             // Limpiar cuadro de texto
             const signatureInput = document.getElementById('signature');
-            // ⚠️ SOLO limpiar si NO viene desde URL
-if (!pendingCallNumber) {
-    signatureInput.value = '';
-}
-
+            signatureInput.value = '';
             
             // Actualizar biblioteca seleccionada
             selectedLibrary = libraryId;
@@ -1030,10 +1001,6 @@ if (!pendingCallNumber) {
             
             // Habilitar controles
             toggleControls(true);
-
-            // 🔒→🔓 Forzar habilitación del input
-document.getElementById('signature').disabled = false;
-
             
             // Resetear estado de carga
             isMapLoading = false;
@@ -1291,36 +1258,44 @@ document.getElementById('signature').disabled = false;
         
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
-
-    console.log("🔥 DOM cargado");
-
-    initFromURL(); // 👈 ESTO ES CRÍTICO
-
-    const signatureInput = document.getElementById('signature');
-
-    toggleControls(false);
-
-    signatureInput.addEventListener('input', function() {
-        updateUI();
-
-        if (selectedMaterial && this.value.trim() !== '') {
-            document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
-            selectedMaterial = null;
-        }
-
-        if (selectedLibrary) {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                findAndDisplayLocation();
-            }, 500);
-        }
-    });
-
-    updateUI();
-
-    console.log('✅ Sistema inicializado con soporte de URL');
-});
-
+            const signatureInput = document.getElementById('signature');
+            
+            // Deshabilitar controles inicialmente (ninguna biblioteca seleccionada)
+            toggleControls(false);
+            
+            // NINGUNA BIBLIOTECA SELECCIONADA POR DEFECTO
+            // El mapa mostrará el estado inicial sin selección
+            
+            signatureInput.addEventListener('input', function() {
+                updateUI();
+                
+                // Si hay material seleccionado, limpiarlo cuando se empiece a escribir
+                if (selectedMaterial && this.value.trim() !== '') {
+                    document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
+                    selectedMaterial = null;
+                }
+                
+                if (selectedLibrary) {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        findAndDisplayLocation();
+                    }, 500);
+                }
+            });
+            
+            signatureInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    clearTimeout(searchTimeout);
+                    if (selectedLibrary) {
+                        findAndDisplayLocation();
+                    }
+                }
+            });
+            
+            updateUI();
+            console.log('✅ Sistema inicializado - Ninguna biblioteca seleccionada por defecto');
+        });
     </script>
 </body>
 </html>
