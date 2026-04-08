@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapas de Biblioteca</title>
     <style>
-        /* Tus estilos originales, intactos */
+        /* ========== ESTILOS ORIGINALES (sin cambios estéticos) ========== */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; color: #333; padding: 20px; }
         .container { max-width: 1200px; margin: 0 auto; }
@@ -46,10 +46,37 @@
         .detail-item { flex: 1; min-width: 150px; }
         .detail-label { font-size: 12px; color: #666; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
         .detail-value { font-size: 14px; font-weight: 600; color: #2c3e50; word-break: break-word; }
-        .location-info-panel { background: #e8f6ef; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; border-left: 4px solid #27ae60; }
-        .location-info-panel.active { display: block; }
-        .location-info-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #2c3e50; display: flex; align-items: center; gap: 8px; }
-        .location-info-text { font-size: 14px; line-height: 1.6; color: #555; }
+        
+        /* PANEL DE INFORMACIÓN DE UBICACIÓN - AHORA SIEMPRE VISIBLE (estático) */
+        .location-info-panel {
+            background: #f0f2f5;      /* Color neutro inactivo */
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #b0b3b8;
+            transition: all 0.2s ease;
+            /* Altura consistente */
+            min-height: 85px;
+        }
+        .location-info-panel.active {
+            background: #e8f6ef;
+            border-left-color: #27ae60;
+        }
+        .location-info-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .location-info-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
         .map-container { flex: 1; position: relative; background: #f8f9fa; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0; min-height: 500px; margin-bottom: 20px; }
         .initial-state { display: flex; align-items: center; justify-content: center; height: 100%; color: #999; font-size: 18px; text-align: center; padding: 40px; }
         .loading-state { display: flex; align-items: center; justify-content: center; height: 100%; background: #f8f9fa; color: #6c757d; font-size: 18px; text-align: center; padding: 40px; }
@@ -119,6 +146,7 @@
                         <div class="detail-item"><div class="detail-label">Localización:</div><div class="detail-value" id="current-signature">-</div></div>
                     </div>
                 </div>
+                <!-- Panel de ubicación siempre presente, sin efecto de desplazamiento -->
                 <div class="location-info-panel" id="location-info-panel">
                     <div class="location-info-title"><span>📍</span> Información de Ubicación</div>
                     <div class="location-info-text" id="location-info-text">Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa</div>
@@ -139,7 +167,6 @@
         let currentImageLoadTimeout = null;
         let isMapLoading = false;
         let currentMarker = null;      // Referencia al marcador actual
-        let currentLocationInfo = null; // Última ubicación mostrada
         
         const mapData = {
             "MEDELLÍN": {
@@ -202,7 +229,7 @@
             return null;
         }
 
-        // ======================== MANEJO DE MARCADOR SIN PARPADEO ========================
+        // ======================== MARCADOR SIN PARPADEO ========================
         function updateMarker(location) {
             if (!location) {
                 if (currentMarker) currentMarker.style.display = 'none';
@@ -212,18 +239,13 @@
                 currentMarker = createMarker(0, 0, 0, 0);
                 document.getElementById('map-container').appendChild(currentMarker);
             }
-            // Actualizar atributos del marcador
             if (location.isMultiple && location.locations) {
-                // Para múltiples ubicaciones, por simplicidad usamos la primera
                 const first = location.locations[0];
                 currentMarker.setAttribute('data-relative-x', first.x);
                 currentMarker.setAttribute('data-relative-y', first.y);
                 currentMarker.setAttribute('data-relative-width', first.width);
                 currentMarker.setAttribute('data-relative-height', first.height);
                 currentMarker.style.display = 'block';
-                // Si hay más de una, podrías crear más marcadores, pero para evitar parpadeo se mantiene uno
-                // En tu diseño original se soportaban múltiples, pero aquí simplificamos para velocidad.
-                // Si necesitas múltiples, avísame.
             } else if (location.x !== undefined) {
                 currentMarker.setAttribute('data-relative-x', location.x);
                 currentMarker.setAttribute('data-relative-y', location.y);
@@ -231,7 +253,7 @@
                 currentMarker.setAttribute('data-relative-height', location.height);
                 currentMarker.style.display = 'block';
             }
-            adjustMarkersPosition(); // Reajustar posición
+            adjustMarkersPosition();
         }
 
         function createMarker(x, y, w, h) {
@@ -278,7 +300,7 @@
             if (currentMarker) currentMarker.style.display = 'none';
         }
 
-        // ======================== CARGA DE MAPA OPTIMIZADA ========================
+        // ======================== CARGA DE MAPA ========================
         function loadLibraryMap(libraryKey) {
             if (isMapLoading) return false;
             isMapLoading = true;
@@ -304,7 +326,6 @@
                 imgElement.style.objectFit = 'contain';
                 mapContainer.innerHTML = '';
                 mapContainer.appendChild(imgElement);
-                // Si hay un marcador pendiente, mostrarlo
                 if (currentMarker && currentMarker.style.display !== 'none') {
                     imgElement.onload = () => { adjustMarkersPosition(); };
                 } else {
@@ -322,12 +343,11 @@
             if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
             mapContainer.innerHTML = `<div class="no-map-state"><div><span>🚫</span><h3>Mapa no disponible</h3><p>${msg}</p></div></div>`;
             clearMapMarkers();
-            document.getElementById('location-info-panel').classList.remove('active');
             document.getElementById('legend-panel').classList.remove('active');
             isMapLoading = false;
         }
 
-        // ======================== BÚSQUEDA Y ACTUALIZACIÓN RÁPIDA ========================
+        // ======================== BÚSQUEDA Y ACTUALIZACIÓN ========================
         function findAndDisplayLocation() {
             if (!selectedLibrary) return;
             const signature = document.getElementById('signature').value.trim();
@@ -365,11 +385,11 @@
             document.getElementById(`btn-${libId}`).classList.add('selected');
             toggleControls(true);
             isMapLoading = false;
-            // Limpiar marcador anterior
             if (currentMarker) currentMarker.style.display = 'none';
             loadLibraryMap(libraryMap[libId]);
             updateUI();
-            document.getElementById('location-info-panel').classList.remove('active');
+            // Limpiar mensaje de ubicación (solo texto, no desaparece el panel)
+            showLocationInfo("Seleccione una localización para ver su ubicación en el mapa.");
             document.getElementById('legend-panel').classList.remove('active');
         }
 
@@ -407,10 +427,18 @@
             } else document.getElementById('selection-info').style.display = 'none';
         }
 
+        // Función para mostrar mensaje en el panel estático (sin ocultar/mostrar el panel)
         function showLocationInfo(msg) {
-            document.getElementById('location-info-text').textContent = msg;
-            document.getElementById('location-info-panel').classList.add('active');
-            document.getElementById('legend-panel').classList.add('active');
+            const panel = document.getElementById('location-info-panel');
+            const textDiv = document.getElementById('location-info-text');
+            textDiv.textContent = msg;
+            panel.classList.add('active');
+            // La leyenda solo aparece cuando hay ubicación con marcador
+            if (msg !== "Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa" && msg !== "Seleccione una localización para ver su ubicación en el mapa.") {
+                document.getElementById('legend-panel').classList.add('active');
+            } else {
+                document.getElementById('legend-panel').classList.remove('active');
+            }
         }
 
         // ======================== EVENTOS E INICIALIZACIÓN ========================
@@ -428,7 +456,7 @@
                 }
                 if (selectedLibrary) {
                     if (searchTimeout) clearTimeout(searchTimeout);
-                    searchTimeout = setTimeout(() => findAndDisplayLocation(), 150); // Aún más rápido
+                    searchTimeout = setTimeout(() => findAndDisplayLocation(), 150);
                 }
             });
             sigInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); clearTimeout(searchTimeout); if (selectedLibrary) findAndDisplayLocation(); } });
