@@ -847,15 +847,11 @@
     console.log(`✅ Imagen renderizada en DOM: ${libraryData.name}`);
     isMapLoading = false;
 
-    const signatureInput = document.getElementById('signature');
+const signatureInput = document.getElementById('signature');
 
-    // 🚀 CASO URL (flujo automático)
-   if (pendingCallNumber) {
-    console.log("🚀 Ejecutando flujo desde URL");
-
+// 🚀 flujo URL
+if (pendingCallNumber) {
     signatureInput.value = pendingCallNumber;
-
-    // 🔓 aseguramos que el usuario pueda escribir después
     signatureInput.disabled = false;
 
     updateUI();
@@ -864,32 +860,27 @@
         findAndDisplayLocation();
     }, 200);
 
-       setTimeout(() => {
+    setTimeout(() => {
         signatureInput.focus();
         signatureInput.select();
     }, 300);
 
-    // limpiar estado
     pendingCallNumber = null;
     pendingLibrary = null;
-
     return;
 }
 
+// 🔁 flujo normal
+const signature = signatureInput.value.trim();
+if (signature) {
+    setTimeout(() => {
+        findAndDisplayLocation();
+    }, 100);
+}
 
-    // 🔁 flujo normal
-    const signature = signatureInput.value.trim();
-    if (signature) {
-        setTimeout(() => {
-            findAndDisplayLocation();
-        }, 100);
-    }
-
-                    // 🔓 GARANTIZAR que el input siempre quede habilitado
-const signatureInput = document.getElementById('signature');
+// 🔓 asegurar SIEMPRE habilitado
 signatureInput.disabled = false;
 
-};
 
                 
                 imgElement.onerror = function() {
@@ -966,6 +957,10 @@ if (selectedLibrary) {
         showLocationInfo(locationMessage);
     }
 }
+
+            // 🔓 SIEMPRE permitir escribir aunque no haya mapa
+const signatureInput = document.getElementById('signature');
+signatureInput.disabled = false;
 
         }
 
@@ -1080,6 +1075,10 @@ if (!pendingCallNumber) {
             
             // Habilitar controles
             toggleControls(true);
+
+            // 🔒→🔓 Forzar habilitación del input
+document.getElementById('signature').disabled = false;
+
             
             // Resetear estado de carga
             isMapLoading = false;
