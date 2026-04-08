@@ -942,6 +942,31 @@ signatureInput.disabled = false;
             clearMapMarkers();
             document.getElementById('location-info-panel').classList.remove('active');
             document.getElementById('legend-panel').classList.remove('active');
+
+
+            // 🧠 Aunque no haya mapa, permitir mostrar información de ubicación
+if (selectedLibrary) {
+    const signature = document.getElementById('signature').value.trim();
+
+    if (signature) {
+        const libraryKey = libraryMap[selectedLibrary];
+        const libraryData = mapData[libraryKey];
+
+        const locationResult = searchInStacks(libraryData, signature);
+
+        let locationMessage;
+
+        if (locationResult) {
+            const parts = locationResult.stackInfo.split('.');
+            locationMessage = `Este material puede encontrarse en el piso ${locationResult.floor} de la ${libraryData.name}, estante ${parts[1]} lado ${parts[2]}. (Mapa no disponible)`;
+        } else {
+            locationMessage = `Material disponible en ${libraryData.name}. (Mapa no disponible). Consulte con el personal para ubicación exacta.`;
+        }
+
+        showLocationInfo(locationMessage);
+    }
+}
+
         }
 
         // FUNCIÓN CORREGIDA: Buscar y mostrar ubicación
@@ -970,22 +995,11 @@ signatureInput.disabled = false;
             const mapImage = mapContainer.querySelector('img#map-image');
             const noMapState = mapContainer.querySelector('.no-map-state');
             
-            if (noMapState) {
-    console.log("⚠️ No hay mapa, pero se continuará con la búsqueda lógica");
-
-    const locationResult = searchInStacks(libraryData, signature);
-    let locationMessage;
-
-    if (locationResult) {
-        const parts = locationResult.stackInfo.split('.');
-        locationMessage = `Este material puede encontrarse en el piso ${locationResult.floor} de la ${libraryData.name}, estante ${parts[1]} lado ${parts[2]}. (Mapa no disponible, consulte con el personal para ubicación visual).`;
-    } else {
-        locationMessage = `Material disponible en ${libraryData.name}. (Mapa no disponible). Consulte con el personal para ubicación exacta.`;
-    }
-
-    showLocationInfo(locationMessage);
+           if (noMapState) {
+    console.log("⏹️ Ya se mostró que no hay mapa disponible, deteniendo búsqueda");
     return;
 }
+
 
             
             if (!mapImage) {
