@@ -1,8 +1,4 @@
-// ============================================================================
-// SISTEMA DE MAPAS DE BIBLIOTECA CON VISUALIZACIÓN 3D (MATTERPORT)
-// ============================================================================
-
-// ------------------------- ESTADO GLOBAL ------------------------------------
+// ======================== CONFIGURACIÓN Y DATOS ========================
 let selectedLibrary = null;
 let selectedMaterial = null;
 let currentLibraryData = null;
@@ -11,7 +7,6 @@ let currentImageLoadTimeout = null;
 let isMapLoading = false;
 let pendingLocation = null;
 
-// ------------------------- DATOS DE MAPAS (CON URLs 3D) ---------------------
 const mapData = {
     "MEDELLÍN": {
         name: "Biblioteca Medellín",
@@ -53,287 +48,34 @@ const mapData = {
                     }
                 },
                 stacks: [
-                    // ==================== STACKS PISO 1 ====================
-                    {
-                        id: "1.1A1.Izquierdo",
-                        start: "000.0",
-                        end: "005.1",
-                        x: 0.6222,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=59&sr=-1.4,-1.33"
-                    },
-                    {
-                        id: "1.1A2.Izquierdo",
-                        start: "005.101",
-                        end: "036.0",
-                        x: 0.6222,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=94&sr=-2.26,-1.48"
-                    },
-                    {
-                        id: "1.1B2.Derecho",
-                        start: "036.01",
-                        end: "302.0",
-                        x: 0.5944,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=92&sr=-.53,-1.51"
-                    },
-                    {
-                        id: "1.1B1.Derecho",
-                        start: "302.01",
-                        end: "330.01",
-                        x: 0.5944,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=61&sr=-.35,-.8"
-                    },
-                    {
-                        id: "1.2A1.Izquierdo",
-                        start: "330.011",
-                        end: "338.5",
-                        x: 0.5602,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=61&sr=-3,-1.08"
-                    },
-                    {
-                        id: "1.2A2.Izquierdo",
-                        start: "338.501",
-                        end: "373.2",
-                        x: 0.5602,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=92&sr=-3,-1.08"
-                    },
-                    {
-                        id: "1.2B2.Derecho",
-                        start: "373.201",
-                        end: "512.1",
-                        x: 0.5324,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=90&sr=-.02,-1.09"
-                    },
-                    {
-                        id: "1.2B1.Derecho",
-                        start: "512.101",
-                        end: "515.3",
-                        x: 0.5324,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=63&sr=-.18,-.4"
-                    },
-                    {
-                        id: "1.3A1.Izquierdo",
-                        start: "515.301",
-                        end: "519.5",
-                        x: 0.4963,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=63&sr=-3.07,-.41"
-                    },
-                    {
-                        id: "1.3A2.Izquierdo",
-                        start: "519.501",
-                        end: "537.0",
-                        x: 0.4936,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=90&sr=-2.97,-.52"
-                    },
-                    {
-                        id: "1.3B2.Derecho",
-                        start: "537.01",
-                        end: "574.5",
-                        x: 0.4685,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=88&sr=-.33,-.7"
-                    },
-                    {
-                        id: "1.3B1.Derecho",
-                        start: "574.501",
-                        end: "591.0",
-                        x: 0.4685,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=66&sr=-.21,-.94"
-                    },
-                    {
-                        id: "1.4A1.Izquierdo",
-                        start: "591.01",
-                        end: "612.76",
-                        x: 0.4324,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=65&sr=-2.84,-1.28"
-                    },
-                    {
-                        id: "1.4A2.Izquierdo",
-                        start: "612.7601",
-                        end: "612.27",
-                        x: 0.4333,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=217&sr=-2.7,-1.26"
-                    },
-                    {
-                        id: "1.4B2.Derecho",
-                        start: "612.2701",
-                        end: "621.4",
-                        x: 0.4065,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=86&sr=-.23,-.81"
-                    },
-                    {
-                        id: "1.4B1.Derecho",
-                        start: "621.401",
-                        end: "624.18",
-                        x: 0.4065,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=67&sr=-.06,-.81"
-                    },
-                    {
-                        id: "1.5A1.Izquierdo",
-                        start: "624.1801",
-                        end: "629.8",
-                        x: 0.3713,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=67&sr=-2.97,-1.37"
-                    },
-                    {
-                        id: "1.5A2.Izquierdo",
-                        start: "629.801",
-                        end: "634.0",
-                        x: 0.3704,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=87&sr=-3.01,-1.06"
-                    },
-                    {
-                        id: "1.5B2.Derecho",
-                        start: "634.01",
-                        end: "657.0",
-                        x: 0.3435,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=84&sr=.03,-.97"
-                    },
-                    {
-                        id: "1.5B1.Derecho",
-                        start: "657.01",
-                        end: "657.8",
-                        x: 0.3435,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=68&sr=-.02,-.9"
-                    },
-                    {
-                        id: "1.6A1.Izquierdo",
-                        start: "657.801",
-                        end: "658.3",
-                        x: 0.3074,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=68&sr=-2.86,-1.08"
-                    },
-                    {
-                        id: "1.6A2.Izquierdo",
-                        start: "658.301",
-                        end: "658.5",
-                        x: 0.3074,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=85&sr=-2.91,-1.1"
-                    },
-                    {
-                        id: "1.6B2.Derecho",
-                        start: "658.501",
-                        end: "658.85",
-                        x: 0.2806,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=228&sr=-.2,-.61"
-                    },
-                    {
-                        id: "1.6B1.Derecho",
-                        start: "658.8501",
-                        end: "690.2",
-                        x: 0.2806,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=251&sr=-.13,-.96"
-                    },
-                    {
-                        id: "1.7A1.Izquierdo",
-                        start: "690.201",
-                        end: "790.2",
-                        x: 0.2444,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=250&sr=-3.13,-1.19"
-                    },
-                    {
-                        id: "1.7A2.Izquierdo",
-                        start: "790.201",
-                        end: "799.1",
-                        x: 0.2444,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=83&sr=-2.69,-1.2"
-                    },
-                    {
-                        id: "1.7B2.Derecho",
-                        start: "799.101",
-                        end: "899.9",
-                        x: 0.2185,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=229&sr=-.25,-1.13"
-                    },
-                    {
-                        id: "1.7B1.Derecho",
-                        start: "900",
-                        end: "999.9",
-                        x: 0.2185,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=254&sr=-.24,-.97"
-                    }
+                    { id: "1.1A1.Izquierdo", start: "000.0", end: "005.1", x: 0.6222, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=59&sr=-1.4,-1.33" },
+                    { id: "1.1A2.Izquierdo", start: "005.101", end: "036.0", x: 0.6222, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=94&sr=-2.26,-1.48" },
+                    { id: "1.1B2.Derecho", start: "036.01", end: "302.0", x: 0.5944, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=92&sr=-.53,-1.51" },
+                    { id: "1.1B1.Derecho", start: "302.01", end: "330.01", x: 0.5944, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=61&sr=-.35,-.8" },
+                    { id: "1.2A1.Izquierdo", start: "330.011", end: "338.5", x: 0.5602, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=61&sr=-3,-1.08" },
+                    { id: "1.2A2.Izquierdo", start: "338.501", end: "373.2", x: 0.5602, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=92&sr=-3,-1.08" },
+                    { id: "1.2B2.Derecho", start: "373.201", end: "512.1", x: 0.5324, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=90&sr=-.02,-1.09" },
+                    { id: "1.2B1.Derecho", start: "512.101", end: "515.3", x: 0.5324, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=63&sr=-.18,-.4" },
+                    { id: "1.3A1.Izquierdo", start: "515.301", end: "519.5", x: 0.4963, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=63&sr=-3.07,-.41" },
+                    { id: "1.3A2.Izquierdo", start: "519.501", end: "537.0", x: 0.4936, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=90&sr=-2.97,-.52" },
+                    { id: "1.3B2.Derecho", start: "537.01", end: "574.5", x: 0.4685, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=88&sr=-.33,-.7" },
+                    { id: "1.3B1.Derecho", start: "574.501", end: "591.0", x: 0.4685, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=66&sr=-.21,-.94" },
+                    { id: "1.4A1.Izquierdo", start: "591.01", end: "612.76", x: 0.4324, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=65&sr=-2.84,-1.28" },
+                    { id: "1.4A2.Izquierdo", start: "612.7601", end: "612.27", x: 0.4333, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=217&sr=-2.7,-1.26" },
+                    { id: "1.4B2.Derecho", start: "612.2701", end: "621.4", x: 0.4065, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=86&sr=-.23,-.81" },
+                    { id: "1.4B1.Derecho", start: "621.401", end: "624.18", x: 0.4065, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=67&sr=-.06,-.81" },
+                    { id: "1.5A1.Izquierdo", start: "624.1801", end: "629.8", x: 0.3713, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=67&sr=-2.97,-1.37" },
+                    { id: "1.5A2.Izquierdo", start: "629.801", end: "634.0", x: 0.3704, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=87&sr=-3.01,-1.06" },
+                    { id: "1.5B2.Derecho", start: "634.01", end: "657.0", x: 0.3435, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=84&sr=.03,-.97" },
+                    { id: "1.5B1.Derecho", start: "657.01", end: "657.8", x: 0.3435, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=68&sr=-.02,-.9" },
+                    { id: "1.6A1.Izquierdo", start: "657.801", end: "658.3", x: 0.3074, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=68&sr=-2.86,-1.08" },
+                    { id: "1.6A2.Izquierdo", start: "658.301", end: "658.5", x: 0.3074, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=85&sr=-2.91,-1.1" },
+                    { id: "1.6B2.Derecho", start: "658.501", end: "658.85", x: 0.2806, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=228&sr=-.2,-.61" },
+                    { id: "1.6B1.Derecho", start: "658.8501", end: "690.2", x: 0.2806, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=251&sr=-.13,-.96" },
+                    { id: "1.7A1.Izquierdo", start: "690.201", end: "790.2", x: 0.2444, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=250&sr=-3.13,-1.19" },
+                    { id: "1.7A2.Izquierdo", start: "790.201", end: "799.1", x: 0.2444, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=83&sr=-2.69,-1.2" },
+                    { id: "1.7B2.Derecho", start: "799.101", end: "899.9", x: 0.2185, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=229&sr=-.25,-1.13" },
+                    { id: "1.7B1.Derecho", start: "900", end: "999.9", x: 0.2185, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=254&sr=-.24,-.97" }
                 ]
             },
             2: {
@@ -388,30 +130,11 @@ const mapData = {
     }
 };
 
-// ------------------------- MAPEOS AUXILIARES --------------------------------
-const libraryMap = {
-    'medellin': 'MEDELLÍN',
-    'oriente': 'CENTRO REGIONAL ORIENTE',
-    'uraba': 'CENTRO REGIONAL URABÁ'
-};
+const libraryMap = { 'medellin': 'MEDELLÍN', 'oriente': 'CENTRO REGIONAL ORIENTE', 'uraba': 'CENTRO REGIONAL URABÁ' };
+const materialMap = { 'tesis': 'TRABAJO DE GRADO', 'cd': 'MULTIMEDIA', 'revista': 'REVISTA', 'folleto': 'FOLLETO', 'norma': 'NORMAS' };
+const materialDisplayNames = { 'tesis': 'TRABAJO DE GRADO', 'cd': 'CD', 'revista': 'REVISTA', 'folleto': 'FOLLETO', 'norma': 'NORMA' };
 
-const materialMap = {
-    'tesis': 'TRABAJO DE GRADO',
-    'cd': 'MULTIMEDIA',
-    'revista': 'REVISTA',
-    'folleto': 'FOLLETO',
-    'norma': 'NORMAS'
-};
-
-const materialDisplayNames = {
-    'tesis': 'TRABAJO DE GRADO',
-    'cd': 'CD',
-    'revista': 'REVISTA',
-    'folleto': 'FOLLETO',
-    'norma': 'NORMA'
-};
-
-// ------------------------- FUNCIONES AUXILIARES -----------------------------
+// ======================== FUNCIONES AUXILIARES ========================
 function toggleControls(enabled) {
     document.getElementById('signature').disabled = !enabled;
     document.querySelectorAll('.material-btn').forEach(btn => btn.disabled = !enabled);
@@ -482,7 +205,7 @@ function searchInStaticLocations(libData, type) {
     return null;
 }
 
-// ------------------------- FUNCIONES DEL MAPA (CARGA, DIBUJO, MARCADORES) ---
+// ======================== MAPA Y MARCADORES ========================
 function loadLibraryMap(libraryKey) {
     if (isMapLoading) return false;
     isMapLoading = true;
@@ -518,11 +241,12 @@ function loadLibraryMap(libraryKey) {
         mapContainer.innerHTML = '';
         mapContainer.appendChild(imgElement);
         clearMapMarkers();
+        removeExplicit3DButton();
         imgElement.onload = () => {
             isMapLoading = false;
             if (pendingLocation) {
                 drawLocation(pendingLocation);
-                showLocationInfo(pendingLocation.message || (pendingLocation.stackInfo ? `Ubicado en estante ${pendingLocation.stackInfo}` : "Ubicación encontrada. Haz clic en el marcador 📍 para ver en 3D."));
+                showLocationInfo(pendingLocation.message || (pendingLocation.stackInfo ? `Ubicado en estante ${pendingLocation.stackInfo}` : "Ubicación encontrada"));
                 pendingLocation = null;
             } else {
                 const signature = document.getElementById('signature').value.trim();
@@ -547,6 +271,7 @@ function showNoMapAvailable(msg) {
     if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
     mapContainer.innerHTML = `<div class="no-map-state"><div><span>🚫</span><h3>Mapa no disponible</h3><p>${msg}</p></div></div>`;
     clearMapMarkers();
+    removeExplicit3DButton();
     document.getElementById('location-info-panel').classList.remove('active');
     document.getElementById('legend-panel').classList.remove('active');
     isMapLoading = false;
@@ -568,6 +293,7 @@ function findAndDisplayLocation() {
     if (!validateSignature(signature)) {
         showLocationInfo("Signatura no válida.");
         clearMapMarkers();
+        removeExplicit3DButton();
         return;
     }
     const location = searchInStacks(libData, signature);
@@ -577,7 +303,7 @@ function findAndDisplayLocation() {
         const piso = parts[0];
         const estante = parts[1];
         const lado = parts[2];
-        message = `Este material puede encontrarse en el piso ${location.floor} de ${libData.name}, estante ${estante} lado ${lado}. Haz clic en el marcador 📍 para ver la ubicación exacta en 3D.`;
+        message = `Este material puede encontrarse en el piso ${location.floor} de ${libData.name}, estante ${estante} lado ${lado}.`;
     } else {
         message = `Material disponible en ${libData.name} (Colección General). Consulte al personal.`;
     }
@@ -587,6 +313,7 @@ function findAndDisplayLocation() {
         showLocationInfo(message);
     } else {
         clearMapMarkers();
+        removeExplicit3DButton();
         showLocationInfo(message);
     }
 }
@@ -607,6 +334,7 @@ function selectLibrary(libId) {
     loadLibraryMap(libraryMap[libId]);
     updateUI();
     clearMapMarkers();
+    removeExplicit3DButton();
     document.getElementById('location-info-panel').classList.remove('active');
     document.getElementById('legend-panel').classList.remove('active');
 }
@@ -633,64 +361,116 @@ function findAndDisplayLocationForMaterial(matId) {
     if (location) {
         if (location.isMultiple) {
             message = location.locations.map(l => l.message).join(" ");
-            message += " Haz clic en el marcador correspondiente 📍 para ver la ubicación en 3D.";
         } else {
-            message = location.message + " Haz clic en el marcador 📍 para ver la ubicación en 3D.";
+            message = location.message;
         }
     } else {
         message = `Material disponible en ${libData.name} (${materialDisplayNames[matId]}). Consulte al personal.`;
     }
     if (location) drawLocation(location);
-    else clearMapMarkers();
+    else {
+        clearMapMarkers();
+        removeExplicit3DButton();
+    }
     showLocationInfo(message);
 }
 
-function open3DMap(url) {
-    if (url && url.trim() !== "") {
-        window.open(url, '_blank', 'noopener,noreferrer');
-    } else {
-        console.warn("No hay URL 3D definida para esta ubicación");
-        alert("No hay vista 3D disponible para esta ubicación.");
+// ======================== BOTÓN 3D EXPLÍCITO ========================
+let current3DButton = null;
+
+function addExplicit3DButton(url3d) {
+    if (!url3d) return;
+    removeExplicit3DButton();
+    
+    const btn = document.createElement('button');
+    btn.id = 'btn-ver-3d';
+    btn.innerHTML = '<span>🌐</span> Ver esta ubicación en 3D (Matterport)';
+    btn.style.cssText = `
+        background: linear-gradient(135deg, #e67e22, #f39c12);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        transition: transform 0.2s, box-shadow 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 15px;
+        font-family: 'Segoe UI', sans-serif;
+    `;
+    btn.onmouseover = () => {
+        btn.style.transform = 'scale(1.02)';
+        btn.style.boxShadow = '0 6px 16px rgba(0,0,0,0.25)';
+    };
+    btn.onmouseout = () => {
+        btn.style.transform = 'scale(1)';
+        btn.style.boxShadow = '0 3px 10px rgba(0,0,0,0.2)';
+    };
+    btn.onclick = () => window.open(url3d, '_blank', 'noopener,noreferrer');
+    
+    const mapContainer = document.getElementById('map-container');
+    if (mapContainer && mapContainer.parentNode) {
+        mapContainer.parentNode.insertBefore(btn, mapContainer.nextSibling);
+        current3DButton = btn;
     }
 }
 
+function removeExplicit3DButton() {
+    if (current3DButton && current3DButton.parentNode) {
+        current3DButton.remove();
+        current3DButton = null;
+    }
+}
+
+// ======================== DIBUJO DE MARCADORES ========================
 function drawLocation(loc) {
     clearMapMarkers();
+    removeExplicit3DButton();
     if (!loc) return;
+    
+    let firstUrl3d = null;
+    
     if (loc.isMultiple && loc.locations) {
         loc.locations.forEach((l, idx) => {
-            const marker = createMarker(l.x, l.y, l.width, l.height, idx, l.url3D);
+            const marker = createMarker(l.x, l.y, l.width, l.height, idx);
             document.getElementById('map-container').appendChild(marker);
+            if (idx === 0 && l.url3D) firstUrl3d = l.url3D;
         });
     } else if (loc.x !== undefined) {
-        const marker = createMarker(loc.x, loc.y, loc.width, loc.height, 0, loc.url3D);
+        const marker = createMarker(loc.x, loc.y, loc.width, loc.height, 0);
         document.getElementById('map-container').appendChild(marker);
+        firstUrl3d = loc.url3D;
     }
+    
+    if (firstUrl3d) {
+        addExplicit3DButton(firstUrl3d);
+    }
+    
     requestAnimationFrame(() => adjustMarkersPosition());
 }
 
-function createMarker(x, y, w, h, idx = 0, url3d = null) {
+function createMarker(x, y, w, h, idx = 0) {
     const marker = document.createElement('div');
     marker.className = 'map-marker';
     marker.setAttribute('data-relative-x', x);
     marker.setAttribute('data-relative-y', y);
     marker.setAttribute('data-relative-width', w);
     marker.setAttribute('data-relative-height', h);
-    if (url3d) marker.setAttribute('data-url3d', url3d);
-
     Object.assign(marker.style, {
         position: 'absolute',
         background: 'rgba(255,215,0,0.7)',
         border: '2px solid #e67e22',
-        pointerEvents: 'auto',
+        pointerEvents: 'none',
         boxSizing: 'border-box',
         borderRadius: '4px',
         boxShadow: '0 0 15px rgba(230,126,34,0.8)',
         zIndex: '10',
-        display: 'none',
-        cursor: 'pointer'
+        display: 'none'
     });
-
     const icon = document.createElement('div');
     icon.textContent = '📍';
     Object.assign(icon.style, {
@@ -703,18 +483,6 @@ function createMarker(x, y, w, h, idx = 0, url3d = null) {
         pointerEvents: 'none'
     });
     marker.appendChild(icon);
-
-    marker.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const url = marker.getAttribute('data-url3d');
-        if (url) {
-            open3DMap(url);
-        } else {
-            console.warn("Este marcador no tiene URL 3D asociada");
-            alert("No hay vista 3D disponible para esta ubicación.");
-        }
-    });
-
     return marker;
 }
 
@@ -777,7 +545,7 @@ function showLocationInfo(msg) {
     document.getElementById('legend-panel').classList.add('active');
 }
 
-// ------------------------- EVENTOS E INICIALIZACIÓN -------------------------
+// ======================== EVENTOS E INICIALIZACIÓN ========================
 let resizeTimer;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
@@ -787,19 +555,16 @@ window.addEventListener('resize', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Botones de bibliotecas
     document.getElementById('btn-medellin').addEventListener('click', () => selectLibrary('medellin'));
     document.getElementById('btn-oriente').addEventListener('click', () => selectLibrary('oriente'));
     document.getElementById('btn-uraba').addEventListener('click', () => selectLibrary('uraba'));
-
-    // Botones de materiales
+    
     document.getElementById('btn-tesis').addEventListener('click', () => selectMaterial('tesis'));
     document.getElementById('btn-cd').addEventListener('click', () => selectMaterial('cd'));
     document.getElementById('btn-revista').addEventListener('click', () => selectMaterial('revista'));
     document.getElementById('btn-folleto').addEventListener('click', () => selectMaterial('folleto'));
     document.getElementById('btn-norma').addEventListener('click', () => selectMaterial('norma'));
-
-    // Input de signatura
+    
     const sigInput = document.getElementById('signature');
     toggleControls(false);
     sigInput.addEventListener('input', () => {
@@ -821,8 +586,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     updateUI();
-
-    // Parámetros de URL (integración externa)
+    
+    // Parámetros URL (mantiene funcionalidad)
     const params = new URLSearchParams(window.location.search);
     const libCode = params.get('library_code');
     const callNum = params.get('call_number');
