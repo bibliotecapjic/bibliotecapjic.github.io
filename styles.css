@@ -1,4 +1,6 @@
-/* ======================== RESET Y BASE ======================== */
+/* ============================================
+   RESET Y ESTILOS BASE
+   ============================================ */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -17,7 +19,9 @@ body {
     margin: 0 auto;
 }
 
-/* ======================== HEADER ======================== */
+/* ============================================
+   HEADER
+   ============================================ */
 .header {
     background: linear-gradient(135deg, #2c3e50, #4a6491);
     color: white;
@@ -40,7 +44,9 @@ h1 {
     margin-top: 5px;
 }
 
-/* ======================== MAIN GRID ======================== */
+/* ============================================
+   MAIN GRID (2 COLUMNAS)
+   ============================================ */
 .main-content {
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -53,7 +59,9 @@ h1 {
     }
 }
 
-/* ======================== PANEL DE CONTROLES ======================== */
+/* ============================================
+   PANEL DE CONTROLES (IZQUIERDA)
+   ============================================ */
 .controls-panel {
     background: white;
     padding: 25px;
@@ -122,7 +130,9 @@ h1 {
     width: 100%;
 }
 
-/* ======================== SIGNATURE (LOCALIZACIÓN) ======================== */
+/* ============================================
+   SIGNATURE (LOCALIZACIÓN DE LIBROS)
+   ============================================ */
 .signature-section {
     margin-bottom: 30px;
 }
@@ -187,7 +197,9 @@ h1 {
     line-height: 1.5;
 }
 
-/* ======================== OTROS MATERIALES ======================== */
+/* ============================================
+   OTROS MATERIALES
+   ============================================ */
 .other-materials-section {
     margin-bottom: 20px;
 }
@@ -228,7 +240,9 @@ h1 {
     opacity: 0.6;
 }
 
-/* ======================== PANEL DEL MAPA ======================== */
+/* ============================================
+   PANEL DEL MAPA (DERECHA)
+   ============================================ */
 .map-panel {
     background: white;
     padding: 25px;
@@ -281,7 +295,9 @@ h1 {
     word-break: break-word;
 }
 
-/* ======================== INFO DE UBICACIÓN ======================== */
+/* ============================================
+   INFO DE UBICACIÓN (VERDE)
+   ============================================ */
 .location-info-panel {
     background: #e8f6ef;
     padding: 15px;
@@ -311,7 +327,9 @@ h1 {
     color: #555;
 }
 
-/* ======================== CONTENEDOR DEL MAPA ======================== */
+/* ============================================
+   CONTENEDOR DEL MAPA (IMAGEN + MARCADORES)
+   ============================================ */
 .map-container {
     flex: 1;
     position: relative;
@@ -357,15 +375,26 @@ h1 {
 }
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
-/* ======================== LEYENDA ======================== */
+/* ============================================
+   MARCADORES (CLIQUEABLES)
+   ============================================ */
+.map-marker {
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.map-marker:hover {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 8px rgba(255, 87, 34, 0.8));
+}
+
+/* ============================================
+   LEYENDA
+   ============================================ */
 .legend-panel {
     background: white;
     padding: 12px 15px;
@@ -394,7 +423,9 @@ h1 {
     color: #555;
 }
 
-/* ======================== ESTADO SIN MAPA ======================== */
+/* ============================================
+   ESTADO SIN MAPA (ERROR / NO DISPONIBLE)
+   ============================================ */
 .no-map-state {
     display: flex;
     align-items: center;
@@ -427,7 +458,9 @@ h1 {
     margin: 0 auto;
 }
 
-/* ======================== MENSAJES ======================== */
+/* ============================================
+   MENSAJES DE ERROR, WARNING Y ÉXITO
+   ============================================ */
 .message {
     padding: 15px;
     border-radius: 8px;
@@ -453,7 +486,9 @@ h1 {
     color: #27ae60;
 }
 
-/* ======================== ACCESIBILIDAD ======================== */
+/* ============================================
+   ACCESIBILIDAD (solo lectura)
+   ============================================ */
 .sr-only {
     position: absolute;
     width: 1px;
