@@ -1,4 +1,8 @@
-// ======================== CONFIGURACIÓN Y DATOS ========================
+// ============================================================================
+// SISTEMA DE MAPAS DE BIBLIOTECA CON VISUALIZACIÓN 3D (MATTERPORT)
+// ============================================================================
+
+// ------------------------- ESTADO GLOBAL ------------------------------------
 let selectedLibrary = null;
 let selectedMaterial = null;
 let currentLibraryData = null;
@@ -7,6 +11,7 @@ let currentImageLoadTimeout = null;
 let isMapLoading = false;
 let pendingLocation = null;
 
+// ------------------------- DATOS DE MAPAS (CON URLs 3D) ---------------------
 const mapData = {
     "MEDELLÍN": {
         name: "Biblioteca Medellín",
@@ -48,34 +53,287 @@ const mapData = {
                     }
                 },
                 stacks: [
-                    { id: "1.1A1.Izquierdo", start: "000.0", end: "005.1", x: 0.6222, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=59&sr=-1.4,-1.33" },
-                    { id: "1.1A2.Izquierdo", start: "005.101", end: "036.0", x: 0.6222, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=94&sr=-2.26,-1.48" },
-                    { id: "1.1B2.Derecho", start: "036.01", end: "302.0", x: 0.5944, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=92&sr=-.53,-1.51" },
-                    { id: "1.1B1.Derecho", start: "302.01", end: "330.01", x: 0.5944, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=61&sr=-.35,-.8" },
-                    { id: "1.2A1.Izquierdo", start: "330.011", end: "338.5", x: 0.5602, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=61&sr=-3,-1.08" },
-                    { id: "1.2A2.Izquierdo", start: "338.501", end: "373.2", x: 0.5602, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=92&sr=-3,-1.08" },
-                    { id: "1.2B2.Derecho", start: "373.201", end: "512.1", x: 0.5324, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=90&sr=-.02,-1.09" },
-                    { id: "1.2B1.Derecho", start: "512.101", end: "515.3", x: 0.5324, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=63&sr=-.18,-.4" },
-                    { id: "1.3A1.Izquierdo", start: "515.301", end: "519.5", x: 0.4963, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=63&sr=-3.07,-.41" },
-                    { id: "1.3A2.Izquierdo", start: "519.501", end: "537.0", x: 0.4936, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=90&sr=-2.97,-.52" },
-                    { id: "1.3B2.Derecho", start: "537.01", end: "574.5", x: 0.4685, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=88&sr=-.33,-.7" },
-                    { id: "1.3B1.Derecho", start: "574.501", end: "591.0", x: 0.4685, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=66&sr=-.21,-.94" },
-                    { id: "1.4A1.Izquierdo", start: "591.01", end: "612.76", x: 0.4324, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=65&sr=-2.84,-1.28" },
-                    { id: "1.4A2.Izquierdo", start: "612.7601", end: "612.27", x: 0.4333, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=217&sr=-2.7,-1.26" },
-                    { id: "1.4B2.Derecho", start: "612.2701", end: "621.4", x: 0.4065, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=86&sr=-.23,-.81" },
-                    { id: "1.4B1.Derecho", start: "621.401", end: "624.18", x: 0.4065, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=67&sr=-.06,-.81" },
-                    { id: "1.5A1.Izquierdo", start: "624.1801", end: "629.8", x: 0.3713, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=67&sr=-2.97,-1.37" },
-                    { id: "1.5A2.Izquierdo", start: "629.801", end: "634.0", x: 0.3704, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=87&sr=-3.01,-1.06" },
-                    { id: "1.5B2.Derecho", start: "634.01", end: "657.0", x: 0.3435, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=84&sr=.03,-.97" },
-                    { id: "1.5B1.Derecho", start: "657.01", end: "657.8", x: 0.3435, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=68&sr=-.02,-.9" },
-                    { id: "1.6A1.Izquierdo", start: "657.801", end: "658.3", x: 0.3074, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=68&sr=-2.86,-1.08" },
-                    { id: "1.6A2.Izquierdo", start: "658.301", end: "658.5", x: 0.3074, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=85&sr=-2.91,-1.1" },
-                    { id: "1.6B2.Derecho", start: "658.501", end: "658.85", x: 0.2806, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=228&sr=-.2,-.61" },
-                    { id: "1.6B1.Derecho", start: "658.8501", end: "690.2", x: 0.2806, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=251&sr=-.13,-.96" },
-                    { id: "1.7A1.Izquierdo", start: "690.201", end: "790.2", x: 0.2444, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=250&sr=-3.13,-1.19" },
-                    { id: "1.7A2.Izquierdo", start: "790.201", end: "799.1", x: 0.2444, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=83&sr=-2.69,-1.2" },
-                    { id: "1.7B2.Derecho", start: "799.101", end: "899.9", x: 0.2185, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=229&sr=-.25,-1.13" },
-                    { id: "1.7B1.Derecho", start: "900", end: "999.9", x: 0.2185, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=254&sr=-.24,-.97" }
+                    // ==================== STACKS PISO 1 ====================
+                    {
+                        id: "1.1A1.Izquierdo",
+                        start: "000.0",
+                        end: "005.1",
+                        x: 0.6222,
+                        y: 0.6770,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=59&sr=-1.4,-1.33"
+                    },
+                    {
+                        id: "1.1A2.Izquierdo",
+                        start: "005.101",
+                        end: "036.0",
+                        x: 0.6222,
+                        y: 0.8254,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=94&sr=-2.26,-1.48"
+                    },
+                    {
+                        id: "1.1B2.Derecho",
+                        start: "036.01",
+                        end: "302.0",
+                        x: 0.5944,
+                        y: 0.8254,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=92&sr=-.53,-1.51"
+                    },
+                    {
+                        id: "1.1B1.Derecho",
+                        start: "302.01",
+                        end: "330.01",
+                        x: 0.5944,
+                        y: 0.6770,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=61&sr=-.35,-.8"
+                    },
+                    {
+                        id: "1.2A1.Izquierdo",
+                        start: "330.011",
+                        end: "338.5",
+                        x: 0.5602,
+                        y: 0.6770,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=61&sr=-3,-1.08"
+                    },
+                    {
+                        id: "1.2A2.Izquierdo",
+                        start: "338.501",
+                        end: "373.2",
+                        x: 0.5602,
+                        y: 0.8254,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=92&sr=-3,-1.08"
+                    },
+                    {
+                        id: "1.2B2.Derecho",
+                        start: "373.201",
+                        end: "512.1",
+                        x: 0.5324,
+                        y: 0.8254,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=90&sr=-.02,-1.09"
+                    },
+                    {
+                        id: "1.2B1.Derecho",
+                        start: "512.101",
+                        end: "515.3",
+                        x: 0.5324,
+                        y: 0.6770,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=63&sr=-.18,-.4"
+                    },
+                    {
+                        id: "1.3A1.Izquierdo",
+                        start: "515.301",
+                        end: "519.5",
+                        x: 0.4963,
+                        y: 0.6770,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=63&sr=-3.07,-.41"
+                    },
+                    {
+                        id: "1.3A2.Izquierdo",
+                        start: "519.501",
+                        end: "537.0",
+                        x: 0.4936,
+                        y: 0.8254,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=90&sr=-2.97,-.52"
+                    },
+                    {
+                        id: "1.3B2.Derecho",
+                        start: "537.01",
+                        end: "574.5",
+                        x: 0.4685,
+                        y: 0.8254,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=88&sr=-.33,-.7"
+                    },
+                    {
+                        id: "1.3B1.Derecho",
+                        start: "574.501",
+                        end: "591.0",
+                        x: 0.4685,
+                        y: 0.6770,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=66&sr=-.21,-.94"
+                    },
+                    {
+                        id: "1.4A1.Izquierdo",
+                        start: "591.01",
+                        end: "612.76",
+                        x: 0.4324,
+                        y: 0.6770,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=65&sr=-2.84,-1.28"
+                    },
+                    {
+                        id: "1.4A2.Izquierdo",
+                        start: "612.7601",
+                        end: "612.27",
+                        x: 0.4333,
+                        y: 0.8254,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=217&sr=-2.7,-1.26"
+                    },
+                    {
+                        id: "1.4B2.Derecho",
+                        start: "612.2701",
+                        end: "621.4",
+                        x: 0.4065,
+                        y: 0.8254,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=86&sr=-.23,-.81"
+                    },
+                    {
+                        id: "1.4B1.Derecho",
+                        start: "621.401",
+                        end: "624.18",
+                        x: 0.4065,
+                        y: 0.6770,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=67&sr=-.06,-.81"
+                    },
+                    {
+                        id: "1.5A1.Izquierdo",
+                        start: "624.1801",
+                        end: "629.8",
+                        x: 0.3713,
+                        y: 0.6770,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=67&sr=-2.97,-1.37"
+                    },
+                    {
+                        id: "1.5A2.Izquierdo",
+                        start: "629.801",
+                        end: "634.0",
+                        x: 0.3704,
+                        y: 0.8254,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=87&sr=-3.01,-1.06"
+                    },
+                    {
+                        id: "1.5B2.Derecho",
+                        start: "634.01",
+                        end: "657.0",
+                        x: 0.3435,
+                        y: 0.8254,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=84&sr=.03,-.97"
+                    },
+                    {
+                        id: "1.5B1.Derecho",
+                        start: "657.01",
+                        end: "657.8",
+                        x: 0.3435,
+                        y: 0.6770,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=68&sr=-.02,-.9"
+                    },
+                    {
+                        id: "1.6A1.Izquierdo",
+                        start: "657.801",
+                        end: "658.3",
+                        x: 0.3074,
+                        y: 0.6770,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=68&sr=-2.86,-1.08"
+                    },
+                    {
+                        id: "1.6A2.Izquierdo",
+                        start: "658.301",
+                        end: "658.5",
+                        x: 0.3074,
+                        y: 0.8254,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=85&sr=-2.91,-1.1"
+                    },
+                    {
+                        id: "1.6B2.Derecho",
+                        start: "658.501",
+                        end: "658.85",
+                        x: 0.2806,
+                        y: 0.8254,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=228&sr=-.2,-.61"
+                    },
+                    {
+                        id: "1.6B1.Derecho",
+                        start: "658.8501",
+                        end: "690.2",
+                        x: 0.2806,
+                        y: 0.6770,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=251&sr=-.13,-.96"
+                    },
+                    {
+                        id: "1.7A1.Izquierdo",
+                        start: "690.201",
+                        end: "790.2",
+                        x: 0.2444,
+                        y: 0.6770,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=250&sr=-3.13,-1.19"
+                    },
+                    {
+                        id: "1.7A2.Izquierdo",
+                        start: "790.201",
+                        end: "799.1",
+                        x: 0.2444,
+                        y: 0.8254,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=83&sr=-2.69,-1.2"
+                    },
+                    {
+                        id: "1.7B2.Derecho",
+                        start: "799.101",
+                        end: "899.9",
+                        x: 0.2185,
+                        y: 0.8254,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=229&sr=-.25,-1.13"
+                    },
+                    {
+                        id: "1.7B1.Derecho",
+                        start: "900",
+                        end: "999.9",
+                        x: 0.2185,
+                        y: 0.6770,
+                        height: 0.1109,
+                        width: 0.0269,
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=254&sr=-.24,-.97"
+                    }
                 ]
             },
             2: {
@@ -130,11 +388,30 @@ const mapData = {
     }
 };
 
-const libraryMap = { 'medellin': 'MEDELLÍN', 'oriente': 'CENTRO REGIONAL ORIENTE', 'uraba': 'CENTRO REGIONAL URABÁ' };
-const materialMap = { 'tesis': 'TRABAJO DE GRADO', 'cd': 'MULTIMEDIA', 'revista': 'REVISTA', 'folleto': 'FOLLETO', 'norma': 'NORMAS' };
-const materialDisplayNames = { 'tesis': 'TRABAJO DE GRADO', 'cd': 'CD', 'revista': 'REVISTA', 'folleto': 'FOLLETO', 'norma': 'NORMA' };
+// ------------------------- MAPEOS AUXILIARES --------------------------------
+const libraryMap = {
+    'medellin': 'MEDELLÍN',
+    'oriente': 'CENTRO REGIONAL ORIENTE',
+    'uraba': 'CENTRO REGIONAL URABÁ'
+};
 
-// ======================== FUNCIONES AUXILIARES ========================
+const materialMap = {
+    'tesis': 'TRABAJO DE GRADO',
+    'cd': 'MULTIMEDIA',
+    'revista': 'REVISTA',
+    'folleto': 'FOLLETO',
+    'norma': 'NORMAS'
+};
+
+const materialDisplayNames = {
+    'tesis': 'TRABAJO DE GRADO',
+    'cd': 'CD',
+    'revista': 'REVISTA',
+    'folleto': 'FOLLETO',
+    'norma': 'NORMA'
+};
+
+// ------------------------- FUNCIONES AUXILIARES -----------------------------
 function toggleControls(enabled) {
     document.getElementById('signature').disabled = !enabled;
     document.querySelectorAll('.material-btn').forEach(btn => btn.disabled = !enabled);
@@ -173,7 +450,7 @@ function searchInStacks(libData, callNumber) {
                     width: stack.width,
                     height: stack.height,
                     stackInfo: stack.id,
-                    url3D: stack.url3D   // <--- NUEVO
+                    url3D: stack.url3D
                 };
             }
         }
@@ -187,7 +464,6 @@ function searchInStaticLocations(libData, type) {
         if (locs && locs[type]) {
             const loc = locs[type];
             if (Array.isArray(loc)) {
-                // Para arrays, devolvemos cada objeto con su propia URL
                 return { floor, locations: loc, isMultiple: true };
             } else {
                 return {
@@ -197,7 +473,7 @@ function searchInStaticLocations(libData, type) {
                     width: loc.width,
                     height: loc.height,
                     message: loc.message,
-                    url3D: loc.url3D,   // <--- NUEVO
+                    url3D: loc.url3D,
                     isMultiple: false
                 };
             }
@@ -206,7 +482,7 @@ function searchInStaticLocations(libData, type) {
     return null;
 }
 
-// ======================== MAPA Y MARCADORES CON 3D ========================
+// ------------------------- FUNCIONES DEL MAPA (CARGA, DIBUJO, MARCADORES) ---
 function loadLibraryMap(libraryKey) {
     if (isMapLoading) return false;
     isMapLoading = true;
@@ -369,7 +645,6 @@ function findAndDisplayLocationForMaterial(matId) {
     showLocationInfo(message);
 }
 
-// NUEVA FUNCIÓN: abre la URL 3D en nueva pestaña
 function open3DMap(url) {
     if (url && url.trim() !== "") {
         window.open(url, '_blank', 'noopener,noreferrer');
@@ -383,7 +658,6 @@ function drawLocation(loc) {
     clearMapMarkers();
     if (!loc) return;
     if (loc.isMultiple && loc.locations) {
-        // Dibujar múltiples marcadores (ej. Trabajo de Grado)
         loc.locations.forEach((l, idx) => {
             const marker = createMarker(l.x, l.y, l.width, l.height, idx, l.url3D);
             document.getElementById('map-container').appendChild(marker);
@@ -403,12 +677,12 @@ function createMarker(x, y, w, h, idx = 0, url3d = null) {
     marker.setAttribute('data-relative-width', w);
     marker.setAttribute('data-relative-height', h);
     if (url3d) marker.setAttribute('data-url3d', url3d);
-    
+
     Object.assign(marker.style, {
         position: 'absolute',
         background: 'rgba(255,215,0,0.7)',
         border: '2px solid #e67e22',
-        pointerEvents: 'auto',   // Para que sea clickeable
+        pointerEvents: 'auto',
         boxSizing: 'border-box',
         borderRadius: '4px',
         boxShadow: '0 0 15px rgba(230,126,34,0.8)',
@@ -416,7 +690,7 @@ function createMarker(x, y, w, h, idx = 0, url3d = null) {
         display: 'none',
         cursor: 'pointer'
     });
-    
+
     const icon = document.createElement('div');
     icon.textContent = '📍';
     Object.assign(icon.style, {
@@ -429,8 +703,7 @@ function createMarker(x, y, w, h, idx = 0, url3d = null) {
         pointerEvents: 'none'
     });
     marker.appendChild(icon);
-    
-    // Evento click para abrir el mapa 3D
+
     marker.addEventListener('click', (e) => {
         e.stopPropagation();
         const url = marker.getAttribute('data-url3d');
@@ -441,7 +714,7 @@ function createMarker(x, y, w, h, idx = 0, url3d = null) {
             alert("No hay vista 3D disponible para esta ubicación.");
         }
     });
-    
+
     return marker;
 }
 
@@ -504,7 +777,7 @@ function showLocationInfo(msg) {
     document.getElementById('legend-panel').classList.add('active');
 }
 
-// ======================== EVENTOS E INICIALIZACIÓN ========================
+// ------------------------- EVENTOS E INICIALIZACIÓN -------------------------
 let resizeTimer;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
@@ -514,16 +787,19 @@ window.addEventListener('resize', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Botones de bibliotecas
     document.getElementById('btn-medellin').addEventListener('click', () => selectLibrary('medellin'));
     document.getElementById('btn-oriente').addEventListener('click', () => selectLibrary('oriente'));
     document.getElementById('btn-uraba').addEventListener('click', () => selectLibrary('uraba'));
-    
+
+    // Botones de materiales
     document.getElementById('btn-tesis').addEventListener('click', () => selectMaterial('tesis'));
     document.getElementById('btn-cd').addEventListener('click', () => selectMaterial('cd'));
     document.getElementById('btn-revista').addEventListener('click', () => selectMaterial('revista'));
     document.getElementById('btn-folleto').addEventListener('click', () => selectMaterial('folleto'));
     document.getElementById('btn-norma').addEventListener('click', () => selectMaterial('norma'));
-    
+
+    // Input de signatura
     const sigInput = document.getElementById('signature');
     toggleControls(false);
     sigInput.addEventListener('input', () => {
@@ -545,8 +821,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     updateUI();
-    
-    // Parámetros URL (mantiene la funcionalidad original)
+
+    // Parámetros de URL (integración externa)
     const params = new URLSearchParams(window.location.search);
     const libCode = params.get('library_code');
     const callNum = params.get('call_number');
