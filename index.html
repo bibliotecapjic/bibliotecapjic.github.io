@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapas de Biblioteca</title>
+    <title>Mapas de Biblioteca con Visión 3D</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1><span aria-hidden="true">🗺️</span> Sistema de Mapas de Biblioteca</h1>
-            <div class="subtitle">Selecciona la Biblioteca de tu interés y localiza los materiales en el mapa de cada Biblioteca. Puede realizar la búsqueda mediante el código de clasificación (localización en estantería) o por tipo de material.</div>
+            <div class="subtitle">Selecciona la Biblioteca, ingresa la signatura o elige un material. Haz clic en el marcador 📍 para ver la ubicación en 3D (Matterport).</div>
         </div>
         <div class="main-content">
             <div class="controls-panel">
@@ -26,9 +26,9 @@
                 <div class="signature-section">
                     <h2 class="signature-title"><span aria-hidden="true">🕮</span> <span class="required-field">Localización de Libros</span></h2>
                     <div class="signature-box">
-                        <label class="signature-label" for="signature">Ingrese el número que corresponde a la localización del libro en estantería:</label>
-                        <input type="text" class="signature-input" id="signature" placeholder="123.4 A12 || 512.1 B18" required disabled>
-                        <div class="help-text">Ingrese el número de localización para ubicar el material en el mapa. Ejemplos: 658.403, 005.1, 900.2, A412, 312 A123.</div>
+                        <label class="signature-label" for="signature">Ingrese el número de localización del libro en estantería:</label>
+                        <input type="text" class="signature-input" id="signature" placeholder="Ej: 658.403, 005.1, 900.2" required disabled>
+                        <div class="help-text">Ejemplos: 658.403, 005.1, 900.2, A412, 312 A123. Luego haga clic en el marcador 📍 sobre el mapa para ver la ubicación exacta en 3D.</div>
                     </div>
                 </div>
                 <div class="divider"></div>
@@ -57,12 +57,12 @@
                 </div>
                 <div class="location-info-panel" id="location-info-panel">
                     <div class="location-info-title"><span>📍</span> Información de Ubicación</div>
-                    <div class="location-info-text" id="location-info-text">Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa</div>
+                    <div class="location-info-text" id="location-info-text">Seleccione una biblioteca e ingrese el número de localización o un material. Luego haga clic en el marcador 📍 sobre el mapa para ver la ubicación en 3D.</div>
                 </div>
                 <div class="map-container" id="map-container">
-                    <div class="initial-state"><div><span>🗺️</span><p>Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa</p></div></div>
+                    <div class="initial-state"><div><span>🗺️</span><p>Seleccione una biblioteca y una ubicación para mostrar el mapa</p></div></div>
                 </div>
-                <div class="legend-panel" id="legend-panel"><div class="legend-color"></div><div class="legend-text">Ubicación aproximada del material</div></div>
+                <div class="legend-panel" id="legend-panel"><div class="legend-color"></div><div class="legend-text">Ubicación aproximada del material. Haz clic en el marcador para vista 3D.</div></div>
             </div>
         </div>
     </div>
