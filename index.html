@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapas de Biblioteca</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><span aria-hidden="true">🗺️</span> Sistema de Mapas de Biblioteca</h1>
+            <div class="subtitle">Selecciona la Biblioteca de tu interés y localiza los materiales en el mapa de cada Biblioteca. Puede realizar la búsqueda mediante el código de clasificación (localización en estantería) o por tipo de material.</div>
+        </div>
+        <div class="main-content">
+            <div class="controls-panel">
+                <div class="library-section">
+                    <h2 class="section-title"><span aria-hidden="true">🏛️</span>Biblioteca</h2>
+                    <div class="library-buttons">
+                        <button class="library-btn" id="btn-medellin"><span class="library-icon">📚</span> Medellín</button>
+                        <button class="library-btn" id="btn-oriente"><span class="library-icon">📚</span> Centro Regional Oriente</button>
+                        <button class="library-btn" id="btn-uraba"><span class="library-icon">📚</span> Centro Regional Urabá</button>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="signature-section">
+                    <h2 class="signature-title"><span aria-hidden="true">🕮</span> <span class="required-field">Localización de Libros</span></h2>
+                    <div class="signature-box">
+                        <label class="signature-label" for="signature">Ingrese el número que corresponde a la localización del libro en estantería:</label>
+                        <input type="text" class="signature-input" id="signature" placeholder="123.4 A12 || 512.1 B18" required disabled>
+                        <div class="help-text">Ingrese el número de localización para ubicar el material en el mapa. Ejemplos: 658.403, 005.1, 900.2, A412, 312 A123.</div>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="other-materials-section">
+                    <h2 class="section-title"><span aria-hidden="true">📑</span> Otros Materiales</h2>
+                    <div class="material-buttons">
+                        <button class="material-btn" id="btn-tesis" disabled>TRABAJOS DE GRADO</button>
+                        <button class="material-btn" id="btn-cd" disabled>CD</button>
+                        <button class="material-btn" id="btn-revista" disabled>REVISTAS</button>
+                        <button class="material-btn" id="btn-folleto" disabled>FOLLETOS</button>
+                        <button class="material-btn" id="btn-norma" disabled>NORMAS</button>
+                    </div>
+                </div>
+            </div>
+            <div class="map-panel">
+                <div class="message message-error" id="message-error"></div>
+                <div class="message message-warning" id="message-warning"></div>
+                <div class="message message-success" id="message-success"></div>
+                <div class="selection-info" id="selection-info" style="display: none;">
+                    <h3><span>📋</span> Selección Actual</h3>
+                    <div class="selection-details">
+                        <div class="detail-item"><div class="detail-label">Biblioteca:</div><div class="detail-value" id="current-library">-</div></div>
+                        <div class="detail-item"><div class="detail-label">Tipo de material:</div><div class="detail-value" id="current-material">-</div></div>
+                        <div class="detail-item"><div class="detail-label">Localización:</div><div class="detail-value" id="current-signature">-</div></div>
+                    </div>
+                </div>
+                <div class="location-info-panel" id="location-info-panel">
+                    <div class="location-info-title"><span>📍</span> Información de Ubicación</div>
+                    <div class="location-info-text" id="location-info-text">Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa</div>
+                </div>
+                <div class="map-container" id="map-container">
+                    <div class="initial-state"><div><span>🗺️</span><p>Seleccione una biblioteca e ingrese el número de localización para ubicarlo en el mapa</p></div></div>
+                </div>
+                <div class="legend-panel" id="legend-panel"><div class="legend-color"></div><div class="legend-text">Ubicación aproximada del material</div></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
