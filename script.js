@@ -149,15 +149,15 @@ const libraryMap = {
 // También incluimos el ID del botón correspondiente y el nombre a mostrar.
 const externalToMapKey = {
     // material_type
-    'BOOK':     { buttonId: null,      mapKey: null,       display: 'LIBRO' },          // No activa botón, solo signatura
+    'BOOK':     { buttonId: null,      mapKey: null,       display: 'LIBRO' },
     'ISSUE':    { buttonId: 'revista', mapKey: 'REVISTA',   display: 'REVISTA' },
     'CDROM':    { buttonId: 'cd',      mapKey: 'MULTIMEDIA', display: 'CD' },
     'THESIS':   { buttonId: 'tesis',   mapKey: 'TRABAJO DE GRADO', display: 'TRABAJO DE GRADO' },
     'PAMPHLET': { buttonId: 'folleto', mapKey: 'FOLLETO',   display: 'FOLLETO' },
     // location_code
-    'NORMA':    { buttonId: 'norma',   mapKey: 'NORMAS',    display: 'NORMA' }
+    'NORMA':    { buttonId: 'norma',   mapKey: 'NORMAS',    display: 'NORMA' },
+    'TES':      { buttonId: 'tesis',   mapKey: 'TRABAJO DE GRADO', display: 'TRABAJO DE GRADO' }
 };
-
 // Para compatibilidad con funciones existentes (selectMaterial, etc.)
 // Generamos materialMap (buttonId -> mapKey) y un objeto de nombres mostrados
 const materialMap = {};
