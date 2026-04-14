@@ -78,7 +78,7 @@ const mapData = {
                         {
                             x: 0.8167, y: 0.4356, width: 0.1694, height: 0.2643,
                             message: "Los Trabajos de grado en formato físico se encuentran en el piso 2 de la Biblioteca.",
-                            url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=13&sr=-.15,.02"
+                            url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=32&sr=-.09,-.08"
                         }
                     ],
                     "NORMAS": {
