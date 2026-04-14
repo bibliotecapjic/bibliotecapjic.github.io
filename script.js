@@ -53,7 +53,6 @@ const mapData = {
                     }
                 },
                 stacks: [
-                    // ==================== STACKS PISO 1 ====================
                     { id: "1.1A1.Izquierdo", start: "000.0", end: "005.1", x: 0.6222, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=59&sr=-1.4,-1.33" },
                     { id: "1.1A2.Izquierdo", start: "005.101", end: "036.0", x: 0.6222, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=94&sr=-2.26,-1.48" },
                     { id: "1.1B2.Derecho", start: "036.01", end: "302.0", x: 0.5944, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=92&sr=-.53,-1.51" },
@@ -137,29 +136,25 @@ const mapData = {
 };
 
 // ------------------------- MAPEOS SIMPLIFICADOS -----------------------------
-// Mapeo de bibliotecas (URL -> ID interno -> clave en mapData)
 const libraryMap = {
     'medellin': 'MEDELLÍN',
     'oriente': 'CENTRO REGIONAL ORIENTE',
     'uraba': 'CENTRO REGIONAL URABÁ'
 };
 
-// Mapeo DIRECTO desde valores externos (material_type o location_code)
-// a la clave que se usa en staticLocations del mapa.
-// También incluimos el ID del botón correspondiente y el nombre a mostrar.
+// Mapeo externo a clave de mapa y botón
 const externalToMapKey = {
-    // material_type
-    'BOOK':     { buttonId: null,      mapKey: null,       display: 'LIBRO' },
-    'ISSUE':    { buttonId: 'revista', mapKey: 'REVISTA',   display: 'REVISTA' },
-    'CDROM':    { buttonId: 'cd',      mapKey: 'MULTIMEDIA', display: 'CD' },
+    // material_type (prioridad principal)
     'THESIS':   { buttonId: 'tesis',   mapKey: 'TRABAJO DE GRADO', display: 'TRABAJO DE GRADO' },
-    'PAMPHLET': { buttonId: 'folleto', mapKey: 'FOLLETO',   display: 'FOLLETO' },
-    // location_code
-    'NORMA':    { buttonId: 'norma',   mapKey: 'NORMAS',    display: 'NORMA' },
-    'TES':      { buttonId: 'tesis',   mapKey: 'TRABAJO DE GRADO', display: 'TRABAJO DE GRADO' }
+    'BOOK':     { buttonId: null,      mapKey: null,               display: 'LIBRO' },
+    'ISSUE':    { buttonId: 'revista', mapKey: 'REVISTA',          display: 'REVISTA' },
+    'CDROM':    { buttonId: 'cd',      mapKey: 'MULTIMEDIA',       display: 'CD' },
+    'PAMPHLET': { buttonId: 'folleto', mapKey: 'FOLLETO',          display: 'FOLLETO' },
+    // location_code (solo NORMA tiene prioridad)
+    'NORMA':    { buttonId: 'norma',   mapKey: 'NORMAS',           display: 'NORMA' }
 };
-// Para compatibilidad con funciones existentes (selectMaterial, etc.)
-// Generamos materialMap (buttonId -> mapKey) y un objeto de nombres mostrados
+
+// Generar materialMap y materialDisplayNames para compatibilidad
 const materialMap = {};
 const materialDisplayNames = {};
 Object.values(externalToMapKey).forEach(item => {
@@ -167,12 +162,6 @@ Object.values(externalToMapKey).forEach(item => {
         materialMap[item.buttonId] = item.mapKey;
         materialDisplayNames[item.buttonId] = item.display;
     }
-});
-
-// Mapeo rápido de external a buttonId (para la URL)
-const externalToButtonId = {};
-Object.entries(externalToMapKey).forEach(([external, data]) => {
-    if (data.buttonId) externalToButtonId[external] = data.buttonId;
 });
 
 // ------------------------- FUNCIONES AUXILIARES -----------------------------
@@ -338,7 +327,6 @@ function findAndDisplayLocation() {
     let message = "";
     if (location) {
         const parts = location.stackInfo.split('.');
-        const piso = parts[0];
         const estante = parts[1];
         const lado = parts[2];
         message = `Este material puede encontrarse en el piso ${location.floor} de ${libData.name}, estante ${estante} lado ${lado}. Haz clic en el marcador 📍 para ver la ubicación exacta en 3D.`;
@@ -533,7 +521,6 @@ function updateUI() {
     if (selectedLibrary || selectedMaterial || sig) {
         document.getElementById('selection-info').style.display = 'block';
         document.getElementById('current-library').textContent = selectedLibrary ? libraryMap[selectedLibrary] : '-';
-        // Mostrar el nombre legible del material seleccionado
         let materialText = '-';
         if (selectedMaterial) {
             materialText = materialDisplayNames[selectedMaterial] || selectedMaterial.toUpperCase();
@@ -614,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`URL: library_code=${libCode} → ${libId}`);
         selectLibrary(libId);
 
-        // Prioridad: location_code primero (NORMA)
+        // 1. Excepción: location_code NORMA tiene prioridad
         if (locationCode && locationCode.toUpperCase() === 'NORMA') {
             const mapping = externalToMapKey['NORMA'];
             if (mapping && mapping.buttonId) {
@@ -622,14 +609,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => selectMaterial(mapping.buttonId), 200);
             }
         }
-        // Si no hay location_code, usar material_type
+        // 2. Si no, usar material_type como prioridad principal
         else if (materialType) {
             const upperType = materialType.toUpperCase();
             const mapping = externalToMapKey[upperType];
             if (mapping) {
                 if (upperType === 'BOOK') {
-                    // BOOK: solo usar call_number, sin botón
-                    console.log(`URL: material_type=BOOK → usar call_number`);
+                    // BOOK: solo usar call_number
                     if (callNumber) {
                         const decoded = callNumber.replace(/\+/g, ' ');
                         setTimeout(() => {
@@ -640,15 +626,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else if (mapping.buttonId) {
                     console.log(`URL: material_type=${upperType} → seleccionar material ${mapping.buttonId}`);
                     setTimeout(() => selectMaterial(mapping.buttonId), 200);
-                    // No se asigna call_number
-                } else {
-                    console.warn(`URL: material_type=${upperType} no tiene botón asociado`);
                 }
             } else {
                 console.warn(`URL: material_type desconocido: ${upperType}`);
             }
         }
-        // Si no hay location_code ni material_type, pero hay call_number
+        // 3. Si no hay location_code NI material_type, pero hay call_number
         else if (callNumber) {
             console.log(`URL: solo call_number presente → asignar al campo de signatura`);
             const decoded = callNumber.replace(/\+/g, ' ');
