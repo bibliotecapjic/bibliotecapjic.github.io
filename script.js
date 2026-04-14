@@ -1,17 +1,57 @@
-// ============================================================================
-// SISTEMA DE MAPAS DE BIBLIOTECA CON VISUALIZACIÓN 3D (MATTERPORT)
-// ============================================================================
+/**
+ * ============================================================================
+ * SISTEMA DE MAPAS DE BIBLIOTECA CON VISUALIZACIÓN 3D (MATTERPORT)
+ * ============================================================================
+ * 
+ * Este módulo permite:
+ *  - Seleccionar una biblioteca (Medellín, Oriente, Urabá).
+ *  - Buscar un libro por su signatura (clasificación Dewey) y mostrar su
+ *    ubicación aproximada en un mapa 2D interactivo.
+ *  - Seleccionar tipos de material (revistas, CDs, tesis, folletos, normas)
+ *    y mostrar sus ubicaciones estáticas en el mapa.
+ *  - Hacer clic sobre los marcadores 📍 para abrir una vista 3D (Matterport)
+ *    en una nueva pestaña.
+ *  - Leer parámetros de la URL (library_code, material_type, location_code,
+ *    call_number) para integración con sistemas externos.
+ * 
+ * ============================================================================
+ */
 
-// ------------------------- ESTADO GLOBAL ------------------------------------
+// ------------------------------- ESTADO GLOBAL ------------------------------
+
+/** @type {string|null} Biblioteca seleccionada ('medellin', 'oriente', 'uraba') */
 let selectedLibrary = null;
+
+/** @type {string|null} Material seleccionado ('tesis', 'cd', 'revista', 'folleto', 'norma') */
 let selectedMaterial = null;
+
+/** @type {object|null} Datos de la biblioteca actual (cargados desde mapData) */
 let currentLibraryData = null;
+
+/** @type {number|null} Timeout para búsqueda mientras el usuario escribe */
 let searchTimeout = null;
+
+/** @type {number|null} Timeout para la carga de la imagen del mapa */
 let currentImageLoadTimeout = null;
+
+/** @type {boolean} Indica si el mapa se está cargando para evitar peticiones simultáneas */
 let isMapLoading = false;
+
+/** @type {object|null} Ubicación calculada que se mostrará cuando termine de cargar el mapa */
 let pendingLocation = null;
 
-// ------------------------- DATOS DE MAPAS (CON URLs 3D) ---------------------
+// ------------------------------- DATOS DE MAPAS (CON URLs 3D) ----------------
+
+/**
+ * Contiene toda la información de cada biblioteca: nombre, pisos,
+ * ubicaciones estáticas (revistas, tesis, etc.) y estanterías (stacks)
+ * con sus rangos Dewey y coordenadas relativas.
+ * 
+ * Las coordenadas x, y, width, height son valores relativos al tamaño de la imagen
+ * (entre 0 y 1). Se usan para dibujar los marcadores.
+ * 
+ * Cada stack y ubicación estática incluye una URL de Matterport para la vista 3D.
+ */
 const mapData = {
     "MEDELLÍN": {
         name: "Biblioteca Medellín",
@@ -27,13 +67,13 @@ const mapData = {
                     "FOLLETO": {
                         x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
                         message: "Colección de Folletos. Consultar en Circulación y Préstamo",
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=127&sr=-2.78,-.8"
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=261&sr=-2.89,-1.43"
                     },
                     "TRABAJO DE GRADO": [
                         {
                             x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
                             message: "Los Trabajos de grado en CDs se encuentran en el primer piso - Circulación y préstamo.",
-                            url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=127&sr=-2.78,-.8"
+                            url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=261&sr=-2.89,-1.43"
                         },
                         {
                             x: 0.8167, y: 0.4356, width: 0.1694, height: 0.2643,
@@ -44,14 +84,16 @@ const mapData = {
                     "NORMAS": {
                         x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
                         message: "Colección de Normas Técnicas. Consultar en Circulación y Préstamo",
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=127&sr=-2.78,-.8"
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=261&sr=-2.89,-1.43"
                     },
                     "MULTIMEDIA": {
                         x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
                         message: "Colección Multimedia - CDs, DVDs. Consultar en Circulación y Préstamo",
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=127&sr=-2.78,-.8"
+                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=261&sr=-2.89,-1.43"
                     }
                 },
+                // Estanterías (stacks) con rangos Dewey. Cada stack tiene un ID, rango numérico,
+                // coordenadas relativas y URL 3D correspondiente.
                 stacks: [
                     { id: "1.1A1.Izquierdo", start: "000.0", end: "005.1", x: 0.6222, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=59&sr=-1.4,-1.33" },
                     { id: "1.1A2.Izquierdo", start: "005.101", end: "036.0", x: 0.6222, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=94&sr=-2.26,-1.48" },
@@ -135,14 +177,31 @@ const mapData = {
     }
 };
 
-// ------------------------- MAPEOS SIMPLIFICADOS -----------------------------
+// ------------------------------- MAPEOS Y CONSTANTES -------------------------
+
+/**
+ * Convierte el identificador interno de la biblioteca (medellin, oriente, uraba)
+ * a la clave usada en mapData.
+ */
 const libraryMap = {
     'medellin': 'MEDELLÍN',
     'oriente': 'CENTRO REGIONAL ORIENTE',
     'uraba': 'CENTRO REGIONAL URABÁ'
 };
 
-// Mapeo externo a clave de mapa y botón
+/**
+ * Mapeo de parámetros externos (material_type o location_code) a la información
+ * necesaria para la interfaz y la búsqueda en el mapa.
+ * 
+ * Cada entrada contiene:
+ *   - buttonId: identificador del botón en la UI (tesis, cd, revista, folleto, norma)
+ *   - mapKey:   clave que se busca en staticLocations (ej: 'TRABAJO DE GRADO')
+ *   - display:  texto legible para mostrar al usuario.
+ * 
+ * La prioridad es:
+ *   1. Si location_code = NORMA, se usa esta entrada.
+ *   2. Si no, se usa material_type (THESIS, BOOK, ISSUE, CDROM, PAMPHLET).
+ */
 const externalToMapKey = {
     // material_type (prioridad principal)
     'THESIS':   { buttonId: 'tesis',   mapKey: 'TRABAJO DE GRADO', display: 'TRABAJO DE GRADO' },
@@ -154,7 +213,11 @@ const externalToMapKey = {
     'NORMA':    { buttonId: 'norma',   mapKey: 'NORMAS',           display: 'NORMA' }
 };
 
-// Generar materialMap y materialDisplayNames para compatibilidad
+/**
+ * Genera dos objetos auxiliares para compatibilidad con el resto del código:
+ *   - materialMap:       buttonId -> mapKey (para buscar en staticLocations)
+ *   - materialDisplayNames: buttonId -> display (para mostrar en la UI)
+ */
 const materialMap = {};
 const materialDisplayNames = {};
 Object.values(externalToMapKey).forEach(item => {
@@ -164,7 +227,12 @@ Object.values(externalToMapKey).forEach(item => {
     }
 });
 
-// ------------------------- FUNCIONES AUXILIARES -----------------------------
+// ------------------------------- FUNCIONES AUXILIARES -------------------------
+
+/**
+ * Habilita o deshabilita los controles de la interfaz (campo de signatura y botones de material).
+ * @param {boolean} enabled - true para activar, false para desactivar.
+ */
 function toggleControls(enabled) {
     document.getElementById('signature').disabled = !enabled;
     document.querySelectorAll('.material-btn').forEach(btn => btn.disabled = !enabled);
@@ -175,6 +243,12 @@ function toggleControls(enabled) {
     }
 }
 
+/**
+ * Extrae la parte numérica de una signatura Dewey.
+ * Ejemplo: "005.131 W251" -> { numericPart: 5.131 }
+ * @param {string} callNumber - Signatura ingresada por el usuario.
+ * @returns {object|null} Objeto con numericPart o null si no se encuentra número.
+ */
 function normalizeDewey(callNumber) {
     if (!callNumber) return null;
     const match = callNumber.toString().trim().match(/^[A-Z]*(\d+(?:\.\d+)?)/);
@@ -182,10 +256,21 @@ function normalizeDewey(callNumber) {
     return { original: callNumber, numericPart: parseFloat(match[1]) };
 }
 
+/**
+ * Valida que la signatura solo contenga caracteres seguros (letras, números, puntos, espacios, guiones).
+ * @param {string} s - Signatura a validar.
+ * @returns {boolean} true si es válida.
+ */
 function validateSignature(s) {
     return /^[0-9A-Za-z.,\s-]+$/.test(s) && s.length <= 50;
 }
 
+/**
+ * Busca en los estantes (stacks) de una biblioteca la ubicación correspondiente a una signatura.
+ * @param {object} libData - Datos de la biblioteca (mapData[libraryKey]).
+ * @param {string} callNumber - Signatura a buscar.
+ * @returns {object|null} Objeto con la ubicación (x, y, width, height, url3D, etc.) o null si no se encuentra.
+ */
 function searchInStacks(libData, callNumber) {
     const norm = normalizeDewey(callNumber);
     if (!norm || isNaN(norm.numericPart)) return null;
@@ -211,6 +296,12 @@ function searchInStacks(libData, callNumber) {
     return null;
 }
 
+/**
+ * Busca ubicaciones estáticas (revistas, tesis, normas, etc.) en una biblioteca.
+ * @param {object} libData - Datos de la biblioteca.
+ * @param {string} mapKey - Clave a buscar en staticLocations (ej: 'REVISTA').
+ * @returns {object|null} Ubicación o lista de ubicaciones (si es múltiple).
+ */
 function searchInStaticLocations(libData, mapKey) {
     for (let floor in libData.floors) {
         const locs = libData.floors[floor].staticLocations;
@@ -235,7 +326,14 @@ function searchInStaticLocations(libData, mapKey) {
     return null;
 }
 
-// ------------------------- FUNCIONES DEL MAPA -------------------------------
+// ------------------------------- FUNCIONES DEL MAPA ---------------------------
+
+/**
+ * Carga la imagen del mapa de la biblioteca seleccionada y la muestra en el contenedor.
+ * Durante la carga, muestra un spinner. Si la imagen ya existe, la reemplaza.
+ * @param {string} libraryKey - Clave de la biblioteca en mapData (ej: 'MEDELLÍN').
+ * @returns {boolean} true si se inició la carga, false si ya se estaba cargando.
+ */
 function loadLibraryMap(libraryKey) {
     if (isMapLoading) return false;
     isMapLoading = true;
@@ -295,6 +393,10 @@ function loadLibraryMap(libraryKey) {
     return true;
 }
 
+/**
+ * Muestra un mensaje de error en el contenedor del mapa cuando no se puede cargar.
+ * @param {string} msg - Mensaje a mostrar.
+ */
 function showNoMapAvailable(msg) {
     const mapContainer = document.getElementById('map-container');
     if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
@@ -305,6 +407,10 @@ function showNoMapAvailable(msg) {
     isMapLoading = false;
 }
 
+/**
+ * Busca la ubicación de la signatura ingresada en el campo de texto y la muestra en el mapa.
+ * Se activa al escribir o al presionar Enter.
+ */
 function findAndDisplayLocation() {
     if (!selectedLibrary) return;
     const signature = document.getElementById('signature').value.trim();
@@ -343,6 +449,10 @@ function findAndDisplayLocation() {
     }
 }
 
+/**
+ * Selecciona una biblioteca, actualiza la interfaz y carga su mapa.
+ * @param {string} libId - Identificador interno ('medellin', 'oriente', 'uraba').
+ */
 function selectLibrary(libId) {
     if (selectedLibrary === libId) return;
     if (selectedLibrary) document.getElementById(`btn-${selectedLibrary}`).classList.remove('selected');
@@ -363,6 +473,10 @@ function selectLibrary(libId) {
     document.getElementById('legend-panel').classList.remove('active');
 }
 
+/**
+ * Selecciona un tipo de material (tesis, CD, revista, etc.) y muestra su ubicación estática.
+ * @param {string} matId - Identificador interno ('tesis', 'cd', 'revista', 'folleto', 'norma').
+ */
 function selectMaterial(matId) {
     if (selectedMaterial === matId) return;
     if (selectedMaterial) document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
@@ -373,6 +487,10 @@ function selectMaterial(matId) {
     if (selectedLibrary) findAndDisplayLocationForMaterial(matId);
 }
 
+/**
+ * Busca y muestra la ubicación estática del material seleccionado.
+ * @param {string} matId - Identificador del material.
+ */
 function findAndDisplayLocationForMaterial(matId) {
     if (!selectedLibrary) return;
     const libKey = libraryMap[selectedLibrary];
@@ -402,6 +520,10 @@ function findAndDisplayLocationForMaterial(matId) {
     showLocationInfo(message);
 }
 
+/**
+ * Abre la URL de Matterport en una nueva pestaña.
+ * @param {string} url - URL de la vista 3D.
+ */
 function open3DMap(url) {
     if (url && url.trim() !== "") {
         window.open(url, '_blank', 'noopener,noreferrer');
@@ -411,6 +533,10 @@ function open3DMap(url) {
     }
 }
 
+/**
+ * Dibuja uno o varios marcadores en el mapa a partir de una ubicación (o lista de ubicaciones).
+ * @param {object} loc - Objeto devuelto por searchInStacks o searchInStaticLocations.
+ */
 function drawLocation(loc) {
     clearMapMarkers();
     if (!loc) return;
@@ -426,6 +552,17 @@ function drawLocation(loc) {
     requestAnimationFrame(() => adjustMarkersPosition());
 }
 
+/**
+ * Crea un elemento div que representa un marcador en el mapa.
+ * El marcador es clickeable y abre la vista 3D asociada.
+ * @param {number} x - Coordenada x relativa (0..1).
+ * @param {number} y - Coordenada y relativa (0..1).
+ * @param {number} w - Ancho relativo.
+ * @param {number} h - Alto relativo.
+ * @param {number} idx - Índice (para ajustar tamaño del ícono si hay múltiples).
+ * @param {string|null} url3d - URL de Matterport.
+ * @returns {HTMLDivElement} Marcador listo para insertar.
+ */
 function createMarker(x, y, w, h, idx = 0, url3d = null) {
     const marker = document.createElement('div');
     marker.className = 'map-marker';
@@ -475,6 +612,10 @@ function createMarker(x, y, w, h, idx = 0, url3d = null) {
     return marker;
 }
 
+/**
+ * Ajusta la posición y tamaño de los marcadores según el tamaño actual de la imagen
+ * y el contenedor, respetando el object-fit: contain.
+ */
 function adjustMarkersPosition() {
     const container = document.getElementById('map-container');
     const img = container.querySelector('img#map-image');
@@ -512,10 +653,16 @@ function adjustMarkersPosition() {
     });
 }
 
+/**
+ * Elimina todos los marcadores del mapa.
+ */
 function clearMapMarkers() {
     document.querySelectorAll('#map-container .map-marker').forEach(m => m.remove());
 }
 
+/**
+ * Actualiza el panel de "Selección Actual" con la biblioteca, material o signatura elegidos.
+ */
 function updateUI() {
     const sig = document.getElementById('signature').value.trim();
     if (selectedLibrary || selectedMaterial || sig) {
@@ -534,13 +681,18 @@ function updateUI() {
     }
 }
 
+/**
+ * Muestra un mensaje en el panel de información de ubicación y activa la leyenda.
+ * @param {string} msg - Mensaje a mostrar.
+ */
 function showLocationInfo(msg) {
     document.getElementById('location-info-text').textContent = msg;
     document.getElementById('location-info-panel').classList.add('active');
     document.getElementById('legend-panel').classList.add('active');
 }
 
-// ------------------------- EVENTOS E INICIALIZACIÓN -------------------------
+// ------------------------------- EVENTOS E INICIALIZACIÓN ---------------------
+
 let resizeTimer;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
@@ -549,6 +701,12 @@ window.addEventListener('resize', () => {
     }, 100);
 });
 
+/**
+ * Inicializa la aplicación al cargar el DOM:
+ *   - Asigna eventos a los botones de biblioteca y materiales.
+ *   - Configura el campo de signatura con debounce.
+ *   - Lee los parámetros de la URL y actúa en consecuencia.
+ */
 document.addEventListener('DOMContentLoaded', () => {
     // Botones de bibliotecas
     document.getElementById('btn-medellin').addEventListener('click', () => selectLibrary('medellin'));
@@ -601,7 +759,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`URL: library_code=${libCode} → ${libId}`);
         selectLibrary(libId);
 
-        // 1. Excepción: location_code NORMA tiene prioridad
+        // 1. Excepción: location_code NORMA tiene prioridad sobre cualquier material_type
         if (locationCode && locationCode.toUpperCase() === 'NORMA') {
             const mapping = externalToMapKey['NORMA'];
             if (mapping && mapping.buttonId) {
@@ -615,7 +773,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const mapping = externalToMapKey[upperType];
             if (mapping) {
                 if (upperType === 'BOOK') {
-                    // BOOK: solo usar call_number
+                    // BOOK: solo usar call_number, sin seleccionar botón de material
                     if (callNumber) {
                         const decoded = callNumber.replace(/\+/g, ' ');
                         setTimeout(() => {
