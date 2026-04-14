@@ -54,286 +54,34 @@ const mapData = {
                 },
                 stacks: [
                     // ==================== STACKS PISO 1 ====================
-                    {
-                        id: "1.1A1.Izquierdo",
-                        start: "000.0",
-                        end: "005.1",
-                        x: 0.6222,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=59&sr=-1.4,-1.33"
-                    },
-                    {
-                        id: "1.1A2.Izquierdo",
-                        start: "005.101",
-                        end: "036.0",
-                        x: 0.6222,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=94&sr=-2.26,-1.48"
-                    },
-                    {
-                        id: "1.1B2.Derecho",
-                        start: "036.01",
-                        end: "302.0",
-                        x: 0.5944,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=92&sr=-.53,-1.51"
-                    },
-                    {
-                        id: "1.1B1.Derecho",
-                        start: "302.01",
-                        end: "330.01",
-                        x: 0.5944,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=61&sr=-.35,-.8"
-                    },
-                    {
-                        id: "1.2A1.Izquierdo",
-                        start: "330.011",
-                        end: "338.5",
-                        x: 0.5602,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=61&sr=-3,-1.08"
-                    },
-                    {
-                        id: "1.2A2.Izquierdo",
-                        start: "338.501",
-                        end: "373.2",
-                        x: 0.5602,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=92&sr=-3,-1.08"
-                    },
-                    {
-                        id: "1.2B2.Derecho",
-                        start: "373.201",
-                        end: "512.1",
-                        x: 0.5324,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=90&sr=-.02,-1.09"
-                    },
-                    {
-                        id: "1.2B1.Derecho",
-                        start: "512.101",
-                        end: "515.3",
-                        x: 0.5324,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=63&sr=-.18,-.4"
-                    },
-                    {
-                        id: "1.3A1.Izquierdo",
-                        start: "515.301",
-                        end: "519.5",
-                        x: 0.4963,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=63&sr=-3.07,-.41"
-                    },
-                    {
-                        id: "1.3A2.Izquierdo",
-                        start: "519.501",
-                        end: "537.0",
-                        x: 0.4936,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=90&sr=-2.97,-.52"
-                    },
-                    {
-                        id: "1.3B2.Derecho",
-                        start: "537.01",
-                        end: "574.5",
-                        x: 0.4685,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=88&sr=-.33,-.7"
-                    },
-                    {
-                        id: "1.3B1.Derecho",
-                        start: "574.501",
-                        end: "591.0",
-                        x: 0.4685,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=66&sr=-.21,-.94"
-                    },
-                    {
-                        id: "1.4A1.Izquierdo",
-                        start: "591.01",
-                        end: "612.76",
-                        x: 0.4324,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=65&sr=-2.84,-1.28"
-                    },
-                    {
-                        id: "1.4A2.Izquierdo",
-                        start: "612.7601",
-                        end: "612.27",
-                        x: 0.4333,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=217&sr=-2.7,-1.26"
-                    },
-                    {
-                        id: "1.4B2.Derecho",
-                        start: "612.2701",
-                        end: "621.4",
-                        x: 0.4065,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=86&sr=-.23,-.81"
-                    },
-                    {
-                        id: "1.4B1.Derecho",
-                        start: "621.401",
-                        end: "624.18",
-                        x: 0.4065,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=67&sr=-.06,-.81"
-                    },
-                    {
-                        id: "1.5A1.Izquierdo",
-                        start: "624.1801",
-                        end: "629.8",
-                        x: 0.3713,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=67&sr=-2.97,-1.37"
-                    },
-                    {
-                        id: "1.5A2.Izquierdo",
-                        start: "629.801",
-                        end: "634.0",
-                        x: 0.3704,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=87&sr=-3.01,-1.06"
-                    },
-                    {
-                        id: "1.5B2.Derecho",
-                        start: "634.01",
-                        end: "657.0",
-                        x: 0.3435,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=84&sr=.03,-.97"
-                    },
-                    {
-                        id: "1.5B1.Derecho",
-                        start: "657.01",
-                        end: "657.8",
-                        x: 0.3435,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=68&sr=-.02,-.9"
-                    },
-                    {
-                        id: "1.6A1.Izquierdo",
-                        start: "657.801",
-                        end: "658.3",
-                        x: 0.3074,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=68&sr=-2.86,-1.08"
-                    },
-                    {
-                        id: "1.6A2.Izquierdo",
-                        start: "658.301",
-                        end: "658.5",
-                        x: 0.3074,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=85&sr=-2.91,-1.1"
-                    },
-                    {
-                        id: "1.6B2.Derecho",
-                        start: "658.501",
-                        end: "658.85",
-                        x: 0.2806,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=228&sr=-.2,-.61"
-                    },
-                    {
-                        id: "1.6B1.Derecho",
-                        start: "658.8501",
-                        end: "690.2",
-                        x: 0.2806,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=251&sr=-.13,-.96"
-                    },
-                    {
-                        id: "1.7A1.Izquierdo",
-                        start: "690.201",
-                        end: "790.2",
-                        x: 0.2444,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=250&sr=-3.13,-1.19"
-                    },
-                    {
-                        id: "1.7A2.Izquierdo",
-                        start: "790.201",
-                        end: "799.1",
-                        x: 0.2444,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=83&sr=-2.69,-1.2"
-                    },
-                    {
-                        id: "1.7B2.Derecho",
-                        start: "799.101",
-                        end: "899.9",
-                        x: 0.2185,
-                        y: 0.8254,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=229&sr=-.25,-1.13"
-                    },
-                    {
-                        id: "1.7B1.Derecho",
-                        start: "900",
-                        end: "999.9",
-                        x: 0.2185,
-                        y: 0.6770,
-                        height: 0.1109,
-                        width: 0.0269,
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=254&sr=-.24,-.97"
-                    }
+                    { id: "1.1A1.Izquierdo", start: "000.0", end: "005.1", x: 0.6222, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=59&sr=-1.4,-1.33" },
+                    { id: "1.1A2.Izquierdo", start: "005.101", end: "036.0", x: 0.6222, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=94&sr=-2.26,-1.48" },
+                    { id: "1.1B2.Derecho", start: "036.01", end: "302.0", x: 0.5944, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=92&sr=-.53,-1.51" },
+                    { id: "1.1B1.Derecho", start: "302.01", end: "330.01", x: 0.5944, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=61&sr=-.35,-.8" },
+                    { id: "1.2A1.Izquierdo", start: "330.011", end: "338.5", x: 0.5602, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=61&sr=-3,-1.08" },
+                    { id: "1.2A2.Izquierdo", start: "338.501", end: "373.2", x: 0.5602, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=92&sr=-3,-1.08" },
+                    { id: "1.2B2.Derecho", start: "373.201", end: "512.1", x: 0.5324, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=90&sr=-.02,-1.09" },
+                    { id: "1.2B1.Derecho", start: "512.101", end: "515.3", x: 0.5324, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=63&sr=-.18,-.4" },
+                    { id: "1.3A1.Izquierdo", start: "515.301", end: "519.5", x: 0.4963, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=63&sr=-3.07,-.41" },
+                    { id: "1.3A2.Izquierdo", start: "519.501", end: "537.0", x: 0.4936, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=90&sr=-2.97,-.52" },
+                    { id: "1.3B2.Derecho", start: "537.01", end: "574.5", x: 0.4685, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=88&sr=-.33,-.7" },
+                    { id: "1.3B1.Derecho", start: "574.501", end: "591.0", x: 0.4685, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=66&sr=-.21,-.94" },
+                    { id: "1.4A1.Izquierdo", start: "591.01", end: "612.76", x: 0.4324, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=65&sr=-2.84,-1.28" },
+                    { id: "1.4A2.Izquierdo", start: "612.7601", end: "612.27", x: 0.4333, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=217&sr=-2.7,-1.26" },
+                    { id: "1.4B2.Derecho", start: "612.2701", end: "621.4", x: 0.4065, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=86&sr=-.23,-.81" },
+                    { id: "1.4B1.Derecho", start: "621.401", end: "624.18", x: 0.4065, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=67&sr=-.06,-.81" },
+                    { id: "1.5A1.Izquierdo", start: "624.1801", end: "629.8", x: 0.3713, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=67&sr=-2.97,-1.37" },
+                    { id: "1.5A2.Izquierdo", start: "629.801", end: "634.0", x: 0.3704, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=87&sr=-3.01,-1.06" },
+                    { id: "1.5B2.Derecho", start: "634.01", end: "657.0", x: 0.3435, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=84&sr=.03,-.97" },
+                    { id: "1.5B1.Derecho", start: "657.01", end: "657.8", x: 0.3435, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=68&sr=-.02,-.9" },
+                    { id: "1.6A1.Izquierdo", start: "657.801", end: "658.3", x: 0.3074, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=68&sr=-2.86,-1.08" },
+                    { id: "1.6A2.Izquierdo", start: "658.301", end: "658.5", x: 0.3074, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=85&sr=-2.91,-1.1" },
+                    { id: "1.6B2.Derecho", start: "658.501", end: "658.85", x: 0.2806, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=228&sr=-.2,-.61" },
+                    { id: "1.6B1.Derecho", start: "658.8501", end: "690.2", x: 0.2806, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=251&sr=-.13,-.96" },
+                    { id: "1.7A1.Izquierdo", start: "690.201", end: "790.2", x: 0.2444, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=250&sr=-3.13,-1.19" },
+                    { id: "1.7A2.Izquierdo", start: "790.201", end: "799.1", x: 0.2444, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=83&sr=-2.69,-1.2" },
+                    { id: "1.7B2.Derecho", start: "799.101", end: "899.9", x: 0.2185, y: 0.8254, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=229&sr=-.25,-1.13" },
+                    { id: "1.7B1.Derecho", start: "900", end: "999.9", x: 0.2185, y: 0.6770, height: 0.1109, width: 0.0269, url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=254&sr=-.24,-.97" }
                 ]
             },
             2: {
@@ -388,28 +136,44 @@ const mapData = {
     }
 };
 
-// ------------------------- MAPEOS AUXILIARES --------------------------------
+// ------------------------- MAPEOS SIMPLIFICADOS -----------------------------
+// Mapeo de bibliotecas (URL -> ID interno -> clave en mapData)
 const libraryMap = {
     'medellin': 'MEDELLÍN',
     'oriente': 'CENTRO REGIONAL ORIENTE',
     'uraba': 'CENTRO REGIONAL URABÁ'
 };
 
-const materialMap = {
-    'tesis': 'TRABAJO DE GRADO',
-    'cd': 'MULTIMEDIA',
-    'revista': 'REVISTA',
-    'folleto': 'FOLLETO',
-    'norma': 'NORMAS'
+// Mapeo DIRECTO desde valores externos (material_type o location_code)
+// a la clave que se usa en staticLocations del mapa.
+// También incluimos el ID del botón correspondiente y el nombre a mostrar.
+const externalToMapKey = {
+    // material_type
+    'BOOK':     { buttonId: null,      mapKey: null,       display: 'LIBRO' },          // No activa botón, solo signatura
+    'ISSUE':    { buttonId: 'revista', mapKey: 'REVISTA',   display: 'REVISTA' },
+    'CDROM':    { buttonId: 'cd',      mapKey: 'MULTIMEDIA', display: 'CD' },
+    'THESIS':   { buttonId: 'tesis',   mapKey: 'TRABAJO DE GRADO', display: 'TRABAJO DE GRADO' },
+    'PAMPHLET': { buttonId: 'folleto', mapKey: 'FOLLETO',   display: 'FOLLETO' },
+    // location_code
+    'NORMA':    { buttonId: 'norma',   mapKey: 'NORMAS',    display: 'NORMA' }
 };
 
-const materialDisplayNames = {
-    'tesis': 'TRABAJO DE GRADO',
-    'cd': 'CD',
-    'revista': 'REVISTA',
-    'folleto': 'FOLLETO',
-    'norma': 'NORMA'
-};
+// Para compatibilidad con funciones existentes (selectMaterial, etc.)
+// Generamos materialMap (buttonId -> mapKey) y un objeto de nombres mostrados
+const materialMap = {};
+const materialDisplayNames = {};
+Object.values(externalToMapKey).forEach(item => {
+    if (item.buttonId) {
+        materialMap[item.buttonId] = item.mapKey;
+        materialDisplayNames[item.buttonId] = item.display;
+    }
+});
+
+// Mapeo rápido de external a buttonId (para la URL)
+const externalToButtonId = {};
+Object.entries(externalToMapKey).forEach(([external, data]) => {
+    if (data.buttonId) externalToButtonId[external] = data.buttonId;
+});
 
 // ------------------------- FUNCIONES AUXILIARES -----------------------------
 function toggleControls(enabled) {
@@ -458,11 +222,11 @@ function searchInStacks(libData, callNumber) {
     return null;
 }
 
-function searchInStaticLocations(libData, type) {
+function searchInStaticLocations(libData, mapKey) {
     for (let floor in libData.floors) {
         const locs = libData.floors[floor].staticLocations;
-        if (locs && locs[type]) {
-            const loc = locs[type];
+        if (locs && locs[mapKey]) {
+            const loc = locs[mapKey];
             if (Array.isArray(loc)) {
                 return { floor, locations: loc, isMultiple: true };
             } else {
@@ -482,7 +246,7 @@ function searchInStaticLocations(libData, type) {
     return null;
 }
 
-// ------------------------- FUNCIONES DEL MAPA (CARGA, DIBUJO, MARCADORES) ---
+// ------------------------- FUNCIONES DEL MAPA -------------------------------
 function loadLibraryMap(libraryKey) {
     if (isMapLoading) return false;
     isMapLoading = true;
@@ -612,6 +376,7 @@ function selectLibrary(libId) {
 }
 
 function selectMaterial(matId) {
+    if (selectedMaterial === matId) return;
     if (selectedMaterial) document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
     selectedMaterial = matId;
     document.getElementById(`btn-${matId}`).classList.add('selected');
@@ -627,8 +392,12 @@ function findAndDisplayLocationForMaterial(matId) {
     if (!libData) return;
     const mapImage = document.getElementById('map-container').querySelector('img#map-image');
     if (!mapImage) return;
-    const locType = materialMap[matId];
-    const location = searchInStaticLocations(libData, locType);
+    const mapKey = materialMap[matId];
+    if (!mapKey) {
+        showLocationInfo(`No se encontró ubicación para este material.`);
+        return;
+    }
+    const location = searchInStaticLocations(libData, mapKey);
     let message = "";
     if (location) {
         if (location.isMultiple) {
@@ -764,7 +533,14 @@ function updateUI() {
     if (selectedLibrary || selectedMaterial || sig) {
         document.getElementById('selection-info').style.display = 'block';
         document.getElementById('current-library').textContent = selectedLibrary ? libraryMap[selectedLibrary] : '-';
-        document.getElementById('current-material').textContent = selectedMaterial ? materialDisplayNames[selectedMaterial] : (sig ? 'LIBRO' : '-');
+        // Mostrar el nombre legible del material seleccionado
+        let materialText = '-';
+        if (selectedMaterial) {
+            materialText = materialDisplayNames[selectedMaterial] || selectedMaterial.toUpperCase();
+        } else if (sig) {
+            materialText = 'LIBRO';
+        }
+        document.getElementById('current-material').textContent = materialText;
         document.getElementById('current-signature').textContent = sig || '-';
     } else {
         document.getElementById('selection-info').style.display = 'none';
@@ -822,21 +598,66 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     updateUI();
 
-    // Parámetros de URL (integración externa)
+    // ------------------------------------------------------------------------
+    // LECTURA DE PARÁMETROS DE URL (integración externa)
+    // ------------------------------------------------------------------------
     const params = new URLSearchParams(window.location.search);
     const libCode = params.get('library_code');
-    const callNum = params.get('call_number');
+    const materialType = params.get('material_type');
+    const locationCode = params.get('location_code');
+    const callNumber = params.get('call_number');
+
     const codeMap = { 'POBLA': 'medellin', 'RIONE': 'oriente', 'APART': 'uraba' };
+
     if (libCode && codeMap[libCode]) {
         const libId = codeMap[libCode];
         console.log(`URL: library_code=${libCode} → ${libId}`);
         selectLibrary(libId);
-        if (callNum) {
-            const decoded = callNum.replace(/\+/g, ' ');
+
+        // Prioridad: location_code primero (NORMA)
+        if (locationCode && locationCode.toUpperCase() === 'NORMA') {
+            const mapping = externalToMapKey['NORMA'];
+            if (mapping && mapping.buttonId) {
+                console.log(`URL: location_code=NORMA → seleccionar material ${mapping.buttonId}`);
+                setTimeout(() => selectMaterial(mapping.buttonId), 200);
+            }
+        }
+        // Si no hay location_code, usar material_type
+        else if (materialType) {
+            const upperType = materialType.toUpperCase();
+            const mapping = externalToMapKey[upperType];
+            if (mapping) {
+                if (upperType === 'BOOK') {
+                    // BOOK: solo usar call_number, sin botón
+                    console.log(`URL: material_type=BOOK → usar call_number`);
+                    if (callNumber) {
+                        const decoded = callNumber.replace(/\+/g, ' ');
+                        setTimeout(() => {
+                            sigInput.value = decoded;
+                            sigInput.dispatchEvent(new Event('input'));
+                        }, 250);
+                    }
+                } else if (mapping.buttonId) {
+                    console.log(`URL: material_type=${upperType} → seleccionar material ${mapping.buttonId}`);
+                    setTimeout(() => selectMaterial(mapping.buttonId), 200);
+                    // No se asigna call_number
+                } else {
+                    console.warn(`URL: material_type=${upperType} no tiene botón asociado`);
+                }
+            } else {
+                console.warn(`URL: material_type desconocido: ${upperType}`);
+            }
+        }
+        // Si no hay location_code ni material_type, pero hay call_number
+        else if (callNumber) {
+            console.log(`URL: solo call_number presente → asignar al campo de signatura`);
+            const decoded = callNumber.replace(/\+/g, ' ');
             setTimeout(() => {
                 sigInput.value = decoded;
                 sigInput.dispatchEvent(new Event('input'));
-            }, 100);
+            }, 250);
         }
+    } else if (libCode) {
+        console.warn(`URL: library_code desconocido: ${libCode}`);
     }
 });
