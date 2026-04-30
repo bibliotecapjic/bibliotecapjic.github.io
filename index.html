@@ -2,149 +2,91 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Mapas de Biblioteca</title>
-    <!-- Estilos externos -->
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca - Explorador de Conocimiento</title>
+	<link href="./homepage.css" rel="stylesheet">
+	<link href="./css2.css" rel="stylesheet">
 </head>
 <body>
 
-<div class="container">
-    <!-- ==================== CABECERA ==================== -->
-    <div class="header">
-        <h1>
-            <span aria-hidden="true">🗺️</span>
-            Activa el GPS de la Biblioteca.
-        </h1>
-        <div class="subtitle">
-            Selecciona la Biblioteca de tu interés, ingresa la signatura del libro o elige un material.
-            Haz clic en el marcador 📍 para ver la ubicación en 3D.
+<div class="vibrant-visual-hub">
+    
+    <header class="hub-header">
+        <h1 class="hub-title">Explora el <br><span class="text-gradient">Futuro del Saber</span></h1>
+
+        <p class="primo-intro">
+            <b>Primo</b> unifica el acceso al ecosistema de conocimiento del Polit&eacute;cnico. Desde un solo punto, conectamos a nuestra comunidad con la vanguardia de la investigaci&oacute;n global, recursos digitales y la memoria institucional.
+        </p>
+
+        <div class="library-announcement">
+            <span class="announcement-tag">Anuncio</span>
+            <p class="announcement-content">
+                <b>Nueva versi&oacute;n del descubridor Primo:</b> Queremos invitarte a conocer la nueva experiencia de b&uacute;squeda. Hemos actualizado nuestra plataforma para ofrecerte una interfaz m&aacute;s &aacute;gil, visual y f&aacute;cil de usar.
+            </p>
+        </div>
+    </header>
+
+    <div class="visual-grid">
+        <a href="https://sites.google.com/view/novedades-bibliograficas/coordinacion-de-bibliotecas" target="_blank" rel="noopener noreferrer" class="visual-card card-books">
+            <div class="card-png-wrap">
+                <img src="https://polijic.primo.exlibrisgroup.com/nde/custom/57PJIC_INST-NDE/assets/images/Novedades.svg" alt="Novedades">
+            </div>
+            <div class="card-text">
+                <h3>Novedades<br>Bibliogr&aacute;ficas</h3>
+                <p>Lo &uacute;ltimo en nuestra colecci&oacute;n.</p>
+                <span class="card-action">Descubrir</span>
+            </div>
+        </a>
+
+        <a href="https://pcjic.basesdedatosezproxy.com/menu" target="_blank" rel="noopener noreferrer" class="visual-card card-digital">
+            <div class="card-png-wrap">
+                <img src="https://polijic.primo.exlibrisgroup.com/nde/custom/57PJIC_INST-NDE/assets/images/Recursos.svg" alt="Recursos">
+            </div>
+            <div class="card-text">
+                <h3>Recursos<br>Electr&oacute;nicos</h3>
+                <p>Acceso a libros electrónicos y bases de datos académicas.</p>
+                <span class="card-action">Conectar</span>
+            </div>
+        </a>
+
+        <a href="http://repositorio.elpoli.edu.co/" target="_blank" rel="noopener noreferrer" class="visual-card card-repo">
+            <div class="card-png-wrap">
+                <img src="https://polijic.primo.exlibrisgroup.com/nde/custom/57PJIC_INST-NDE/assets/images/Repositorio.svg" alt="Repositorio">
+            </div>
+            <div class="card-text">
+                <h3>Repositorio<br>Institucional</h3>
+                <p>Conocimiento y memoria institucional.</p>
+                <span class="card-action">Buscar</span>
+            </div>
+        </a>
+
+        <a href="http://revistas.elpoli.edu.co/" target="_blank" rel="noopener noreferrer" class="visual-card card-journals">
+            <div class="card-png-wrap">
+                <img src="https://polijic.primo.exlibrisgroup.com/nde/custom/57PJIC_INST-NDE/assets/images/Revistas.svg" alt="Revistas">
+            </div>
+            <div class="card-text">
+                <h3>Revistas<br>Institucionales</h3>
+                <p>Publicaciones peri&oacute;dicas institucionales.</p>
+                <span class="card-action">Leer ahora</span>
+            </div>
+        </a>
+    </div>
+</div>
+
+<footer class="hub-footer">
+    <div class="footer-container">
+        <div class="footer-brand">
+            <span class="brand-dot"></span>
+            <p>&copy; 2026 <b>Polit&eacute;cnico Colombiano Jaime Isaza Cadavid</b></p>
+        </div>
+        
+        <div class="footer-meta">
+            <a href="mailto:biblioteca@elpoli.edu.co" class="footer-email">biblioteca@elpoli.edu.co</a>
+            <span class="footer-divider">|</span>
+            <span>Sistema de Bibliotecas</span>
         </div>
     </div>
+</footer>
 
-    <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
-    <div class="main-content">
-        <!-- PANEL LATERAL DE CONTROLES -->
-        <div class="controls-panel">
-            <!-- Selección de biblioteca -->
-            <div class="library-section">
-                <h2 class="section-title">
-                    <span aria-hidden="true">🏛️</span> Biblioteca
-                </h2>
-                <div class="library-buttons">
-                    <button class="library-btn" id="btn-medellin">
-                        <span class="library-icon">📚</span> Medellín
-                    </button>
-                    <button class="library-btn" id="btn-oriente">
-                        <span class="library-icon">📚</span> Centro Regional Oriente
-                    </button>
-                    <button class="library-btn" id="btn-uraba">
-                        <span class="library-icon">📚</span> Centro Regional Urabá
-                    </button>
-                </div>
-            </div>
-
-            <div class="divider"></div>
-
-            <!-- Búsqueda por signatura / localización -->
-            <div class="signature-section">
-                <h2 class="signature-title">
-                    <span aria-hidden="true">🕮</span>
-                    <span class="required-field">Localización de Libros</span>
-                </h2>
-                <div class="signature-box">
-                    <label class="signature-label" for="signature">
-                        Ingrese el número de localización del libro en estantería:
-                    </label>
-                    <input type="text"
-                           class="signature-input"
-                           id="signature"
-                           placeholder="Ej: 658.403, 005.1, 900.2"
-                           required
-                           disabled>
-                    <div class="help-text">
-                        Ejemplos: 658.403, 005.1, 900.2, A412, 312 A123.
-                        
-                    </div>
-                </div>
-            </div>
-
-            <div class="divider"></div>
-
-            <!-- Otros materiales -->
-            <div class="other-materials-section">
-                <h2 class="section-title">
-                    <span aria-hidden="true">📑</span> Otros Materiales
-                </h2>
-                <div class="material-buttons">
-                    <button class="material-btn" id="btn-tesis" disabled>TRABAJOS DE GRADO</button>
-                    <button class="material-btn" id="btn-cd" disabled>CD</button>
-                    <button class="material-btn" id="btn-revista" disabled>REVISTAS</button>
-                    <button class="material-btn" id="btn-folleto" disabled>FOLLETOS</button>
-                    <button class="material-btn" id="btn-norma" disabled>NORMAS</button>
-                </div>
-            </div>
-        </div> <!-- /.controls-panel -->
-
-        <!-- PANEL DEL MAPA -->
-        <div class="map-panel">
-            <!-- Mensajes emergentes (error, warning, éxito) -->
-            <div class="message message-error" id="message-error"></div>
-            <div class="message message-warning" id="message-warning"></div>
-            <div class="message message-success" id="message-success"></div>
-
-            <!-- Información de la selección actual -->
-            <div class="selection-info" id="selection-info" style="display: none;">
-                <h3><span>📋</span> Selección Actual</h3>
-                <div class="selection-details">
-                    <div class="detail-item">
-                        <div class="detail-label">Biblioteca:</div>
-                        <div class="detail-value" id="current-library">-</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Tipo de material:</div>
-                        <div class="detail-value" id="current-material">-</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Localización:</div>
-                        <div class="detail-value" id="current-signature">-</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Panel de información de ubicación (verde) -->
-            <div class="location-info-panel" id="location-info-panel">
-                <div class="location-info-title">
-                    <span>📍</span> Información de Ubicación
-                </div>
-                <div class="location-info-text" id="location-info-text">
-                    Seleccione una biblioteca e ingrese el número de localización o un material.
-                    Luego haga clic en el marcador 📍 sobre el mapa para ver la ubicación en 3D.
-                </div>
-            </div>
-
-            <!-- Contenedor del mapa (imagen + marcadores) -->
-            <div class="map-container" id="map-container">
-                <div class="initial-state">
-                    <div>
-                        <span>🗺️</span>
-                        <p>Seleccione una biblioteca y una ubicación para mostrar el mapa</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Leyenda -->
-            <div class="legend-panel" id="legend-panel">
-                <div class="legend-color"></div>
-                <div class="legend-text">
-                    Ubicación aproximada del material. Haz clic en el marcador para vista 3D.
-                </div>
-            </div>
-        </div> <!-- /.map-panel -->
-    </div> <!-- /.main-content -->
-</div> <!-- /.container -->
-
-<!-- JavaScript externo -->
-<script src="script.js"></script>
 </body>
 </html>
