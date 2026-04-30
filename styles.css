@@ -1,502 +1,278 @@
-/* ============================================
-   RESET Y ESTILOS BASE
-   ============================================ */
+/* @import "/nde/custom/57PJIC_INST-NDE/assets/css/custom.css"; */
+
+/* ==========================================
+   BIBLIOTECA POLITÉCNICO - ESTILO INSTITUCIONAL
+   Con paleta de colores oficial
+   ========================================== */
+
+:root {
+    /* Paleta institucional */
+    --amarillo: #ffd900;
+    --naranjado: #faa732;
+    --verde-claro: #196844;
+    --verde-oscuro: #013a06;
+    --verde-enlace: #2a4723;
+    --verde-aviso: #00994e;
+    --gris-claro: #ededed;
+    --gris-linea: #eeeeee;
+    --gris-nota: #f9f9f9;
+    --gris-borde: #cecece;
+    --gris-menu: #757575;
+    --gris-oscuro: #333333;
+    --gris-contacto: #535353;
+    --gris-info: #eeeeee;
+    --azul-gov: #004884;
+    --azul-rey-gov: #3366cc;
+    --negro-overlay: rgba(0, 0, 0, 0.8);
+
+    /* Mapeo a variables del diseño original */
+    --bg-main: var(--gris-nota);
+    --card-bg: #FFFFFF;
+    --text-dark: var(--gris-oscuro);
+    --text-soft: var(--gris-contacto);
+    --border-light: var(--gris-borde);
+    --primary: var(--naranjado);
+    --primary-dark: var(--amarillo);
+    --secondary: var(--verde-claro);
+    --alert: var(--verde-aviso);
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f5f7fa;
-    color: #333;
-    padding: 20px;
+    background-color: var(--bg-main);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: var(--text-dark);
+    -webkit-font-smoothing: antialiased;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-.container {
-    max-width: 1200px;
+.vibrant-visual-hub {
+    max-width: 1300px;
     margin: 0 auto;
+    padding: 20px 20px 60px;
 }
 
-/* ============================================
-   HEADER
-   ============================================ */
-.header {
-    background: linear-gradient(135deg, #2c3e50, #4a6491);
-    color: white;
-    padding: 25px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    font-size: 28px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.subtitle {
-    font-size: 16px;
-    opacity: 0.9;
-    margin-top: 5px;
-}
-
-/* ============================================
-   MAIN GRID (2 COLUMNAS)
-   ============================================ */
-.main-content {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 25px;
-}
-
-@media (max-width: 900px) {
-    .main-content {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* ============================================
-   PANEL DE CONTROLES (IZQUIERDA)
-   ============================================ */
-.controls-panel {
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.library-section {
+.hub-header {
+    text-align: center;
     margin-bottom: 30px;
+    margin-top: 0;
+    padding-top: 0;
 }
 
-.section-title {
-    font-size: 18px;
-    color: #2c3e50;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #eee;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.hub-title {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 700 !important;
+    letter-spacing: -0.01em;
+    color: var(--verde-oscuro);
+    margin-bottom: 56px !important;
+    line-height: 1.2;
 }
 
-.library-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 10px;
-}
-
-.library-btn {
-    padding: 16px;
-    background: white;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 500;
-    color: #555;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.library-btn:hover {
-    border-color: #3498db;
-    background: #f0f8ff;
-}
-
-.library-btn.selected {
-    border-color: #3498db;
-    background: #e3f2fd;
-    color: #2c3e50;
-}
-
-.library-icon {
-    font-size: 22px;
-    width: 30px;
-}
-
-.divider {
-    height: 1px;
-    background: #e0e0e0;
-    margin: 25px 0;
+.primo-intro {
+    font-size: 1.1rem;
+    font-weight: 450;
+    color: var(--text-soft);
+    max-width: 100%;
     width: 100%;
-}
-
-/* ============================================
-   SIGNATURE (LOCALIZACIÓN DE LIBROS)
-   ============================================ */
-.signature-section {
-    margin-bottom: 30px;
-}
-
-.signature-title {
-    font-size: 18px;
-    color: #2c3e50;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.required-field::after {
-    content: " *";
-    color: #e74c3c;
-}
-
-.signature-box {
-    margin-top: 10px;
-}
-
-.signature-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #555;
-    font-size: 14px;
-}
-
-.signature-input {
-    width: 100%;
-    padding: 16px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    font-family: monospace;
-    transition: all 0.3s;
-}
-
-.signature-input:required {
-    border-left: 4px solid #3498db;
-}
-
-.signature-input:focus {
-    outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-}
-
-.signature-input:disabled {
-    background-color: #f5f5f5;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-.help-text {
-    font-size: 12px;
-    color: #666;
-    margin-top: 5px;
-    font-style: italic;
+    margin: 0 auto 40px;
+    text-align: center;
     line-height: 1.5;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
-/* ============================================
-   OTROS MATERIALES
-   ============================================ */
-.other-materials-section {
-    margin-bottom: 20px;
+.library-announcement {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: var(--gris-claro);
+    padding: 12px 24px;
+    border-radius: 48px;
+    margin: 0 auto 48px;
+    width: 100%;
+    max-width: 1100px;
+    border: 1px solid var(--border-light);
+    box-sizing: border-box;
+    flex-wrap: wrap;
 }
 
-.material-buttons {
+.announcement-tag {
+    background: var(--primary);
+    color: var(--text-dark);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 32px;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.announcement-content {
+    flex: 1;
+    text-align: center;
+    color: var(--text-dark);
+    font-weight: 450;
+}
+
+.visual-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin-top: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 28px;
 }
 
-.material-btn {
-    padding: 14px 10px;
-    background: white;
-    border: 2px solid #ddd;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #555;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.material-btn:hover {
-    border-color: #f39c12;
-    background: #fff9e6;
-}
-
-.material-btn.selected {
-    border-color: #f39c12;
-    background: #fff3cd;
-    color: #856404;
-}
-
-.material-btn:disabled {
-    background-color: #f5f5f5;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-/* ============================================
-   PANEL DEL MAPA (DERECHA)
-   ============================================ */
-.map-panel {
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+/* TARJETA - texto centrado */
+.visual-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    border: 1px solid var(--border-light);
     display: flex;
     flex-direction: column;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
 }
 
-.selection-info {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    border-left: 4px solid #3498db;
+.visual-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
 }
 
-.selection-info h3 {
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #2c3e50;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.selection-details {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.detail-item {
-    flex: 1;
-    min-width: 150px;
-}
-
-.detail-label {
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.detail-value {
-    font-size: 14px;
-    font-weight: 600;
-    color: #2c3e50;
-    word-break: break-word;
-}
-
-/* ============================================
-   INFO DE UBICACIÓN (VERDE)
-   ============================================ */
-.location-info-panel {
-    background: #e8f6ef;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    display: none;
-    border-left: 4px solid #27ae60;
-}
-
-.location-info-panel.active {
-    display: block;
-}
-
-.location-info-title {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 12px;
-    color: #2c3e50;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.location-info-text {
-    font-size: 14px;
-    line-height: 1.6;
-    color: #555;
-}
-
-/* ============================================
-   CONTENEDOR DEL MAPA (IMAGEN + MARCADORES)
-   ============================================ */
-.map-container {
-    flex: 1;
-    position: relative;
-    background: #f8f9fa;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid #e0e0e0;
-    min-height: 500px;
-    margin-bottom: 20px;
-}
-
-.initial-state {
+.card-png-wrap {
+    height: 160px;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    color: #999;
-    font-size: 18px;
-    text-align: center;
-    padding: 40px;
+    background: var(--gris-info);
+    border-radius: 24px 24px 0 0;
 }
 
-.loading-state {
+.card-png-wrap img {
+    max-width: 55%;
+    max-height: 55%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.visual-card:hover .card-png-wrap img {
+    transform: scale(1.02);
+}
+
+/* Contenedor de texto: usamos gap para separar elementos */
+.card-text {
+    padding: 24px 24px 20px;
+    flex: 1;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    background: #f8f9fa;
-    color: #6c757d;
-    font-size: 18px;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Título: eliminamos márgenes que puedan interferir */
+.visual-card h3 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--verde-oscuro);
+    margin: 0;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+}
+
+/* Párrafo: sin márgenes, el gap del padre ya separa */
+.visual-card p {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Botón: se mantiene igual */
+.card-action {
+    background: var(--primary);
+    color: var(--text-dark) !important;
     text-align: center;
-    padding: 40px;
-}
-
-.loading-spinner {
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 2s linear infinite;
-    margin: 0 auto 20px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* ============================================
-   MARCADORES (CLIQUEABLES)
-   ============================================ */
-.map-marker {
+    padding: 10px 0;
+    border-radius: 40px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: background 0.2s;
+    margin-top: auto;
+    width: 100%;
+    border: none;
     cursor: pointer;
-    transition: transform 0.2s ease, filter 0.2s ease;
+    display: inline-block;
 }
 
-.map-marker:hover {
-    transform: scale(1.2);
-    filter: drop-shadow(0 0 8px rgba(255, 87, 34, 0.8));
+.card-action:hover {
+    background: var(--primary-dark);
+    color: var(--verde-oscuro) !important;
 }
 
-/* ============================================
-   LEYENDA
-   ============================================ */
-.legend-panel {
-    background: white;
-    padding: 12px 15px;
-    border-radius: 6px;
-    display: none;
-    border: 1px solid #e0e0e0;
+.card-books {
+    border-top: 3px solid var(--primary);
+}
+.card-digital {
+    border-top: 3px solid var(--secondary);
+}
+.card-repo {
+    border-top: 3px solid #A3B5A3;  /* mantenemos tono neutro o lo cambiamos? */
+}
+.card-journals {
+    border-top: 3px solid var(--amarillo);
 }
 
-.legend-panel.active {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.hub-footer {
+    margin-top: 60px;
+    padding: 30px 20px;
+    background: var(--gris-claro);
+    border-top: 1px solid var(--border-light);
 }
 
-.legend-color {
-    width: 16px;
-    height: 16px;
-    background: rgba(255, 215, 0, 0.7);
-    border: 2px solid #e67e22;
-    border-radius: 2px;
-    flex-shrink: 0;
-}
-
-.legend-text {
-    font-size: 14px;
-    color: #555;
-}
-
-/* ============================================
-   ESTADO SIN MAPA (ERROR / NO DISPONIBLE)
-   ============================================ */
-.no-map-state {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    color: #6c757d;
-    font-size: 18px;
-    text-align: center;
-    padding: 40px;
-}
-
-.no-map-state i {
-    font-size: 64px;
-    margin-bottom: 20px;
-    opacity: 0.5;
-    color: #adb5bd;
-}
-
-.no-map-state h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #495057;
-}
-
-.no-map-state p {
-    font-size: 14px;
-    opacity: 0.8;
-    max-width: 400px;
+.footer-container {
+    max-width: 1300px;
     margin: 0 auto;
+    text-align: center;
 }
 
-/* ============================================
-   MENSAJES DE ERROR, WARNING Y ÉXITO
-   ============================================ */
-.message {
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    display: none;
+.footer-email {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
 }
 
-.message-error {
-    background: #fdecea;
-    border-left: 4px solid #e74c3c;
-    color: #c0392b;
+.footer-email:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
 }
 
-.message-warning {
-    background: #fff3cd;
-    border-left: 4px solid #f39c12;
-    color: #856404;
-}
-
-.message-success {
-    background: #e8f6ef;
-    border-left: 4px solid #27ae60;
-    color: #27ae60;
-}
-
-/* ============================================
-   ACCESIBILIDAD (solo lectura)
-   ============================================ */
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+@media (max-width: 768px) {
+    .vibrant-visual-hub {
+        padding: 20px 16px 40px;
+    }
+    .card-text {
+        padding: 20px;
+        gap: 16px;
+    }
+    .visual-card h3 {
+        font-size: 1.25rem;
+    }
+    .library-announcement {
+        padding: 10px 16px;
+        border-radius: 32px;
+    }
+    .announcement-content {
+        font-size: 0.9rem;
+    }
+    .hub-title {
+        margin-bottom: 18px;
+    }
 }
