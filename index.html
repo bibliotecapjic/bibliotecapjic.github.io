@@ -2,90 +2,106 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblioteca - Explorador de Conocimiento</title>
-	 <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Biblioteca — Politécnico Colombiano</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<div class="vibrant-visual-hub">
-    
-    <header class="hub-header">
-        <h1 class="hub-title">Explora el <br><span class="text-gradient">Futuro del Saber</span></h1>
-
-        <p class="primo-intro">
-            <b>Primo</b> unifica el acceso al ecosistema de conocimiento del Polit&eacute;cnico. Desde un solo punto, conectamos a nuestra comunidad con la vanguardia de la investigaci&oacute;n global, recursos digitales y la memoria institucional.
-        </p>
-
-        <div class="library-announcement">
-            <span class="announcement-tag">Anuncio</span>
-            <p class="announcement-content">
-                <b>Nueva versi&oacute;n del descubridor Primo:</b> Queremos invitarte a conocer la nueva experiencia de b&uacute;squeda. Hemos actualizado nuestra plataforma para ofrecerte una interfaz m&aacute;s &aacute;gil, visual y f&aacute;cil de usar.
-            </p>
+<div class="container">
+    <!-- Hero asimétrico -->
+    <div class="hero">
+        <div class="hero-badge">✦ Centro de conocimiento</div>
+        <h1 class="hero-title">
+            Explora el <br><span>Futuro del Saber</span>
+        </h1>
+        <div class="hero-description">
+            <strong>Primo</strong> unifica el acceso al ecosistema de conocimiento del Politécnico. 
+            Conectamos a nuestra comunidad con la vanguardia de la investigación global, recursos digitales y la memoria institucional.
         </div>
-    </header>
+    </div>
 
-    <div class="visual-grid">
-        <a href="https://sites.google.com/view/novedades-bibliograficas/coordinacion-de-bibliotecas" target="_blank" rel="noopener noreferrer" class="visual-card card-books">
-            <div class="card-png-wrap">
-                <img src="images/Novedades.svg" alt="Novedades">
-            </div>
-            <div class="card-text">
-                <h3>Novedades<br>Bibliogr&aacute;ficas</h3>
-                <p>Lo &uacute;ltimo en nuestra colecci&oacute;n.</p>
-                <span class="card-action">Descubrir</span>
-            </div>
-        </a>
+    <!-- Anuncio sin botón -->
+    <div class="announcement">
+        <div class="announcement-tag">Anuncio</div>
+        <div class="announcement-text">
+            <strong>Nueva versión del descubridor Primo:</strong> Hemos actualizado nuestra plataforma para ofrecerte una interfaz más ágil, visual y fácil de usar.
+        </div>
+    </div>
 
-        <a href="https://pcjic.basesdedatosezproxy.com/menu" target="_blank" rel="noopener noreferrer" class="visual-card card-digital">
-            <div class="card-png-wrap">
-                <img src="images/Recursos.svg" alt="Recursos">
-            </div>
-            <div class="card-text">
-                <h3>Recursos<br>Electr&oacute;nicos</h3>
-                <p>Acceso a libros electrónicos y bases de datos académicas.</p>
-                <span class="card-action">Conectar</span>
-            </div>
-        </a>
-
-        <a href="http://repositorio.elpoli.edu.co/" target="_blank" rel="noopener noreferrer" class="visual-card card-repo">
-            <div class="card-png-wrap">
-                <img src="images/Repositorio.svg" alt="Repositorio">
-            </div>
-            <div class="card-text">
-                <h3>Repositorio<br>Institucional</h3>
-                <p>Conocimiento y memoria institucional.</p>
-                <span class="card-action">Buscar</span>
-            </div>
-        </a>
-
-        <a href="http://revistas.elpoli.edu.co/" target="_blank" rel="noopener noreferrer" class="visual-card card-journals">
-            <div class="card-png-wrap">
-                <img src="images/Revistas.svg" alt="Revistas">
-            </div>
-            <div class="card-text">
-                <h3>Revistas<br>Institucionales</h3>
-                <p>Publicaciones peri&oacute;dicas institucionales.</p>
-                <span class="card-action">Leer ahora</span>
-            </div>
-        </a>
+    <!-- Tarjetas: 4 en línea, sin animación de borde -->
+    <div class="cards-section">
+        <div class="section-label">Recursos destacados</div>
+        <div class="cards-grid">
+            <!-- Novedades -->
+            <a href="https://sites.google.com/view/novedades-bibliograficas/coordinacion-de-bibliotecas" target="_blank" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Novedades Bibliográficas</h3>
+                <p class="card-desc">Lo último en nuestra colección.</p>
+                <span class="card-button">Descubrir →</span>
+            </a>
+            <!-- Recursos Electrónicos -->
+            <a href="https://pcjic.basesdedatosezproxy.com/menu" target="_blank" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="8" y1="21" x2="16" y2="21" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Recursos Electrónicos</h3>
+                <p class="card-desc">Acceso a libros electrónicos y bases de datos.</p>
+                <span class="card-button">Conectar →</span>
+            </a>
+            <!-- Repositorio -->
+            <a href="http://repositorio.elpoli.edu.co/" target="_blank" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 12v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6" stroke="currentColor" stroke-width="1.5"/>
+                        <polyline points="15 3 21 3 21 9" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="10" y1="14" x2="21" y2="3" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Repositorio Institucional</h3>
+                <p class="card-desc">Conocimiento y memoria institucional.</p>
+                <span class="card-button">Explorar →</span>
+            </a>
+            <!-- Revistas -->
+            <a href="http://revistas.elpoli.edu.co/" target="_blank" class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="8" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="8" y1="16" x2="12" y2="16" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Revistas Institucionales</h3>
+                <p class="card-desc">Publicaciones periódicas institucionales.</p>
+                <span class="card-button">Leer ahora →</span>
+            </a>
+        </div>
     </div>
 </div>
 
-<footer class="hub-footer">
-    <div class="footer-container">
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
         <div class="footer-brand">
-            <span class="brand-dot"></span>
-            <p>&copy; 2026 <b>Polit&eacute;cnico Colombiano Jaime Isaza Cadavid</b></p>
+            <span class="footer-dot"></span>
+            <span class="footer-text">© 2026 <strong>Polotécnico Colombiano Jaime Isaza Cadavid</strong></span>
         </div>
-        
-        <div class="footer-meta">
-            <a href="mailto:biblioteca@elpoli.edu.co" class="footer-email">biblioteca@elpoli.edu.co</a>
-            <span class="footer-divider">|</span>
+        <div class="footer-links">
+            <a href="mailto:biblioteca@elpoli.edu.co">📧 biblioteca@elpoli.edu.co</a>
+            <span class="footer-emoji">📚</span>
             <span>Sistema de Bibliotecas</span>
         </div>
     </div>
 </footer>
-
 </body>
 </html>
