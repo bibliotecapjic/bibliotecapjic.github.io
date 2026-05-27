@@ -130,6 +130,7 @@ body {
     overflow: hidden;
     box-shadow: 0 15px 30px -12px rgba(0, 0, 0, 0.1);
     border: 1px solid #e2edf2;
+    color: inherit; /* Evita el color morado de los enlaces no visitados */
 }
 /* Borde superior grueso sin animación (estático) */
 .card:nth-child(1) { border-top: 6px solid #165a72; }
@@ -155,20 +156,17 @@ body {
     transform: perspective(800px) rotateX(5deg) translateY(-4px);
     filter: drop-shadow(0 12px 15px rgba(0,0,0,0.15));
 }
+/* Estilos unificados para TODOS los trazos del SVG (incluye path, line, rect, polyline, etc.) */
 .card-icon svg {
     width: 70px;
     height: 70px;
-    transition: all 0.2s;
+    display: block;
 }
-.card-icon svg path,
-.card-icon svg rect,
-.card-icon svg line {
+.card-icon svg * {
     stroke: #165a72;
     transition: stroke 0.2s;
 }
-.card:hover .card-icon svg path,
-.card:hover .card-icon svg rect,
-.card:hover .card-icon svg line {
+.card:hover .card-icon svg * {
     stroke: #00B4AB;
 }
 
