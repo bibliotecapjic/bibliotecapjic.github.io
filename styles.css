@@ -1,9 +1,15 @@
+/* ======================================================= */
+/* RESET GLOBAL: elimina márgenes, paddings y define box-sizing border-box para todos los elementos */
+/* ======================================================= */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* ======================================================= */
+/* ESTILOS BASE DEL BODY: fondo, fuente, color, altura de línea y antialiasing */
+/* ======================================================= */
 body {
     background: #f0f4f9;
     font-family: 'Inter', sans-serif;
@@ -12,6 +18,9 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+/* ======================================================= */
+/* CONTENEDOR PRINCIPAL: ancho máximo centrado y padding lateral */
+/* ======================================================= */
 .container {
     max-width: 1400px;
     margin: 0 auto;
@@ -19,6 +28,7 @@ body {
 }
 
 /* ===== HEADER ASIMÉTRICO ===== */
+/* Sección hero con borde izquierdo, badge y título destacado */
 .hero {
     margin: 4rem 0 2rem;
     padding-left: 2rem;
@@ -68,6 +78,7 @@ body {
 }
 
 /* ===== ANUNCIO (sin apariencia de botón) ===== */
+/* Estilos para un aviso sutil con borde izquierdo amarillo */
 .announcement {
     display: flex;
     align-items: center;
@@ -97,6 +108,7 @@ body {
 }
 
 /* ===== TARJETAS: 4 EN UNA LÍNEA ===== */
+/* Sección de tarjetas con etiqueta superior y grid de 4 columnas */
 .cards-section {
     margin: 4rem 0 5rem;
 }
@@ -132,7 +144,7 @@ body {
     border: 1px solid #e2edf2;
     color: inherit; /* Evita el color morado de los enlaces no visitados */
 }
-/* Borde superior grueso sin animación (estático) */
+/* Borde superior grueso sin animación (estático) - color diferente para cada una de las 4 primeras */
 .card:nth-child(1) { border-top: 6px solid #165a72; }
 .card:nth-child(2) { border-top: 6px solid #00B4AB; }
 .card:nth-child(3) { border-top: 6px solid #53738c; }
@@ -144,7 +156,7 @@ body {
     border-color: #cbd5e1;
 }
 
-/* Imagen/Icono con efecto 3D */
+/* Imagen/Icono con efecto 3D al pasar el mouse */
 .card-icon {
     margin-bottom: 1.5rem;
     display: flex;
@@ -213,6 +225,7 @@ body {
 }
 
 /* ===== FOOTER CON VIDA ===== */
+/* Pie de página con gradiente, animación en punto y enlaces interactivos */
 .footer {
     margin-top: 5rem;
     background: linear-gradient(105deg, #165a72 0%, #1e6f8a 100%);
@@ -271,6 +284,7 @@ body {
 }
 
 /* ===== RESPONSIVE: 2 columnas en tablet, 1 en móvil ===== */
+/* Ajustes de grid y espaciado para pantallas medianas y pequeñas */
 @media (max-width: 1100px) {
     .cards-grid {
         grid-template-columns: repeat(2, 1fr);
