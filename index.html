@@ -145,16 +145,121 @@ h1,h2,h3{font-family:'Lora',serif}
 .dw-table .hi td{background:rgba(237,217,29,.12)!important;color:var(--azul-medio)}
 .dw-table .hi td:first-child{color:#5a4a00}
 
-/* ——— SHELF DIAGRAM ——— */
-.shelf-diag{background:var(--fondo-principal);border:1px solid var(--borde-claro);border-radius:12px;padding:1.25rem;margin-bottom:1rem}
-.shelf-row{display:flex;align-items:center;gap:4px;margin-bottom:6px}
-.sh-label{font-size:10px;color:var(--azul-grisaceo);width:70px;text-align:right;flex-shrink:0;font-weight:500}
-.sh-cell{padding:6px 10px;border-radius:7px;font-size:11px;font-weight:600;text-align:center;min-width:64px;border:1.5px solid transparent;font-family:monospace}
-.sc-norm{background:var(--blanco);border-color:var(--borde-claro);color:var(--azul-grisaceo)}
-.sc-hi{background:rgba(22,90,114,.1);border-color:var(--azul-profundo);color:var(--azul-profundo)}
-.sc-found{background:rgba(237,217,29,.25);border-color:var(--amarillo-mostaza);color:#5a4a00}
-.sh-arr{font-size:12px;color:var(--verde-agua);margin:0 3px}
-.sh-down{text-align:center;color:var(--verde-agua);font-size:14px;margin:2px 0 2px 74px}
+/* ===== SHELF DIAGRAM ===== */
+.shelf-diag {
+    background: var(--fondo-principal);
+    border: 1px solid var(--borde-claro);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: visible;
+}
+
+.shelf-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 6px;
+    position: relative;
+}
+
+.sh-label {
+    font-size: 10px;
+    color: var(--azul-grisaceo);
+    width: 70px;
+    text-align: right;
+    flex-shrink: 0;
+    font-weight: 500;
+}
+
+.sh-cell {
+    padding: 6px 10px;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 64px;
+    border: 1.5px solid transparent;
+    font-family: monospace;
+}
+
+.sc-norm {
+    background: var(--blanco);
+    border-color: var(--borde-claro);
+    color: var(--azul-grisaceo);
+}
+
+.sc-hi {
+    background: rgba(22, 90, 114, .1);
+    border-color: var(--azul-profundo);
+    color: var(--azul-profundo);
+}
+
+.sc-found {
+    background: rgba(237, 217, 29, .25);
+    border-color: var(--amarillo-mostaza);
+    color: #5a4a00;
+}
+
+.sh-arr {
+    font-size: 12px;
+    color: var(--verde-agua);
+    margin: 0 3px;
+}
+
+/* Estilo para las flechas de continuación que apuntan a números específicos */
+.sh-down-arrow {
+    text-align: center;
+    color: #d32f2f;
+    font-size: 20px;
+    margin: 2px 0 2px 74px;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sh-down-arrow .arrow-text {
+    font-size: 13px;
+    color: var(--azul-grisaceo);
+    font-weight: normal;
+}
+
+.sh-down-arrow .arrow-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+/* Flecha que apunta directamente a un número */
+.sh-down-target {
+    text-align: center;
+    color: #d32f2f;
+    font-size: 20px;
+    margin: 0;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.sh-down-target .arrow-icon {
+    font-size: 28px;
+    line-height: 1;
+    transform: rotate(-20deg);
+}
+
+/* Resaltar los números destino */
+.target-highlight {
+    border-color: #d32f2f !important;
+    border-width: 2.5px !important;
+    position: relative;
+    z-index: 5;
+    box-shadow: 0 0 12px rgba(211, 47, 47, 0.3);
+}
 
 /* ——— RESULT CARDS ——— */
 .res-card{background:var(--blanco);border:1px solid var(--borde-claro);border-radius:12px;padding:12px 16px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;transition:border-color .2s}
@@ -301,10 +406,6 @@ h1,h2,h3{font-family:'Lora',serif}
         <div class="link-icon li-am"><i class="ti ti-sparkles"></i></div>
         <div><div class="link-title">Novedades bibliográficas</div><div class="link-desc">Últimas adquisiciones de la biblioteca organizadas por área del conocimiento.</div></div>
       </div>
-      <div class="link-card">
-        <div class="link-icon li-dark"><i class="ti ti-globe"></i></div>
-        <div><div class="link-title">Recursos de acceso abierto</div><div class="link-desc">Revistas, libros y artículos científicos disponibles libremente en internet.</div></div>
-      </div>
     </div>
     <div class="tip-box"><i class="ti ti-info-circle"></i> Para acceder a recursos electrónicos y bases de datos suscritas desde fuera del campus, debes iniciar sesión con tu cuenta institucional <strong>@elpoli.edu.co</strong>. Dentro del campus el acceso es automático.</div>
     <a class="cta-btn" href="https://polijic.primo.exlibrisgroup.com/nde/home?vid=57PJIC_INST:NDE&lang=es" target="_blank"><i class="ti ti-external-link"></i> Abrir el descubridor Primo</a>
@@ -321,7 +422,7 @@ h1,h2,h3{font-family:'Lora',serif}
     <div class="card-title"><i class="ti ti-search" style="color:var(--verde-agua)"></i> Búsqueda simple</div>
     <p class="card-desc">Escribe una o más palabras en la barra principal y presiona Enter. Si introduces varios términos <strong>sin operadores</strong>, Primo busca todos los términos a la vez. La búsqueda no distingue mayúsculas de minúsculas.</p>
     <div class="mock">
-      <div class="mock-url">🌐 polijic.primo.exlibrisgroup.com</div>
+      <div class="mock-url">🌐 https://polijic.primo.exlibrisgroup.com/nde/home?vid=57PJIC_INST:NDE&lang=es</div>
       <div class="mock-bar"><span class="typed">administración básica casos prácticos</span> <i class="ti ti-search" style="color:var(--azul-profundo)"></i></div>
       <div style="font-size:12px;color:var(--azul-grisaceo)">→ Muestra ítems que contengan <em>todos</em> los términos indicados</div>
     </div>
@@ -330,7 +431,7 @@ h1,h2,h3{font-family:'Lora',serif}
 
   <div class="card">
     <div class="card-title"><i class="ti ti-adjustments-horizontal" style="color:var(--azul-profundo)"></i> Búsqueda avanzada</div>
-    <p class="card-desc">Haz clic en "Búsqueda avanzada" (enlace debajo de la barra principal) para combinar varios campos. Ideal cuando la búsqueda simple da demasiados resultados.</p>
+    <p class="card-desc">Haz clic en "Búsqueda avanzada" para combinar varios campos. Ideal cuando la búsqueda simple da demasiados resultados.</p>
     <div class="mock">
       <div style="display:grid;grid-template-columns:110px 1fr;gap:6px;margin-bottom:8px;align-items:center">
         <span class="tag t-teal" style="font-size:11px">Título contiene</span>
@@ -350,13 +451,12 @@ h1,h2,h3{font-family:'Lora',serif}
   <div class="card">
     <div class="card-title"><i class="ti ti-list-search" style="color:var(--azul-profundo)"></i> Estrategias de búsqueda</div>
     <ul class="slist">
+      <li><strong>Por tipo de recurso</strong><p>Selecciona el tip de recurso qye quieres encontrar: Todos los recursos, títulos físicos, recursos electrónicos.</p></li>
       <li><strong>Por título</strong><p>Escribe el nombre entre comillas para la frase exacta: <code>"Fundamentos de programación"</code>. Sin comillas busca cada palabra por separado.</p></li>
       <li><strong>Por autor</strong><p>Escribe el apellido primero: Rodas Carpizo, o solo el apellido: Tanenbaum. En búsqueda avanzada selecciona el campo "Autor".</p></li>
       <li><strong>Por ISBN o ISSN</strong><p>Pega el número directamente (con o sin guiones). Si no obtienes resultados con guiones, inténtalo sin ellos.</p></li>
-      <li><strong>Por tema o palabra clave</strong><p>Usa términos del área de conocimiento: "termodinámica", "derecho laboral", "estadística inferencial", "seguridad informática".</p></li>
-      <li><strong>Por signatura topográfica</strong><p>Si conoces el código de clasificación (ej: 658.93), puedes buscarlo directamente para encontrar libros de ese tema.</p></li>
     </ul>
-    <div class="info-box"><i class="ti ti-edit"></i> Después de buscar, la consulta aparece encima de los resultados y puedes editarla directamente sin volver a la página de inicio.</div>
+    <div class="info-box"><i class="ti ti-edit"></i> Después de buscar, la consulta aparece encima de los resultados y puedes modificarla directamente sin volver a la página de inicio.</div>
   </div>
 
   <div class="nav-row">
@@ -378,7 +478,6 @@ h1,h2,h3{font-family:'Lora',serif}
       <div class="op-c"><span class="op-badge ob-not">NOT</span><div class="op-desc">Excluye resultados que contengan el término siguiente.</div><span class="op-ex">celtic NOT irish</span></div>
       <div class="op-c"><span class="op-badge ob-par">( )</span><div class="op-desc">Agrupa términos y controla el orden de evaluación.</div><span class="op-ex">Shakespeare AND (tragedy OR sonnet)</span></div>
     </div>
-    <div class="warn-box"><i class="ti ti-alert-triangle"></i> Al usar operadores booleanos, Primo desactiva mejoras automáticas como sinónimos e inflexiones. La búsqueda simple <code>redes computadores</code> puede dar mejores resultados que <code>redes AND computadores</code> en algunos casos.</div>
   </div>
 
   <div class="card">
@@ -395,11 +494,11 @@ h1,h2,h3{font-family:'Lora',serif}
     <div class="card-title"><i class="ti ti-brain" style="color:var(--verde-agua)"></i> Ejemplos combinados para investigación</div>
     <div style="display:flex;flex-direction:column;gap:10px">
       <div style="padding:10px 14px;background:var(--fondo-principal);border-radius:10px;border:1px solid var(--borde-claro)">
-        <div style="font-family:monospace;font-size:14px;color:var(--azul-muy-oscuro);margin-bottom:4px">Shakespeare AND (tragedy OR sonnet)</div>
+        <div style="font-family:monospace;font-size:14px;color:var(--azul-muy-oscuro);margin-bottom:4px">Shakespeare AND (tragedia OR soneto)</div>
         <div style="font-size:12px;color:var(--azul-grisaceo)">Busca Shakespeare junto con tragedia <em>o</em> soneto</div>
       </div>
       <div style="padding:10px 14px;background:var(--fondo-principal);border-radius:10px;border:1px solid var(--borde-claro)">
-        <div style="font-family:monospace;font-size:14px;color:var(--azul-muy-oscuro);margin-bottom:4px">cycling AND safety NOT helmet</div>
+        <div style="font-family:monospace;font-size:14px;color:var(--azul-muy-oscuro);margin-bottom:4px">ciclismo AND seguridad NOT cascos</div>
         <div style="font-size:12px;color:var(--azul-grisaceo)">Ciclismo y seguridad, excluyendo resultados sobre cascos</div>
       </div>
       <div style="padding:10px 14px;background:var(--fondo-principal);border-radius:10px;border:1px solid var(--borde-claro)">
@@ -427,17 +526,13 @@ h1,h2,h3{font-family:'Lora',serif}
     <div class="card-title"><i class="ti ti-filter" style="color:var(--verde-agua)"></i> Panel de filtros (barra lateral)</div>
     <p class="card-desc">Después de ejecutar una búsqueda, aparece una barra lateral izquierda con filtros. Puedes aplicar varios al mismo tiempo para reducir y precisar los resultados. Los filtros activos se acumulan: si no encuentras resultados, desactiva alguno.</p>
     <div class="fil-grid">
-      <div class="fil-item"><div class="fil-label">Tipo</div><div class="fil-val">📗 Libros</div></div>
-      <div class="fil-item"><div class="fil-label">Tipo</div><div class="fil-val">📄 Artículos</div></div>
-      <div class="fil-item"><div class="fil-label">Tipo</div><div class="fil-val">🎓 Tesis</div></div>
-      <div class="fil-item"><div class="fil-label">Tipo</div><div class="fil-val">📰 Revistas</div></div>
-      <div class="fil-item"><div class="fil-label">Disponibilidad</div><div class="fil-val">✅ En biblioteca</div></div>
-      <div class="fil-item"><div class="fil-label">Acceso</div><div class="fil-val">💻 En línea</div></div>
+      <div class="fil-item"><div class="fil-label">Biblioteca</div><div class="fil-val">📍 Biblioteca que contiene el material de búsqueda</div></div>
+      <div class="fil-item"><div class="fil-label">Disponibilidad</div><div class="fil-val">✅ En Biblioteca, en línea, open access, etc.</div></div>
+      <div class="fil-item"><div class="fil-label">Tipo de recurso</div><div class="fil-val">📗 Libros, artículos, revistas.</div></div>
       <div class="fil-item"><div class="fil-label">Idioma</div><div class="fil-val">🇪🇸 Español</div></div>
-      <div class="fil-item"><div class="fil-label">Año</div><div class="fil-val">2018–2025</div></div>
+      <div class="fil-item"><div class="fil-label">Fecha de publicación</div><div class="fil-val">2018–2025</div></div>
     </div>
-    <div class="tip-box"><i class="ti ti-star"></i> El filtro <strong>"Disponible en la biblioteca"</strong> muestra solo los recursos que puedes solicitar o consultar hoy. Úsalo cuando necesites el material de forma inmediata.</div>
-    <div class="warn-box"><i class="ti ti-alert-triangle"></i> Si aplicas el filtro "Solo texto completo" junto con "Disponible en la biblioteca" y no aparecen resultados, prueba desactivando uno de los dos.</div>
+    <div class="tip-box"><i class="ti ti-star"></i> El filtro <strong>"Disponible en la biblioteca"</strong> muestra solo los recursos que puedes solicitar o consultar físicamente. Úsalo cuando necesites el material en alguna de nuestras Bibliotecas.</div>
   </div>
 
   <div class="nav-row">
@@ -461,6 +556,8 @@ h1,h2,h3{font-family:'Lora',serif}
         <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">
           <span class="tag t-teal">Biblioteca Medellín · Colección General</span>
           <span class="tag t-gray" style="font-family:monospace">658 R685a</span>
+          <span class="tag t-gray" style="font-family:monospace">Código de barras: 047569</span>
+          <span class="tag t-gray" style="font-family:monospace">Tiempo de préstamo: Quince días</span>
         </div>
       </div>
     </div>
@@ -499,8 +596,8 @@ h1,h2,h3{font-family:'Lora',serif}
             <span class="tag t-teal" style="font-size:11px">Colección General · 658.562 A346</span>
           </div>
           <div style="font-size:12px;color:var(--azul-grisaceo);border-top:1px solid var(--borde-claro);padding-top:8px">
-            <div style="margin-bottom:4px"><span style="font-family:monospace;font-weight:600;color:var(--azul-profundo)">T.01 EJ.01</span> · <span style="color:#b91c1c">En préstamo hasta 22/10/2025</span> · Se puede prestar</div>
-            <div style="margin-bottom:4px"><span style="font-family:monospace;font-weight:600;color:var(--azul-profundo)">T.01 EJ.02</span> · <span style="color:var(--verde-agua)">Ejemplar en sitio</span> · Se puede prestar</div>
+            <div style="margin-bottom:4px"><span style="font-family:monospace;font-weight:600;color:var(--azul-profundo)">T.01 EJ.01</span> · <span style="color:#b91c1c">En préstamo hasta 22/10/2025</span> · Material de libre circulación</div>
+            <div style="margin-bottom:4px"><span style="font-family:monospace;font-weight:600;color:var(--azul-profundo)">T.01 EJ.02</span> · <span style="color:var(--verde-agua)">Ejemplar en sitio</span> · Material de libre circulación</div>
             <div><span style="font-family:monospace;font-weight:600;color:var(--azul-profundo)">T.01 EJ.03</span> · <span style="color:var(--verde-agua)">Ejemplar en sitio</span> · Solo sala</div>
           </div>
         </div>
@@ -550,7 +647,7 @@ h1,h2,h3{font-family:'Lora',serif}
         </div>
       </div>
     </div>
-    <div class="warn-box"><i class="ti ti-alert-triangle"></i> <strong>Anota siempre el rótulo completo del catálogo</strong> antes de ir a los estantes: número de clase, número Cutter y ejemplar. Sin estos datos es muy difícil encontrar el libro.</div>
+    <div class="warn-box"><i class="ti ti-alert-triangle"></i> <strong>Anota siempre el rótulo completo del descubridor</strong> antes de ir a los estantes: número de clase, número Cutter y ejemplar. Sin estos datos es muy difícil encontrar el libro.</div>
   </div>
 
   <div class="card">
@@ -582,32 +679,62 @@ h1,h2,h3{font-family:'Lora',serif}
     <p class="card-desc">Los módulos de estantes están numerados. Cada módulo tiene una <strong>cara frontal</strong> (con la etiqueta visible del número de módulo, ej: 3B1, 4A1) y una <strong>cara lateral</strong> (sin etiqueta, continuación del mismo módulo). Los libros avanzan en orden numérico de izquierda a derecha en cada repisa, y de arriba hacia abajo en cada módulo, igual que se lee un texto.</p>
     <div class="shelf-diag">
       <div style="font-size:12px;color:var(--azul-grisaceo);margin-bottom:12px;font-weight:500">Ejemplo: buscando el libro con signatura <code>658.93 B465 Ej.1</code></div>
+      
+      <!-- Repisa 1 -->
       <div class="shelf-row">
         <div class="sh-label">Repisa 1 →</div>
-        <div class="sh-cell sc-norm">600</div><div class="sh-arr">→</div>
-        <div class="sh-cell sc-norm">610</div><div class="sh-arr">→</div>
-        <div class="sh-cell sc-norm">620</div><div class="sh-arr">→</div>
-        <div class="sh-cell sc-norm">630</div><div class="sh-arr">→</div>
+        <div class="sh-cell sc-norm">600</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-norm">610</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-norm">620</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-norm">630</div>
+        <div class="sh-arr">→</div>
         <div class="sh-cell sc-norm">640</div>
       </div>
-      <div class="sh-down">↓ (continúa abajo)</div>
+      
+      <!-- Flecha ↓ (continúa abajo) que apunta a 641 -->
+      <div class="sh-down-arrow">
+        <span class="arrow-text">↓ (continúa abajo)</span>
+        <span class="arrow-icon">⬇</span>
+        <span style="color:#d32f2f;font-weight:bold;font-size:16px;">→ apunta a 641</span>
+      </div>
+      
+      <!-- Repisa 2 -->
       <div class="shelf-row">
         <div class="sh-label">Repisa 2 →</div>
-        <div class="sh-cell sc-norm">641</div><div class="sh-arr">→</div>
-        <div class="sh-cell sc-norm">643</div><div class="sh-arr">→</div>
-        <div class="sh-cell sc-norm">650</div><div class="sh-arr">→</div>
-        <div class="sh-cell sc-hi">655</div><div class="sh-arr">→</div>
+        <div class="sh-cell sc-norm target-highlight">641</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-norm">643</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-norm">650</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-hi">655</div>
+        <div class="sh-arr">→</div>
         <div class="sh-cell sc-hi">657</div>
       </div>
-      <div class="sh-down">↓</div>
+      
+      <!-- Flecha ↓ que apunta a 658 -->
+      <div class="sh-down-arrow">
+        <span class="arrow-icon">⬇</span>
+        <span style="color:#d32f2f;font-weight:bold;font-size:16px;">→ apunta a 658</span>
+      </div>
+      
+      <!-- Repisa 3 -->
       <div class="shelf-row">
         <div class="sh-label">Repisa 3 →</div>
-        <div class="sh-cell sc-hi">658</div><div class="sh-arr">→</div>
-        <div class="sh-cell sc-hi">658.1</div><div class="sh-arr">→</div>
-        <div class="sh-cell sc-hi">658.5</div><div class="sh-arr">→</div>
-        <div class="sh-cell sc-found">658.93</div><div class="sh-arr">→</div>
+        <div class="sh-cell sc-hi target-highlight">658</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-hi">658.1</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-hi">658.5</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-found">658.93</div>
+        <div class="sh-arr">→</div>
         <div class="sh-cell sc-found" style="font-size:10px">658.93 B465 ✓</div>
       </div>
+
       <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--azul-grisaceo)"><span style="width:14px;height:14px;background:var(--blanco);border:1.5px solid var(--borde-claro);border-radius:3px;display:inline-block"></span> Zona incorrecta</div>
         <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--azul-profundo)"><span style="width:14px;height:14px;background:rgba(22,90,114,.1);border:1.5px solid var(--azul-profundo);border-radius:3px;display:inline-block"></span> Zona cercana</div>
