@@ -261,6 +261,32 @@ h1,h2,h3{font-family:'Lora',serif}
     box-shadow: 0 0 12px rgba(211, 47, 47, 0.3);
 }
 
+
+/*Paso a paso: del catálogo al libro */
+.slist{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+.slist li{
+    display:grid;
+    grid-template-columns:280px 1fr;
+    gap:20px;
+    padding:16px 0;
+    border-bottom:1px solid #e5e7eb;
+}
+.slist li strong{
+    border-right:3px solid #1f4e79;
+    padding-right:15px;
+    color:#1f2937;
+}
+.slist li span{
+    text-align:justify;
+    line-height:1.6;
+}
+
+  
+  
 /* ——— RESULT CARDS ——— */
 .res-card{background:var(--blanco);border:1px solid var(--borde-claro);border-radius:12px;padding:12px 16px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;transition:border-color .2s}
 .res-card:hover{border-color:var(--borde-hover)}
@@ -746,7 +772,7 @@ h1,h2,h3{font-family:'Lora',serif}
     </div>
   </div>
 
-  <div class="card">
+  <!-- <div class="card">
     <div class="card-title"><i class="ti ti-route" style="color:var(--azul-profundo)"></i> Paso a paso: del catálogo al libro</div>
     <ul class="slist">
       <li><strong>Anota la signatura completa del catálogo</strong><span>Ejemplo: <code>Biblioteca Medellín · Colección General · 658.93 B465 Ej.1</code> — Necesitas los tres datos: sede, colección y código.</span></li>
@@ -760,7 +786,43 @@ h1,h2,h3{font-family:'Lora',serif}
     <div class="ok-box"><i class="ti ti-bulb"></i> <strong>Consejo clave:</strong> Si llegas al rango correcto y no encuentras el libro, no asumas que no está. Pregunta en el mostrador: podría estar en uso dentro de la sala, en proceso de catalogación, o recién devuelto y pendiente de reubicación.</div>
     <div class="warn-box"><i class="ti ti-hand-stop"></i> <strong>¡Nunca reubiques un libro por tu cuenta!</strong> Si sacas un libro del estante para hojearlo y decides no llevarlo, déjalo en el carrito de devolución. Si lo devuelves al estante en el lugar incorrecto, queda "perdido" para los siguientes usuarios.</div>
   </div>
+  
 
+  <li>
+  <strong>Anota la signatura completa del catálogo</strong>
+  <span>
+    Ejemplo: <code>Biblioteca Medellín · Colección General · 658.93 B465 Ej.1</code>.
+    Necesitas los tres datos: sede, colección y código.
+  </span>
+</li>
+
+<li>
+  <strong>Ve a la sede y colección correctas</strong>
+  <span>
+    Si dice "Colección General", dirígete a la sala general. Si dice
+    "Referencia", ve a la sala de referencia. Si dice "Hemeroteca", ve allí.
+  </span>
+</li>
+ -->
+
+  <ul class="slist">
+    <li>
+        <strong>Anota la signatura completa del catálogo</strong>
+        <span>Ejemplo: <code>Biblioteca Medellín · Colección General · 658.93 B465 Ej.1</code>. Necesitas los tres datos: sede, colección y código.</span>
+    </li>
+    
+    <li>
+        <strong>Ve a la sede y colección correctas</strong>
+        <span>Si dice "Colección General", dirígete a la sala general. Si dice "Referencia", ve a la sala de referencia. Si dice "Hemeroteca", ve allí.</span>
+    </li>
+    
+    <li>
+        <strong>Ubícate en la zona del número de clase (658)</strong>
+        <span>Los módulos de estantes tienen señales por sección. Busca la señalización para orientarte hacia el rango correspondiente.</span>
+    </li>
+</ul>
+
+  
   <div class="nav-row">
     <button class="prev-btn" onclick="goTo(4)"><i class="ti ti-arrow-left"></i> Anterior</button>
     <button class="next-btn" onclick="goTo(6)">Buscar revistas en Hemeroteca <i class="ti ti-arrow-right"></i></button>
