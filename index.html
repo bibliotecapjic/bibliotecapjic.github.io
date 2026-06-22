@@ -84,11 +84,57 @@ h1,h2,h3{font-family:'Lora',serif}
 .t-red{background:rgba(185,28,28,.08);color:#7f1d1d}
 
 /* ——— STEPS LIST ——— */
- .slist{list-style:none;counter-reset:s}
+/* .slist{list-style:none;counter-reset:s}
 .slist li{counter-increment:s;display:flex;gap:14px;margin-bottom:16px;align-items:flex-start}
 .slist li::before{content:counter(s);width:28px;height:28px;border-radius:50%;background:var(--azul-profundo);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;box-shadow:0 2px 6px var(--sombra-amarilla)}
 .slist li strong{font-size:14px;font-weight:500;color:var(--azul-muy-oscuro);display:block;margin-bottom:4px}
-.slist li p,.slist li span{font-size:13px;color:var(--azul-grisaceo);line-height:1.65} 
+.slist li p,.slist li span{font-size:13px;color:var(--azul-grisaceo);line-height:1.65} */
+
+  .slist{
+    list-style:none;
+    counter-reset:s;
+}
+
+.slist li{
+    counter-increment:s;
+    display:grid;
+    grid-template-columns:32px 250px 1fr;
+    gap:14px 18px;
+    align-items:start;
+    margin-bottom:18px;
+}
+
+.slist li::before{
+    content:counter(s);
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:var(--azul-profundo);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:2px;
+}
+
+.slist li strong{
+    grid-column:2;
+    font-size:14px;
+    font-weight:600;
+    color:var(--azul-muy-oscuro);
+    margin:0;
+}
+
+.slist li span,
+.slist li p{
+    grid-column:3;
+    font-size:13px;
+    color:var(--azul-grisaceo);
+    line-height:1.65;
+    margin:0;
+}
 
 
 
