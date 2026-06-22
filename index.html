@@ -85,10 +85,41 @@ h1,h2,h3{font-family:'Lora',serif}
 
 /* ——— STEPS LIST ——— */
 .slist{list-style:none;counter-reset:s}
-.slist li{counter-increment:s;display:flex;gap:14px;margin-bottom:16px;align-items:flex-start}
+/* .slist li{counter-increment:s;display:flex;gap:14px;margin-bottom:16px;align-items:flex-start}
 .slist li::before{content:counter(s);width:28px;height:28px;border-radius:50%;background:var(--azul-profundo);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;box-shadow:0 2px 6px var(--sombra-amarilla)}
 .slist li strong{font-size:14px;font-weight:500;color:var(--azul-muy-oscuro);display:block;margin-bottom:4px}
-.slist li p,.slist li span{font-size:13px;color:var(--azul-grisaceo);line-height:1.65}
+.slist li p,.slist li span{font-size:13px;color:var(--azul-grisaceo);line-height:1.65} */
+
+.slist li{
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+.slist li strong{
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--azul-muy-oscuro);
+  margin: 0;
+}
+
+.slist li .sl-desc{
+  font-size: 13px;
+  color: var(--azul-grisaceo);
+  line-height: 1.65;
+}
+
+
+
+
+
+
+
+  
+
+  
 
 /* ——— MOCK SCREEN ——— */
 .mock{background:var(--fondo-principal);border-radius:12px;border:1px solid var(--borde-claro);padding:1.25rem;margin-bottom:1rem}
@@ -759,13 +790,13 @@ h1,h2,h3{font-family:'Lora',serif}
    <div class="card">
     <div class="card-title"><i class="ti ti-route" style="color:var(--azul-profundo)"></i> Paso a paso: del catálogo al libro</div>
     <ul class="slist">
-      <li><strong>Anota la signatura completa del catálogo</strong><span>Ejemplo: <code>Biblioteca Medellín · Colección General · 658.93 B465 Ej.1</code> — Necesitas los tres datos: sede, colección y código.</span></li>
-      <li><strong>Ve a la sede y colección correctas</strong><span>Si dice "Colección General", dirígete a la sala general. Si dice "Referencia", ve a la sala de referencia. Si dice "Hemeroteca", ve allí. Las colecciones especiales tienen espacios diferenciados.</span></li>
-      <li><strong>Ubícate en la zona del número de clase (658)</strong><span>Los módulos de estantes tienen señales por sección (580–620, 620–680, etc.). Busca la señalización en el techo o en los extremos de las filas para orientarte hacia el rango 658.</span></li>
-      <li><strong>Localiza el módulo exacto (estante frontal)</strong><span>Cada módulo tiene una etiqueta en su cara frontal (ej: 4A1, 5B1). Esa etiqueta indica el rango de números que contiene. Camina por los módulos hasta encontrar el que incluye 658.93.</span></li>
-      <li><strong>Lee repisa por repisa, de arriba hacia abajo</strong><span>Los libros se ordenan de izquierda a derecha en cada repisa. Cuando terminan en la derecha, continúan en la repisa de abajo. El lateral del módulo es continuación del frontal.</span></li>
-      <li><strong>Encuentra el número Cutter (B465)</strong><span>Una vez en el rango 658.93, busca el código B465. Los Cutter van en orden alfanumérico: A…, B…, C…. Dentro de B, el orden es numérico: B100, B200, B465, B900.</span></li>
-      <li><strong>Verifica el número de ejemplar</strong><span>Si buscas Ej.1 y el Ej.1 está prestado, busca Ej.2 o Ej.3 en el mismo lugar (ordenados juntos). Si no lo encuentras en el estante, puede estar en el carrito de devolución o en uso en sala.</span></li>
+      <li><strong>Anota la signatura completa del catálogo</strong><span class="sl-desc">Ejemplo: <code>Biblioteca Medellín · Colección General · 658.93 B465 Ej.1</code> — Necesitas los tres datos: sede, colección y código.</span></li>
+      <li><strong>Ve a la sede y colección correctas</strong><span class="sl-desc">Si dice "Colección General", dirígete a la sala general. Si dice "Referencia", ve a la sala de referencia. Si dice "Hemeroteca", ve allí. Las colecciones especiales tienen espacios diferenciados.</span></li>
+      <li><strong>Ubícate en la zona del número de clase (658)</strong><span class="sl-desc">Los módulos de estantes tienen señales por sección (580–620, 620–680, etc.). Busca la señalización en el techo o en los extremos de las filas para orientarte hacia el rango 658.</span></li>
+      <li><strong>Localiza el módulo exacto (estante frontal)</strong><span class="sl-desc">Cada módulo tiene una etiqueta en su cara frontal (ej: 4A1, 5B1). Esa etiqueta indica el rango de números que contiene. Camina por los módulos hasta encontrar el que incluye 658.93.</span></li>
+      <li><strong>Lee repisa por repisa, de arriba hacia abajo</strong><span class="sl-desc">Los libros se ordenan de izquierda a derecha en cada repisa. Cuando terminan en la derecha, continúan en la repisa de abajo. El lateral del módulo es continuación del frontal.</span></li>
+      <li><strong>Encuentra el número Cutter (B465)</strong><span class="sl-desc">Una vez en el rango 658.93, busca el código B465. Los Cutter van en orden alfanumérico: A…, B…, C…. Dentro de B, el orden es numérico: B100, B200, B465, B900.</span></li>
+      <li><strong>Verifica el número de ejemplar</strong><span class="sl-desc">Si buscas Ej.1 y el Ej.1 está prestado, busca Ej.2 o Ej.3 en el mismo lugar (ordenados juntos). Si no lo encuentras en el estante, puede estar en el carrito de devolución o en uso en sala.</span></li>
     </ul>
     <div class="ok-box"><i class="ti ti-bulb"></i> <strong>Consejo clave:</strong> Si llegas al rango correcto y no encuentras el libro, no asumas que no está. Pregunta en el mostrador: podría estar en uso dentro de la sala, en proceso de catalogación, o recién devuelto y pendiente de reubicación.</div>
     <div class="warn-box"><i class="ti ti-hand-stop"></i> <strong>¡Nunca reubiques un libro por tu cuenta!</strong> Si sacas un libro del estante para hojearlo y decides no llevarlo, déjalo en el carrito de devolución. Si lo devuelves al estante en el lugar incorrecto, queda "perdido" para los siguientes usuarios.</div>
