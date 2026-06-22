@@ -265,41 +265,71 @@ h1,h2,h3{font-family:'Lora',serif}
 /*Paso a paso: del catálogo al libro */
 
 .card{
-    max-width:1000px;
-    margin:auto;
-    background:white;
-    border-radius:12px;
-    padding:24px;
-    box-shadow:0 2px 12px rgba(0,0,0,.08);
-}
-  
-.slist{
-    list-style:none;
-    padding:0;
-    margin:0;
-}
-.slist li{
-    display:grid;
-    grid-template-columns:280px 1fr;
-    gap:20px;
-    padding:16px 0;
-    border-bottom:1px solid #e5e7eb;
-}
-.slist li strong{
-    border-right:3px solid #1f4e79;
-    padding-right:15px;
-    color:#1f2937;
-}
-.slist li span{
-    text-align:justify;
-    line-height:1.6;
+  max-width:1000px;
+  margin:auto;
+  background:white;
+  border-radius:12px;
+  padding:24px;
+  box-shadow:0 2px 12px rgba(0,0,0,.08);
 }
 
-  code{
-    background:#eef2ff;
-    padding:2px 5px;
-    border-radius:4px;
+/* lista */
+.slist{
+  list-style:none;
+  padding:0;
+  margin:0;
 }
+
+.slist li{
+  display:grid;
+  grid-template-columns: minmax(220px, 1fr) 2fr;
+  gap:24px;
+  padding:18px 0;
+  border-bottom:1px solid #e5e7eb;
+  align-items:start;
+}
+
+/* título */
+.slist li strong{
+  color:#1f2937;
+  font-size:15px;
+  line-height:1.4;
+}
+
+/* contenido */
+.slist li span{
+  text-align:justify;
+  line-height:1.6;
+  color:#374151;
+}
+
+/* último item sin línea */
+.slist li:last-child{
+  border-bottom:none;
+}
+
+/* código */
+code{
+  background:#eef2ff;
+  padding:2px 6px;
+  border-radius:6px;
+  font-size:0.9em;
+}
+
+@media (max-width: 600px){
+  .slist li{
+    grid-template-columns: 1fr;
+    gap:10px;
+  }
+}
+
+
+
+
+
+
+
+  
   
   
 /* ——— RESULT CARDS ——— */
