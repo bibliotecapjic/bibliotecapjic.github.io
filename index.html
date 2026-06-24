@@ -42,6 +42,28 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 .hero-accent{width:44px;height:3px;background:var(--amarillo-mostaza);border-radius:2px;margin:12px 0}
 .hero p{font-size:15px;color:rgba(255,255,255,.82);line-height:1.75;max-width:540px;position:relative}
 
+/* ——— BANNERS DE BIENVENIDA Y FINAL ——— */
+.welcome-banner,
+.final-banner {
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(14,47,60,.1);
+    line-height: 0;
+    border: 1px solid var(--borde-claro);
+    background: var(--blanco);
+}
+.welcome-banner img,
+.final-banner img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.final-banner {
+    margin-bottom: 0;
+    margin-top: 2rem;
+}
+
 /* ——— STICKY NAV ——— */
 .nav-wrap{background:var(--blanco);border-radius:14px;border:1px solid var(--borde-claro);padding:6px;margin-bottom:1.75rem;display:flex;flex-wrap:wrap;gap:4px;position:sticky;top:.75rem;z-index:200;box-shadow:0 4px 20px rgba(14,47,60,.08)}
 .nav-btn{display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:10px;border:none;background:transparent;color:var(--azul-grisaceo);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap;font-weight:400}
@@ -61,6 +83,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .section-label{font-size:11px;font-weight:600;color:var(--verde-agua);text-transform:uppercase;letter-spacing:.9px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .section-label::after{content:'';flex:1;height:1px;background:var(--borde-claro)}
+
+/* --- BANNER ESPACIO POR PÁGINA --- */
+.page-banner {
+    margin-bottom: 1.5rem;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--blanco);
+    border: 1px solid var(--borde-claro);
+    line-height: 0;
+}
+.page-banner img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
 
 /* ——— CARDS ——— */
 .card{background:var(--blanco);border:1px solid var(--borde-claro);border-radius:16px;padding:1.5rem;margin-bottom:1.25rem;transition:border-color .2s,box-shadow .2s}
@@ -427,6 +464,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
   <p>Aprende a usar el descubridor Primo, encontrar material en los estantes, consultar revistas, acceder a recursos electrónicos y sacarle el máximo partido a la Biblioteca Institucional</p>
 </div>
 
+<!-- ==================== IMAGEN DE BIENVENIDA ==================== -->
+<div class="welcome-banner">
+  <!-- Reemplaza el src con la URL de tu imagen PNG de bienvenida -->
+  <img src="https://via.placeholder.com/900x250/00B4AB/FFFFFF?text=¡Bienvenido+a+la+Biblioteca!" alt="Banner de bienvenida">
+</div>
+
 <!-- ==================== PROGRESS ==================== -->
 <div class="progress" id="prog">
   <div class="pdot done" id="pd1"></div><div class="pdot" id="pd2"></div>
@@ -453,6 +496,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 0 — INICIO ==================== -->
 <div class="panel active" id="panel0">
   <div class="section-label"><i class="ti ti-home"></i> Paso 1 — ¿Qué es Primo y cómo funciona?</div>
+  
+  <!-- Espacio para el banner de la página -->
+  <div class="page-banner">
+    <!-- Reemplaza el src con la URL de tu imagen PNG -->
+    <img src="https://via.placeholder.com/900x200/165a72/FFFFFF?text=Banner+de+la+Biblioteca" alt="Banner de la página">
+  </div>
 
   <div class="card">
     <div class="card-title"><i class="ti ti-topology-star-3" style="color:var(--verde-agua)"></i> ¿Qué es Primo?</div>
@@ -501,6 +550,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 1 — BÚSQUEDA ==================== -->
 <div class="panel" id="panel1">
   <div class="section-label"><i class="ti ti-search"></i> Paso 2 — Cómo buscar en el descubridor</div>
+  
+  <!-- Espacio para el banner de la página -->
+  <div class="page-banner">
+    <!-- Reemplaza el src con la URL de tu imagen PNG -->
+    <img src="https://via.placeholder.com/900x200/165a72/FFFFFF?text=Banner+de+la+Biblioteca" alt="Banner de la página">
+  </div>
 
   <div class="card">
     <div class="card-title"><i class="ti ti-search" style="color:var(--verde-agua)"></i> Búsqueda simple</div>
@@ -552,6 +607,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 2 — OPERADORES ==================== -->
 <div class="panel" id="panel2">
   <div class="section-label"><i class="ti ti-code"></i> Paso 3 — Operadores booleanos y comodines</div>
+  
+  <!-- Espacio para el banner de la página -->
+  <div class="page-banner">
+    <!-- Reemplaza el src con la URL de tu imagen PNG -->
+    <img src="https://via.placeholder.com/900x200/165a72/FFFFFF?text=Banner+de+la+Biblioteca" alt="Banner de la página">
+  </div>
 
   <div class="card">
     <div class="card-title"><i class="ti ti-math-function" style="color:var(--azul-profundo)"></i> Operadores booleanos</div>
@@ -605,6 +666,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 3 — FILTROS ==================== -->
 <div class="panel" id="panel3">
   <div class="section-label"><i class="ti ti-filter"></i> Paso 4 — Cómo usar los filtros</div>
+  
+  <!-- Espacio para el banner de la página -->
+  <div class="page-banner">
+    <!-- Reemplaza el src con la URL de tu imagen PNG -->
+    <img src="https://via.placeholder.com/900x200/165a72/FFFFFF?text=Banner+de+la+Biblioteca" alt="Banner de la página">
+  </div>
 
   <div class="card">
     <div class="card-title"><i class="ti ti-filter" style="color:var(--verde-agua)"></i> Panel de filtros (barra lateral)</div>
@@ -628,6 +695,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 4 — RESULTADOS ==================== -->
 <div class="panel" id="panel4">
   <div class="section-label"><i class="ti ti-list"></i> Paso 5 — Interpretar los resultados</div>
+  
+  <!-- Espacio para el banner de la página -->
+  <div class="page-banner">
+    <!-- Reemplaza el src con la URL de tu imagen PNG -->
+    <img src="https://via.placeholder.com/900x200/165a72/FFFFFF?text=Banner+de+la+Biblioteca" alt="Banner de la página">
+  </div>
 
   <div class="card">
     <div class="card-title"><i class="ti ti-list-details" style="color:var(--verde-agua)"></i> Qué leer en cada resultado</div>
@@ -703,6 +776,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 5 — ESTANTES ==================== -->
 <div class="panel" id="panel5">
   <div class="section-label"><i class="ti ti-layout-rows"></i> Paso 6 — Cómo buscar un libro en los estantes</div>
+  
+  <!-- Espacio para el banner de la página -->
+  <div class="page-banner">
+    <!-- Reemplaza el src con la URL de tu imagen PNG -->
+    <img src="https://via.placeholder.com/900x200/165a72/FFFFFF?text=Banner+de+la+Biblioteca" alt="Banner de la página">
+  </div>
 
   <div class="card">
     <div class="card-title"><i class="ti ti-tag" style="color:var(--verde-agua)"></i> El rótulo del libro: tu mapa de navegación</div>
@@ -859,6 +938,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 6 — REVISTAS ==================== -->
 <div class="panel" id="panel6">
   <div class="section-label"><i class="ti ti-news"></i> Paso 7 — Cómo buscar una revista o artículo de revista</div>
+  
+  <!-- Espacio para el banner de la página -->
+  <div class="page-banner">
+    <!-- Reemplaza el src con la URL de tu imagen PNG -->
+    <img src="https://via.placeholder.com/900x200/165a72/FFFFFF?text=Banner+de+la+Biblioteca" alt="Banner de la página">
+  </div>
 
   <div class="card">
     <div class="card-title"><i class="ti ti-search" style="color:var(--verde-agua)"></i> Buscar en el descubridor: artículo vs. revista</div>
@@ -932,6 +1017,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 7 — RECURSOS DIGITALES ==================== -->
 <div class="panel" id="panel7">
   <div class="section-label"><i class="ti ti-world"></i> Paso 8 — Cómo acceder a recursos electrónicos</div>
+  
+  <!-- Espacio para el banner de la página -->
+  <div class="page-banner">
+    <!-- Reemplaza el src con la URL de tu imagen PNG -->
+    <img src="https://via.placeholder.com/900x200/165a72/FFFFFF?text=Banner+de+la+Biblioteca" alt="Banner de la página">
+  </div>
 
   <div class="card">
     <div class="card-title"><i class="ti ti-device-laptop" style="color:var(--verde-agua)"></i> ¿Qué son los recursos electrónicos?</div>
@@ -1011,6 +1102,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 8 — MI CUENTA ==================== -->
 <div class="panel" id="panel8">
   <div class="section-label"><i class="ti ti-user-circle"></i> Paso 9 — Mi cuenta en Primo</div>
+  
+  <!-- Espacio para el banner de la página -->
+  <div class="page-banner">
+    <!-- Reemplaza el src con la URL de tu imagen PNG -->
+    <img src="https://via.placeholder.com/900x200/165a72/FFFFFF?text=Banner+de+la+Biblioteca" alt="Banner de la página">
+  </div>
 
   <div class="card">
     <div class="card-title"><i class="ti ti-user-circle" style="color:var(--verde-agua)"></i> El Área de Usuario</div>
@@ -1052,6 +1149,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 9 — BUENAS PRÁCTICAS ==================== -->
 <div class="panel" id="panel9">
   <div class="section-label"><i class="ti ti-award"></i> Paso 10 — Buenas prácticas y normas de la biblioteca</div>
+  
+  <!-- Espacio para el banner de la página -->
+  <div class="page-banner">
+    <!-- Reemplaza el src con la URL de tu imagen PNG -->
+    <img src="https://via.placeholder.com/900x200/165a72/FFFFFF?text=Banner+de+la+Biblioteca" alt="Banner de la página">
+  </div>
 
   <div class="card">
     <div class="card-title"><i class="ti ti-clipboard-check" style="color:var(--verde-agua)"></i> Comportamientos esperados en la biblioteca</div>
@@ -1116,7 +1219,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
   </div>
 </div>
 
-  
+<!-- ==================== IMAGEN FINAL ==================== -->
+<div class="final-banner">
+  <!-- Reemplaza el src con la URL de tu imagen PNG final -->
+  <img src="https://via.placeholder.com/900x200/165a72/FFFFFF?text=¡Gracias+por+usar+nuestra+guía!" alt="Banner final">
+</div>
+
 <!-- ==================== FOOTER ==================== -->
 <div class="guide-footer">
   <div style="flex:1">
