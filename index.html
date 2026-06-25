@@ -42,6 +42,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 .hero-accent{width:44px;height:3px;background:var(--amarillo-mostaza);border-radius:2px;margin:12px 0}
 .hero p{font-size:15px;color:rgba(255,255,255,.82);line-height:1.75;max-width:540px;position:relative}
 
+/* ——— STICKY NAV ——— */
+.nav-wrap{background:var(--blanco);border-radius:14px;border:1px solid var(--borde-claro);padding:6px;margin-bottom:1.75rem;display:flex;flex-wrap:wrap;gap:4px;position:sticky;top:.75rem;z-index:200;box-shadow:0 4px 20px rgba(14,47,60,.08)}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:10px;border:none;background:transparent;color:var(--azul-grisaceo);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap;font-weight:400}
+.nav-btn:hover{background:var(--fondo-principal);color:var(--azul-profundo)}
+.nav-btn.active{background:var(--azul-profundo);color:#fff;font-weight:500}
+.nav-btn .num{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.22);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-btn:not(.active) .num{background:var(--borde-claro);color:var(--azul-grisaceo)}
+
 /* ——— BANNERS DE BIENVENIDA Y FINAL ——— */
 .welcome-banner,
 .final-banner {
@@ -69,14 +77,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 .hidden-banner {
     display: none !important;
 }
-
-/* ——— STICKY NAV ——— */
-.nav-wrap{background:var(--blanco);border-radius:14px;border:1px solid var(--borde-claro);padding:6px;margin-bottom:1.75rem;display:flex;flex-wrap:wrap;gap:4px;position:sticky;top:.75rem;z-index:200;box-shadow:0 4px 20px rgba(14,47,60,.08)}
-.nav-btn{display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:10px;border:none;background:transparent;color:var(--azul-grisaceo);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap;font-weight:400}
-.nav-btn:hover{background:var(--fondo-principal);color:var(--azul-profundo)}
-.nav-btn.active{background:var(--azul-profundo);color:#fff;font-weight:500}
-.nav-btn .num{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.22);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.nav-btn:not(.active) .num{background:var(--borde-claro);color:var(--azul-grisaceo)}
 
 /* ——— PROGRESS ——— */
 .progress{display:flex;gap:4px;margin-bottom:2rem}
@@ -470,6 +470,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
   <p>Aprende a usar el descubridor Primo, encontrar material en los estantes, consultar revistas, acceder a recursos electrónicos y sacarle el máximo partido a la Biblioteca Institucional</p>
 </div>
 
+<!-- ==================== NAVIGATION (AHORA ANTES DEL BANNER) ==================== -->
+<div class="nav-wrap">
+  <button class="nav-btn active" onclick="goTo(0)" id="btn0"><span class="num">1</span><span class="label">Inicio</span></button>
+  <button class="nav-btn" onclick="goTo(1)" id="btn1"><span class="num">2</span><span class="label">Búsqueda</span></button>
+  <button class="nav-btn" onclick="goTo(2)" id="btn2"><span class="num">3</span><span class="label">Operadores</span></button>
+  <button class="nav-btn" onclick="goTo(3)" id="btn3"><span class="num">4</span><span class="label">Filtros</span></button>
+  <button class="nav-btn" onclick="goTo(4)" id="btn4"><span class="num">5</span><span class="label">Resultados</span></button>
+  <button class="nav-btn" onclick="goTo(5)" id="btn5"><span class="num">6</span><span class="label">Libros / Estantes</span></button>
+  <button class="nav-btn" onclick="goTo(6)" id="btn6"><span class="num">7</span><span class="label">Revistas</span></button>
+  <button class="nav-btn" onclick="goTo(7)" id="btn7"><span class="num">8</span><span class="label">Recursos electrónicos</span></button>
+  <button class="nav-btn" onclick="goTo(8)" id="btn8"><span class="num">9</span><span class="label">Mi cuenta</span></button>
+  <button class="nav-btn" onclick="goTo(9)" id="btn9"><span class="num">10</span><span class="label">Buenas prácticas</span></button>
+</div>
+
 <!-- ==================== IMAGEN DE BIENVENIDA (SOLO EN PÁGINA 1) ==================== -->
 <div class="welcome-banner" id="welcomeBanner">
   <!-- Reemplaza el src con la URL de tu imagen PNG de bienvenida -->
@@ -483,20 +497,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
   <div class="pdot" id="pd5"></div><div class="pdot" id="pd6"></div>
   <div class="pdot" id="pd7"></div><div class="pdot" id="pd8"></div>
   <div class="pdot" id="pd9"></div><div class="pdot" id="pd10"></div>
-</div>
-
-<!-- ==================== NAVIGATION ==================== -->
-<div class="nav-wrap">
-  <button class="nav-btn active" onclick="goTo(0)" id="btn0"><span class="num">1</span><span class="label">Inicio</span></button>
-  <button class="nav-btn" onclick="goTo(1)" id="btn1"><span class="num">2</span><span class="label">Búsqueda</span></button>
-  <button class="nav-btn" onclick="goTo(2)" id="btn2"><span class="num">3</span><span class="label">Operadores</span></button>
-  <button class="nav-btn" onclick="goTo(3)" id="btn3"><span class="num">4</span><span class="label">Filtros</span></button>
-  <button class="nav-btn" onclick="goTo(4)" id="btn4"><span class="num">5</span><span class="label">Resultados</span></button>
-  <button class="nav-btn" onclick="goTo(5)" id="btn5"><span class="num">6</span><span class="label">Libros / Estantes</span></button>
-  <button class="nav-btn" onclick="goTo(6)" id="btn6"><span class="num">7</span><span class="label">Revistas</span></button>
-  <button class="nav-btn" onclick="goTo(7)" id="btn7"><span class="num">8</span><span class="label">Recursos electrónicos</span></button>
-  <button class="nav-btn" onclick="goTo(8)" id="btn8"><span class="num">9</span><span class="label">Mi cuenta</span></button>
-  <button class="nav-btn" onclick="goTo(9)" id="btn9"><span class="num">10</span><span class="label">Buenas prácticas</span></button>
 </div>
 
 <!-- ==================== PANEL 0 — INICIO ==================== -->
