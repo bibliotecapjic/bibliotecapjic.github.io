@@ -451,18 +451,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 
 <!-- ==================== NAVIGATION ==================== -->
 <div class="nav-wrap">
-  <button class="nav-btn active" onclick="goTo(0)" id="btn0"><span class="num">0</span><span class="label">Inicio</span></button>
+  <button class="nav-btn active" onclick="goTo(0)" id="btn0"><span class="label">Inicio</span></button>
   <button class="nav-btn" onclick="goTo(1)" id="btn1"><span class="num">1</span><span class="label">Primo</span></button>
   <button class="nav-btn" onclick="goTo(2)" id="btn2"><span class="num">2</span><span class="label">Búsqueda</span></button>
   <button class="nav-btn" onclick="goTo(3)" id="btn3"><span class="num">3</span><span class="label">Operadores</span></button>
   <button class="nav-btn" onclick="goTo(4)" id="btn4"><span class="num">4</span><span class="label">Filtros</span></button>
   <button class="nav-btn" onclick="goTo(5)" id="btn5"><span class="num">5</span><span class="label">Resultados</span></button>
-  <button class="nav-btn" onclick="goTo(6)" id="btn6"><span class="num">6</span><span class="label">Estantes</span></button>
+  <button class="nav-btn" onclick="goTo(6)" id="btn6"><span class="num">6</span><span class="label">Buscar en Estantes</span></button>
   <button class="nav-btn" onclick="goTo(7)" id="btn7"><span class="num">7</span><span class="label">Revistas</span></button>
-  <button class="nav-btn" onclick="goTo(8)" id="btn8"><span class="num">8</span><span class="label">Digitales</span></button>
+  <button class="nav-btn" onclick="goTo(8)" id="btn8"><span class="num">8</span><span class="label">Recursos electrónicos</span></button>
   <button class="nav-btn" onclick="goTo(9)" id="btn9"><span class="num">9</span><span class="label">Mi cuenta</span></button>
-  <button class="nav-btn" onclick="goTo(10)" id="btn10"><span class="num">10</span><span class="label">Prácticas</span></button>
-  <button class="nav-btn" onclick="goTo(11)" id="btn11"><span class="num">11</span><span class="label">Final</span></button>
+  <button class="nav-btn" onclick="goTo(10)" id="btn10"><span class="num">10</span><span class="label">Buenas Prácticas</span></button>
+  <button class="nav-btn" onclick="goTo(11)" id="btn11"><span class="label">Fin</span></button>
 </div>
 
 <!-- ==================== PROGRESS ==================== -->
@@ -1050,7 +1050,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
   <div class="card">
     <div class="card-title"><i class="ti ti-bookmark" style="color:var(--azul-profundo)"></i> Guardar un registro: paso a paso</div>
     <ul class="slist">
-      <li><strong>Busca el material en el catálogo</strong><span>Ejecuta cualquier búsqueda. Verás los resultados en lista.</span></li>
+      <li><strong>Busca el material en el Descubridor</strong><span>Ejecuta cualquier búsqueda. Verás los resultados en lista.</span></li>
       <li><strong>Haz clic en el ícono de marcador 📌</strong><span>Está al lado de cada resultado. Al guardarlo, el ícono cambia de color y el ítem aparece en tu lista de Registros guardados.</span></li>
       <li><strong>Accede a tus registros guardados</strong><span>Menú de usuario (tus iniciales) → Registros guardados. Puedes buscar entre ellos, ordenarlos y exportarlos.</span></li>
       <li><strong>Crea etiquetas para organizar</strong><span>Haz clic en "Agregar nueva etiqueta" dentro de un registro. Ponle un nombre (ej: "Estadística I") y asígnala a varios registros para agruparlos por curso o proyecto.</span></li>
@@ -1119,7 +1119,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     <p class="card-desc">Los <strong>bibliotecólogos de referencia</strong> son profesionales especializados que pueden ayudarte a planificar tu estrategia de búsqueda, identificar las mejores fuentes para tu tema, manejar gestores bibliográficos (Zotero, Mendeley) y acceder a recursos que no encuentras por tu cuenta. No dudes en acercarte al mostrador o preguntar.</p>
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:1rem">
       <a class="cta-btn" href="https://polijic.primo.exlibrisgroup.com/nde/home?vid=57PJIC_INST:NDE&lang=es" target="_blank"><i class="ti ti-search"></i> Ir al catálogo</a>
-      <button class="sec-btn" onclick="goTo(11)"><i class="ti ti-arrow-right"></i> Ver final</button>
+      <!-- <button class="sec-btn" onclick="goTo(11)"><i class="ti ti-arrow-right"></i> Ver final</button> -->
     </div>
   </div>
   <div class="nav-row">
@@ -1141,7 +1141,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     <p>Recuerda que el equipo de biblioteca está siempre disponible para ayudarte en tu proceso de investigación y aprendizaje.</p>
     <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
       <button class="cta-btn" onclick="goTo(0)"><i class="ti ti-home"></i> Volver al inicio</button>
-      <a class="sec-btn" href="https://polijic.primo.exlibrisgroup.com/nde/home?vid=57PJIC_INST:NDE&lang=es" target="_blank"><i class="ti ti-search"></i> Ir al catálogo</a>
+      <a class="sec-btn" href="https://polijic.primo.exlibrisgroup.com/nde/home?vid=57PJIC_INST:NDE&lang=es" target="_blank"><i class="ti ti-search"></i> Ir al descubridor Primo</a>
     </div>
   </div>
 </div>
@@ -1150,13 +1150,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <div class="guide-footer">
   <div style="flex:1">
     <p style="font-size:16px;font-weight:500;margin-bottom:6px">Biblioteca Politécnico Colombiano Jaime Isaza Cadavid</p>
-    <p>Guía de uso del catálogo Primo NDE · Medellín, Colombia<br>
-    <a href="https://polijic.primo.exlibrisgroup.com/nde/home?vid=57PJIC_INST:NDE&lang=es" target="_blank">Acceder al catálogo →</a></p>
+    <p>Guía de uso del descubridor Primo·<br>
+    <a href="https://polijic.primo.exlibrisgroup.com/nde/home?vid=57PJIC_INST:NDE&lang=es" target="_blank">Acceder al descubridor →</a></p>
   </div>
-  <div style="text-align:right;font-size:12px;color:var(--blanco-transparente)">
+  <!-- <div style="text-align:right;font-size:12px;color:var(--blanco-transparente)">
     <div>Plataforma: Ex Libris Primo VE</div>
     <div>Interfaz: NDE (New Discovery Experience)</div>
-  </div>
+  </div> -->
 </div>
 
 </div><!-- /wrapper -->
