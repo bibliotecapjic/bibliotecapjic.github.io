@@ -65,6 +65,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     margin-top: 2rem;
     margin-bottom: 0;
 }
+/* Ocultar banners cuando no corresponden */
+.hidden-banner {
+    display: none !important;
+}
 
 /* ——— STICKY NAV ——— */
 .nav-wrap{background:var(--blanco);border-radius:14px;border:1px solid var(--borde-claro);padding:6px;margin-bottom:1.75rem;display:flex;flex-wrap:wrap;gap:4px;position:sticky;top:.75rem;z-index:200;box-shadow:0 4px 20px rgba(14,47,60,.08)}
@@ -466,8 +470,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
   <p>Aprende a usar el descubridor Primo, encontrar material en los estantes, consultar revistas, acceder a recursos electrónicos y sacarle el máximo partido a la Biblioteca Institucional</p>
 </div>
 
-<!-- ==================== IMAGEN DE BIENVENIDA (SOLO AL INICIO) ==================== -->
-<div class="welcome-banner">
+<!-- ==================== IMAGEN DE BIENVENIDA (SOLO EN PÁGINA 1) ==================== -->
+<div class="welcome-banner" id="welcomeBanner">
   <!-- Reemplaza el src con la URL de tu imagen PNG de bienvenida -->
   <img src="images/Page0.png?text=¡Bienvenido+a+la+Biblioteca!" alt="Banner de bienvenida">
 </div>
@@ -1221,8 +1225,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
   </div>
 </div>
 
-<!-- ==================== IMAGEN FINAL (SOLO AL FINAL) ==================== -->
-<div class="final-banner">
+<!-- ==================== IMAGEN FINAL (SOLO EN PÁGINA 10) ==================== -->
+<div class="final-banner" id="finalBanner">
   <!-- Reemplaza el src con la URL de tu imagen PNG final -->
   <img src="images/Page11.png?text=¡Gracias+por+usar+nuestra+guía!" alt="Banner final">
 </div>
@@ -1245,17 +1249,41 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <script>
 let cur = 0;
 const tot = 10;
+
 function goTo(n) {
+  // Cambiar panel
   document.getElementById('panel' + cur).classList.remove('active');
   document.getElementById('btn' + cur).classList.remove('active');
   cur = n;
   document.getElementById('panel' + cur).classList.add('active');
   document.getElementById('btn' + cur).classList.add('active');
+  
+  // Actualizar progreso
   for (let i = 0; i < tot; i++) {
     document.getElementById('pd' + (i + 1)).classList.toggle('done', i <= n);
   }
+  
+  // --- CONTROL DE BANNERS ---
+  const welcomeBanner = document.getElementById('welcomeBanner');
+  const finalBanner = document.getElementById('finalBanner');
+  
+  // Banner de bienvenida: solo visible en página 1 (panel 0)
+  if (n === 0) {
+    welcomeBanner.classList.remove('hidden-banner');
+  } else {
+    welcomeBanner.classList.add('hidden-banner');
+  }
+  
+  // Banner final: solo visible en página 10 (panel 9)
+  if (n === 9) {
+    finalBanner.classList.remove('hidden-banner');
+  } else {
+    finalBanner.classList.add('hidden-banner');
+  }
+  
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
 function showUA(n, el) {
   document.querySelectorAll('.ua-panel').forEach(p => p.classList.remove('on'));
   document.querySelectorAll('.ua-tab').forEach(t => t.classList.remove('on'));
