@@ -87,7 +87,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     font-weight: 600;
     color: var(--azul-profundo);
     margin-bottom: 1rem;
-    /* Eliminado font-family: 'Lora', serif; para que herede DM Sans */
 }
 .special-page p {
     font-size: 16px;
@@ -163,11 +162,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 .t-red{background:rgba(185,28,28,.08);color:#7f1d1d}
 
 /* ——— STEPS LIST ——— */
-  .slist{
+.slist{
     list-style:none;
     counter-reset:s;
 }
-
 .slist li{
     counter-increment:s;
     display:grid;
@@ -176,7 +174,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     align-items:start;
     margin-bottom:18px;
 }
-
 .slist li::before{
     content:counter(s);
     width:28px;
@@ -191,7 +188,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     justify-content:center;
     margin-top:2px;
 }
-
 .slist li strong{
     font-size:14px;
     font-weight:500;
@@ -199,7 +195,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     line-height:1.45;
     margin:0;
 }  
-
 .slist li span,
 .slist li p{
     grid-column:3;
@@ -274,7 +269,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     position: relative;
     overflow: visible;
 }
-
 .shelf-row {
     display: flex;
     align-items: center;
@@ -282,7 +276,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     margin-bottom: 6px;
     position: relative;
 }
-
 .sh-label {
     font-size: 10px;
     color: var(--azul-grisaceo);
@@ -291,7 +284,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     flex-shrink: 0;
     font-weight: 500;
 }
-
 .sh-cell {
     padding: 6px 10px;
     border-radius: 7px;
@@ -302,31 +294,26 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     border: 1.5px solid transparent;
     font-family: monospace;
 }
-
 .sc-norm {
     background: var(--blanco);
     border-color: var(--borde-claro);
     color: var(--azul-grisaceo);
 }
-
 .sc-hi {
     background: rgba(22, 90, 114, .1);
     border-color: var(--azul-profundo);
     color: var(--azul-profundo);
 }
-
 .sc-found {
     background: rgba(237, 217, 29, .25);
     border-color: var(--amarillo-mostaza);
     color: #5a4a00;
 }
-
 .sh-arr {
     font-size: 12px;
     color: var(--verde-agua);
     margin: 0 3px;
 }
-
 .sh-down-arrow {
     text-align: center;
     color: #d32f2f;
@@ -338,18 +325,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     align-items: center;
     gap: 8px;
 }
-
 .sh-down-arrow .arrow-text {
     font-size: 13px;
     color: var(--azul-grisaceo);
     font-weight: normal;
 }
-
 .sh-down-arrow .arrow-icon {
     font-size: 24px;
     line-height: 1;
 }
-
 .sh-down-target {
     text-align: center;
     color: #d32f2f;
@@ -362,13 +346,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     justify-content: center;
     gap: 8px;
 }
-
 .sh-down-target .arrow-icon {
     font-size: 28px;
     line-height: 1;
     transform: rotate(-20deg);
 }
-
 .target-highlight {
     border-color: #d32f2f !important;
     border-width: 2.5px !important;
@@ -424,7 +406,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     gap:8px;
     font-family:inherit;
 }
-  
 .gp-ok .gp-title{color:#0a5e5a}
 .gp-no .gp-title{color:#7f1d1d}
 .gp-list{list-style:none}
@@ -512,13 +493,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 1 — PRIMO ==================== -->
 <div class="panel" id="panel1">
   <div class="section-label"><i class="ti ti-home"></i> Paso 1 — ¿Qué es Primo y cómo funciona?</div>
-  
-  <!-- Espacio para el banner de la página -->
   <div class="page-banner">
-    <!-- Reemplaza el src con la URL de tu imagen PNG -->
     <img src="images/Page1.png?text=Banner+Paso+1" alt="Banner de la página">
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-topology-star-3" style="color:var(--verde-agua)"></i> ¿Qué es Primo?</div>
     <p class="card-desc">
@@ -534,7 +511,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
       <span class="tag t-gray"><i class="ti ti-building-library" style="font-size:11px"></i> Todas las bibliotecas institucionales</span>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-layout-grid" style="color:var(--azul-profundo)"></i> Recursos disponibles en el portal</div>
     <p class="card-desc">La página de inicio de Primo ofrece acceso a diferentes secciones y recursos especializados, además del descubridor central.</p>
@@ -559,18 +535,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     <div class="tip-box"><i class="ti ti-info-circle"></i> Para acceder a recursos electrónicos y bases de datos suscritas desde fuera del campus, debes iniciar sesión con tu cuenta institucional <strong>@elpoli.edu.co</strong>. Dentro del campus el acceso es automático.</div>
     <a class="cta-btn" href="https://polijic.primo.exlibrisgroup.com/nde/home?vid=57PJIC_INST:NDE&lang=es" target="_blank"><i class="ti ti-external-link"></i> Abrir el descubridor Primo</a>
   </div>
-
   <div class="nav-row"><span></span><button class="next-btn" onclick="goTo(2)">Búsqueda básica y avanzada <i class="ti ti-arrow-right"></i></button></div>
 </div>
 
 <!-- ==================== PANEL 2 — BÚSQUEDA ==================== -->
 <div class="panel" id="panel2">
   <div class="section-label"><i class="ti ti-search"></i> Paso 2 — Cómo buscar en el descubridor</div>
-  
   <div class="page-banner">
     <img src="images/Page2.png?text=Banner+Paso+2" alt="Banner de la página">
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-search" style="color:var(--verde-agua)"></i> Búsqueda simple</div>
     <p class="card-desc">Escribe una o más palabras en la barra principal y presiona Enter. Si introduces varios términos <strong>sin operadores</strong>, Primo busca todos los términos a la vez. La búsqueda no distingue mayúsculas de minúsculas.</p>
@@ -581,7 +554,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     </div>
     <div class="tip-box"><i class="ti ti-quote"></i> Para buscar una frase exacta, enciérrala en comillas: <code style="background:var(--fondo-principal);padding:2px 7px;border-radius:5px;font-size:12px">"cálculo diferencial"</code> — así evitas resultados que tengan las palabras separadas.</div>
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-adjustments-horizontal" style="color:var(--azul-profundo)"></i> Búsqueda avanzada</div>
     <p class="card-desc">Haz clic en "Búsqueda avanzada" para combinar varios campos. Ideal cuando la búsqueda simple da demasiados resultados.</p>
@@ -600,7 +572,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
       </div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-list-search" style="color:var(--azul-profundo)"></i> Estrategias de búsqueda</div>
     <ul class="slist">
@@ -611,7 +582,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     </ul>
     <div class="info-box"><i class="ti ti-edit"></i> Después de buscar, la consulta aparece encima de los resultados y puedes modificarla directamente sin volver a la página de inicio.</div>
   </div>
-
   <div class="nav-row">
     <button class="prev-btn" onclick="goTo(1)"><i class="ti ti-arrow-left"></i> Anterior</button>
     <button class="next-btn" onclick="goTo(3)">Operadores y comodines <i class="ti ti-arrow-right"></i></button>
@@ -621,11 +591,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 3 — OPERADORES ==================== -->
 <div class="panel" id="panel3">
   <div class="section-label"><i class="ti ti-code"></i> Paso 3 — Operadores booleanos y comodines</div>
-  
   <div class="page-banner">
     <img src="images/Page3.png?text=Banner+Paso+3" alt="Banner de la página">
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-math-function" style="color:var(--azul-profundo)"></i> Operadores booleanos</div>
     <p class="card-desc">Los operadores deben escribirse siempre en <strong>MAYÚSCULAS</strong>. Si los escribes en minúsculas, Primo los trata como palabras normales y los incluye en la búsqueda sin su función lógica.</p>
@@ -636,7 +604,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
       <div class="op-c"><span class="op-badge ob-par">( )</span><div class="op-desc">Agrupa términos y controla el orden de evaluación.</div><span class="op-ex">Shakespeare AND (tragedy OR sonnet)</span></div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-asterisk" style="color:var(--azul-profundo)"></i> Comodines</div>
     <p class="card-desc">Permiten buscar variaciones de una palabra sin escribirlas todas. Muy útiles para conjugaciones, plurales y variantes ortográficas.</p>
@@ -646,7 +613,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     </div>
     <div class="tip-box"><i class="ti ti-info-circle"></i> Los comodines no pueden usarse dentro de frases entre comillas. Al usarlos se desactivan los sinónimos automáticos. Para buscar la frase exacta usa comillas: <code>"gestión empresarial"</code></div>
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-brain" style="color:var(--verde-agua)"></i> Ejemplos combinados para investigación</div>
     <div style="display:flex;flex-direction:column;gap:10px">
@@ -658,9 +624,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
         <div style="font-family:monospace;font-size:14px;color:var(--azul-muy-oscuro);margin-bottom:4px">ciclismo AND seguridad NOT cascos</div>
         <div style="font-size:12px;color:var(--azul-grisaceo)">Ciclismo y seguridad, excluyendo resultados sobre cascos</div>
       </div>
+      <div style="padding:10px 14px;background:var(--fondo-principal);border-radius:10px;border:1px solid var(--borde-claro)">
+        <div style="font-family:monospace;font-size:14px;color:var(--azul-muy-oscuro);margin-bottom:4px">administ* AND "pequeña empresa"</div>
+        <div style="font-size:12px;color:var(--azul-grisaceo)">Variantes de administrar/administración con la frase exacta</div>
+      </div>
+      <div style="padding:10px 14px;background:var(--fondo-principal);border-radius:10px;border:1px solid var(--borde-claro)">
+        <div style="font-family:monospace;font-size:14px;color:var(--azul-muy-oscuro);margin-bottom:4px">(redes OR networking) AND seguridad NOT hardware</div>
+        <div style="font-size:12px;color:var(--azul-grisaceo)">Redes o networking, con seguridad, sin contenido de hardware</div>
+      </div>
     </div>
   </div>
-
   <div class="nav-row">
     <button class="prev-btn" onclick="goTo(2)"><i class="ti ti-arrow-left"></i> Anterior</button>
     <button class="next-btn" onclick="goTo(4)">Filtros de búsqueda <i class="ti ti-arrow-right"></i></button>
@@ -670,11 +643,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 4 — FILTROS ==================== -->
 <div class="panel" id="panel4">
   <div class="section-label"><i class="ti ti-filter"></i> Paso 4 — Cómo usar los filtros</div>
-  
   <div class="page-banner">
     <img src="images/Page4.png?text=Banner+Paso+4" alt="Banner de la página">
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-filter" style="color:var(--verde-agua)"></i> Panel de filtros (barra lateral)</div>
     <p class="card-desc">Después de ejecutar una búsqueda, aparece una barra lateral izquierda con filtros. Puedes aplicar varios al mismo tiempo para reducir y precisar los resultados. Los filtros activos se acumulan: si no encuentras resultados, desactiva alguno.</p>
@@ -687,7 +658,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     </div>
     <div class="tip-box"><i class="ti ti-star"></i> El filtro <strong>"Disponible en la biblioteca"</strong> muestra solo los recursos que puedes solicitar o consultar físicamente. Úsalo cuando necesites el material en alguna de nuestras Bibliotecas.</div>
   </div>
-
   <div class="nav-row">
     <button class="prev-btn" onclick="goTo(3)"><i class="ti ti-arrow-left"></i> Anterior</button>
     <button class="next-btn" onclick="goTo(5)">Interpretar resultados <i class="ti ti-arrow-right"></i></button>
@@ -697,11 +667,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 5 — RESULTADOS ==================== -->
 <div class="panel" id="panel5">
   <div class="section-label"><i class="ti ti-list"></i> Paso 5 — Interpretar los resultados</div>
-  
   <div class="page-banner">
     <img src="images/Page5.png?text=Banner+Paso+5" alt="Banner de la página">
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-list-details" style="color:var(--verde-agua)"></i> Qué leer en cada resultado</div>
     <p class="card-desc">Cada ítem en los resultados muestra el tipo de documento, ubicación y clasificación. Aprende a leer estos datos antes de ir a buscar el material físicamente.</p>
@@ -740,7 +708,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
       </div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-building-library" style="color:var(--azul-profundo)"></i> La sección "Ubicaciones"</div>
     <p class="card-desc">Al hacer clic en un resultado, verás la sección <strong>UBICACIONES</strong> con todas las sedes donde existe el ítem. Al expandir una sede se muestran los ejemplares y su estado actual.</p>
@@ -766,7 +733,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     </div>
     <div class="tip-box"><i class="ti ti-eye"></i> Revisa la cantidad de ejemplares: si uno está prestado, puede haber otro disponible en la misma sede o en otra. El tipo "Solo sala" significa que puedes consultarlo en la biblioteca pero no llevarlo a casa.</div>
   </div>
-
   <div class="nav-row">
     <button class="prev-btn" onclick="goTo(4)"><i class="ti ti-arrow-left"></i> Anterior</button>
     <button class="next-btn" onclick="goTo(6)">Encontrar libros en los estantes <i class="ti ti-arrow-right"></i></button>
@@ -776,11 +742,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 6 — ESTANTES ==================== -->
 <div class="panel" id="panel6">
   <div class="section-label"><i class="ti ti-layout-rows"></i> Paso 6 — Cómo buscar un libro en los estantes</div>
-  
   <div class="page-banner">
     <img src="images/Page6.png?text=Banner+Paso+6" alt="Banner de la página">
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-tag" style="color:var(--verde-agua)"></i> El rótulo del libro: tu mapa de navegación</div>
     <p class="card-desc">Cada libro tiene un pequeño rótulo adhesivo en el lomo. Es tu guía para encontrarlo físicamente. Está compuesto de dos (o tres) líneas que debes anotar del catálogo antes de ir a buscar.</p>
@@ -800,7 +764,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
         </div>
         <div style="padding:12px 14px;border-radius:10px;background:rgba(22,90,114,.07);border:1px solid rgba(22,90,114,.2)">
           <div style="font-size:13px;font-weight:600;color:var(--azul-profundo);margin-bottom:5px"><i class="ti ti-a-b" style="font-size:14px"></i> Línea 2: Número Cutter (autor)</div>
-          <div style="font-size:13px;color:var(--azul-medio);line-height:1.6">Código que corresponde al <strong>apellido del autor</strong> según las tablas de Cutter. Ordena alfabéticamente los libros dentro del mismo número de clase.</div>
+          <div style="font-size:13px;color:var(--azul-medio);line-height:1.6">Código que corresponde al <strong>apellido del autor</strong> según las tablas de Cutter. Ordena alfabéticamente los libros dentro del mismo número de clase. Ej: A346 → apellido que empieza por A · R685a → apellido con R.</div>
         </div>
         <div style="padding:12px 14px;border-radius:10px;background:rgba(237,217,29,.1);border:1px solid rgba(237,217,29,.4)">
           <div style="font-size:13px;font-weight:600;color:#5a4a00;margin-bottom:5px"><i class="ti ti-copy" style="font-size:14px"></i> Línea 3 (opcional): Número de ejemplar</div>
@@ -810,7 +774,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
     </div>
     <div class="warn-box"><i class="ti ti-alert-triangle"></i> <strong>Anota siempre el rótulo completo del descubridor</strong> antes de ir a los estantes: número de clase, número Cutter y ejemplar. Sin estos datos es muy difícil encontrar el libro.</div>
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-table" style="color:var(--azul-profundo)"></i> Principales áreas del conocimiento (Clasificación Dewey)</div>
     <p class="card-desc">El sistema Dewey divide el conocimiento en 10 grandes clases de 100 en 100. Conocer los rangos te ayuda a ubicarte en la zona correcta de la biblioteca.</p>
@@ -832,8 +795,78 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
         <tr><td>900–999</td><td>Historia, geografía y biografía</td></tr>
       </tbody>
     </table>
+    <div class="tip-box"><i class="ti ti-bulb"></i> Las filas marcadas con ⭐ corresponden a las áreas académicas con mayor colección en el Politécnico JIC.</div>
   </div>
-
+  <div class="card">
+    <div class="card-title"><i class="ti ti-arrows-right-left" style="color:var(--verde-agua)"></i> Cómo están organizados físicamente los estantes</div>
+    <p class="card-desc">Los módulos de estantes están numerados. Cada módulo tiene una <strong>cara frontal</strong> (con la etiqueta visible del número de módulo, ej: 3B1, 4A1) y una <strong>cara lateral</strong> (sin etiqueta, continuación del mismo módulo). Los libros avanzan en orden numérico de izquierda a derecha en cada repisa, y de arriba hacia abajo en cada módulo, igual que se lee un texto.</p>
+    <div class="shelf-diag">
+      <div style="font-size:12px;color:var(--azul-grisaceo);margin-bottom:12px;font-weight:500">Ejemplo: buscando el libro con signatura <code>658.93 B465 Ej.1</code></div>
+      <div class="shelf-row">
+        <div class="sh-label">Repisa 1 →</div>
+        <div class="sh-cell sc-norm">600</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-norm">610</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-norm">620</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-norm">630</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-norm target-highlight">640</div>
+        <div class="sh-arr">→ ↓ (continúa abajo, de izquierda a derecha)</div>
+      </div>
+      <div class="sh-down-arrow">
+        <span class="arrow-text">⭣ ══════════════════════════════════════════════ ⮨</span>
+      </div>
+      <div class="shelf-row">
+        <div class="sh-label">Repisa 2 →</div>
+        <div class="sh-cell sc-norm target-highlight">641</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-norm">643</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-norm">650</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-norm">655</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-norm target-highlight">657</div>
+        <div class="sh-arr">→ ↓ (continúa abajo, de izquierda a derecha)</div>
+      </div>
+      <div class="sh-down-arrow">
+        <span class="arrow-text">⭣ ══════════════════════════════════════════════ ⮨</span>
+      </div>
+      <div class="shelf-row">
+        <div class="sh-label">Repisa 3 →</div>
+        <div class="sh-cell sc-hi target-highlight">658</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-hi">658.1</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-hi">658.5</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-found">658.93</div>
+        <div class="sh-arr">→</div>
+        <div class="sh-cell sc-found" style="font-size:10px">658.93 B465 ✓</div>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--azul-grisaceo)"><span style="width:14px;height:14px;background:var(--blanco);border:1.5px solid var(--borde-claro);border-radius:3px;display:inline-block"></span> Zona incorrecta</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--azul-profundo)"><span style="width:14px;height:14px;background:rgba(22,90,114,.1);border:1.5px solid var(--azul-profundo);border-radius:3px;display:inline-block"></span> Zona cercana</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#5a4a00"><span style="width:14px;height:14px;background:rgba(237,217,29,.25);border:1.5px solid var(--amarillo-mostaza);border-radius:3px;display:inline-block"></span> ¡Aquí está el libro!</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><i class="ti ti-route" style="color:var(--azul-profundo)"></i> Paso a paso: del catálogo al libro</div>
+    <ul class="slist">
+      <li><strong>Anota la signatura completa del catálogo</strong><span>Ejemplo: <code>Biblioteca Medellín · Colección General · 658.93 B465 Ej.1</code> — Necesitas los tres datos: sede, colección y código.</span></li>
+      <li><strong>Ve a la sede y colección correctas</strong><span>Si dice "Colección General", dirígete a la sala general. Si dice "Hemeroteca", ve allí. Las colecciones especiales tienen espacios diferenciados.</span></li>
+      <li><strong>Ubícate en la zona del número de clase (658)</strong><span>Los módulos de estantes tienen señales por sección (580–620, 620–680, etc.). Busca la señalización en el techo o en los extremos de las filas para orientarte hacia el rango 658.</span></li>
+      <li><strong>Localiza el módulo exacto (estante frontal)</strong><span>Cada módulo tiene una etiqueta en su cara frontal (ej: 4A1, 5B1). Esa etiqueta indica el rango de números que contiene. Camina por los módulos hasta encontrar el que incluye 658.93.</span></li>
+      <li><strong>Lee repisa por repisa, de arriba hacia abajo</strong><span>Los libros se ordenan de izquierda a derecha en cada repisa. Cuando terminan en la derecha, continúan en la repisa de abajo. El lateral del módulo es continuación del frontal.</span></li>
+      <li><strong>Encuentra el número Cutter (B465)</strong><span>Una vez en el rango 658.93, busca el código B465. Los Cutter van en orden alfanumérico: A…, B…, C…. Dentro de B, el orden es numérico: B100, B200, B465, B900.</span></li>
+      <li><strong>Verifica el número de ejemplar</strong><span>Si buscas Ej.1 y el Ej.1 está prestado, busca Ej.2 o Ej.3 en el mismo lugar (ordenados juntos). Si no lo encuentras en el estante, puede estar en el carrito de devolución o en uso en sala.</span></li>
+    </ul>
+    <div class="ok-box"><i class="ti ti-bulb"></i> <strong>Consejo clave:</strong> Si llegas al rango correcto y no encuentras el libro, no asumas que no está. Pregunta en el mostrador: podría estar en uso dentro de la sala, en proceso de catalogación, o recién devuelto y pendiente de reubicación.</div>
+    <div class="warn-box"><i class="ti ti-hand-stop"></i> <strong>¡Nunca reubiques un libro por tu cuenta!</strong> Si sacas un libro del estante para hojearlo y decides no llevarlo, déjalo en el carrito de devolución. Si lo devuelves al estante en el lugar incorrecto, queda "perdido" para los siguientes usuarios.</div>
+  </div>
   <div class="nav-row">
     <button class="prev-btn" onclick="goTo(5)"><i class="ti ti-arrow-left"></i> Anterior</button>
     <button class="next-btn" onclick="goTo(7)">Buscar revistas en Hemeroteca <i class="ti ti-arrow-right"></i></button>
@@ -843,44 +876,68 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 7 — REVISTAS ==================== -->
 <div class="panel" id="panel7">
   <div class="section-label"><i class="ti ti-news"></i> Paso 7 — Cómo buscar una revista o artículo de revista</div>
-  
   <div class="page-banner">
     <img src="images/Page7.png?text=Banner+Paso+7" alt="Banner de la página">
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-search" style="color:var(--verde-agua)"></i> Buscar en el descubridor: artículo vs. revista</div>
     <p class="card-desc">Puedes llegar a un artículo de revista de dos maneras distintas en Primo: buscando el <strong>título del artículo</strong> (si ya sabes cuál quieres) o buscando el <strong>título de la revista</strong> (si quieres explorar todos los números disponibles).</p>
     <div class="g2">
       <div style="padding:14px;background:rgba(0,180,171,.06);border-radius:10px;border:1px solid rgba(0,180,171,.2)">
         <div style="font-size:13px;font-weight:600;color:#0a5e5a;margin-bottom:6px"><i class="ti ti-article"></i> Buscar el artículo</div>
-        <div style="font-size:13px;color:var(--azul-medio);line-height:1.65">Escribe el título del artículo en la barra de búsqueda. El resultado mostrará el artículo y la revista donde fue publicado.</div>
+        <div style="font-size:13px;color:var(--azul-medio);line-height:1.65">Escribe el título del artículo en la barra de búsqueda. El resultado mostrará el artículo y la revista donde fue publicado, con número, año y páginas.</div>
         <div class="mock" style="margin-top:8px;padding:8px 10px">
           <div class="mock-bar" style="padding:6px 10px"><span class="typed" style="font-size:12px">"El ADN de los emprendedores en serie"</span></div>
         </div>
       </div>
       <div style="padding:14px;background:rgba(22,90,114,.06);border-radius:10px;border:1px solid rgba(22,90,114,.2)">
         <div style="font-size:13px;font-weight:600;color:var(--azul-profundo);margin-bottom:6px"><i class="ti ti-books"></i> Buscar la revista</div>
-        <div style="font-size:13px;color:var(--azul-medio);line-height:1.65">Escribe el nombre de la publicación y filtra por tipo "Revista". Verás los volúmenes e issues disponibles.</div>
+        <div style="font-size:13px;color:var(--azul-medio);line-height:1.65">Escribe el nombre de la publicación y filtra por tipo "Revista". Verás los volúmenes e issues disponibles en la biblioteca.</div>
         <div class="mock" style="margin-top:8px;padding:8px 10px">
           <div class="mock-bar" style="padding:6px 10px"><span class="typed" style="font-size:12px">Revista Emprendedores</span></div>
         </div>
       </div>
     </div>
   </div>
-
   <div class="card">
-    <div class="card-title"><i class="ti ti-map-pin" style="color:var(--verde-agua)"></i> Cómo encontrar la revista en la Hemeroteca</div>
-    <p class="card-desc">La Hemeroteca es el espacio físico dedicado a las publicaciones periódicas. Las revistas están organizadas en <strong>carpetas naranjas</strong> ordenadas <strong>alfabéticamente por título</strong> en los estantes laterales.</p>
-    <ul class="slist">
-      <li><strong>Dirígete a la Hemeroteca</strong><span>Es una sala o zona diferenciada de la Colección General.</span></li>
-      <li><strong>Ubícate en el estante lateral correspondiente</strong><span>Las revistas están organizadas alfabéticamente. Cada estante tiene una etiqueta que indica el rango de revistas que contiene.</span></li>
-      <li><strong>Busca la carpeta naranja con el nombre de la revista</strong><span>Las carpetas tienen etiquetas con el título de la publicación y el rango de años.</span></li>
-      <li><strong>Abre la carpeta y busca el número/fecha específico</strong><span>Los fascículos están ordenados cronológicamente.</span></li>
-    </ul>
-    <div class="warn-box"><i class="ti ti-alert-triangle"></i> Las revistas impresas son de <strong>consulta exclusiva en sala</strong>: no se prestan a domicilio.</div>
+    <div class="card-title"><i class="ti ti-file-text" style="color:var(--azul-profundo)"></i> Cómo leer el resultado de un artículo</div>
+    <p class="card-desc">El resultado de un artículo en el catálogo te da todos los datos para encontrarlo físicamente. Identifica cada elemento:</p>
+    <div style="background:var(--fondo-principal);border-radius:12px;border:1px solid var(--borde-claro);padding:1.25rem;margin-bottom:1rem">
+      <div style="font-size:11px;color:var(--azul-grisaceo);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">ARTÍCULO</div>
+      <div style="font-size:16px;font-weight:500;color:var(--azul-claro);margin-bottom:4px">El ADN de los emprendedores en serie</div>
+      <div style="font-size:13px;color:var(--azul-grisaceo);margin-bottom:12px">2025</div>
+      <div style="font-size:13px;color:var(--azul-grisaceo);margin-bottom:12px;padding:8px 12px;background:var(--blanco);border-radius:8px;border:1px solid var(--borde-claro)">
+        <span style="color:var(--amarillo-mostaza);font-weight:700">A</span> <strong>Emprendedores.</strong>
+        <span style="color:var(--verde-agua);font-weight:700"> No. 323</span>
+        <span style="color:var(--azul-profundo);font-weight:600"> Ene. - Feb. 2025</span>
+        <span style="color:var(--azul-grisaceo)"> pp. 51–59</span>
+      </div>
+      <div style="font-size:12px;color:var(--azul-claro);margin-bottom:6px"><i class="ti ti-building-library" style="font-size:13px"></i> Comprobar disponibilidad en <strong>Biblioteca Medellín Hemeroteca y otras ubicaciones</strong> ›</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px"><span style="width:12px;height:12px;background:var(--amarillo-mostaza);border-radius:50%;display:inline-block"></span><span><strong style="color:#5a4a00">A</strong> = Título de la revista (Emprendedores)</span></div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px"><span style="width:12px;height:12px;background:rgba(0,180,171,.5);border-radius:50%;display:inline-block"></span><span><strong style="color:#0a5e5a">No. 323</strong> = Número del ejemplar</span></div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px"><span style="width:12px;height:12px;background:rgba(22,90,114,.4);border-radius:50%;display:inline-block"></span><span><strong style="color:var(--azul-profundo)">Ene-Feb 2025</strong> = Período de publicación</span></div>
+      </div>
+    </div>
+    <div class="tip-box"><i class="ti ti-info-circle"></i> <strong>Anota estos tres datos</strong> antes de ir a la Hemeroteca: nombre de la revista, número del ejemplar y fecha. Son los que usarás para buscar la carpeta correcta en los estantes.</div>
   </div>
-
+  <div class="card">
+    <div class="card-title"><i class="ti ti-map-pin" style="color:var(--verde-agua)"></i> Cómo encontrar la revista en la Hemeroteca — paso a paso</div>
+    <p class="card-desc">La Hemeroteca es el espacio físico dedicado a las publicaciones periódicas (revistas, boletines, periódicos). Las revistas están organizadas en <strong>carpetas naranjas</strong> ordenadas <strong>alfabéticamente por título</strong> en los estantes laterales.</p>
+    <ul class="slist">
+      <li><strong>Dirígete a la Hemeroteca</strong><span>Es una sala o zona diferenciada de la Colección General. El personal de la biblioteca puede indicarte su ubicación exacta dentro del edificio.</span></li>
+      <li><strong>Ubícate en el estante lateral correspondiente</strong><span>Las revistas están en estantes laterales, organizadas alfabéticamente. Cada estante tiene una etiqueta que indica el rango de revistas que contiene (ej: Estante 1 Lado A: Academia Revista... — Boletín Cultural...). Avanza hasta el rango que incluye la inicial del título de tu revista.</span></li>
+      <li><strong>Busca la carpeta naranja con el nombre de la revista</strong><span>Las carpetas naranjas tienen etiquetas con el título de la publicación, el rango de años y, a veces, el rango de números que contienen. Busca la carpeta que diga "Emprendedores" (si ese es el título).</span></li>
+      <li><strong>Abre la carpeta y busca el número/fecha específico</strong><span>Dentro de la carpeta encontrarás los fascículos (números individuales) ordenados cronológicamente. Busca el No. 323 de Ene-Feb 2025 según anotaste del catálogo.</span></li>
+      <li><strong>Localiza el artículo dentro del fascículo</strong><span>Una vez tengas el fascículo en mano, ve a las páginas indicadas (pp. 51–59). Las revistas no se prestan a domicilio: las consultas son en sala.</span></li>
+    </ul>
+    <div class="warn-box"><i class="ti ti-alert-triangle"></i> Las revistas impresas son de <strong>consulta exclusiva en sala</strong>: no se prestan a domicilio. Si el artículo existe también en versión digital (a veces el catálogo lo indica), podrás descargarlo en línea. Consulta la sección de Recursos digitales.</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><i class="ti ti-clock" style="color:var(--azul-profundo)"></i> Revistas encuadernadas y fascículos sueltos</div>
+    <p class="card-desc">Los volúmenes más antiguos de muchas revistas están <strong>encuadernados</strong> (cosidos juntos por año o semestre) y se ubican en los estantes como si fueran libros, con un rótulo que indica el título y el rango de años. Los fascículos recientes se guardan sueltos en las carpetas naranjas. El catálogo indica en qué formato está disponible cada ejemplar.</p>
+    <div class="info-box"><i class="ti ti-wifi"></i> Muchas revistas científicas están disponibles en <strong>versión digital</strong> a través de las bases de datos suscritas (EBSCO, ScienceDirect, ProQuest). En el siguiente paso (Recursos digitales) aprenderás cómo acceder a ellas sin ir físicamente a la biblioteca.</div>
+  </div>
   <div class="nav-row">
     <button class="prev-btn" onclick="goTo(6)"><i class="ti ti-arrow-left"></i> Anterior</button>
     <button class="next-btn" onclick="goTo(8)">Recursos digitales <i class="ti ti-arrow-right"></i></button>
@@ -890,41 +947,55 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 8 — RECURSOS DIGITALES ==================== -->
 <div class="panel" id="panel8">
   <div class="section-label"><i class="ti ti-world"></i> Paso 8 — Cómo acceder a recursos electrónicos</div>
-  
   <div class="page-banner">
     <img src="images/Page8.png?text=Banner+Paso+8" alt="Banner de la página">
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-device-laptop" style="color:var(--verde-agua)"></i> ¿Qué son los recursos electrónicos?</div>
-    <p class="card-desc">Son materiales disponibles en formato digital a los que puedes acceder desde cualquier dispositivo con conexión a internet. Incluyen libros electrónicos (e-books), artículos de revistas científicas, tesis digitales, bases de datos especializadas y recursos de acceso abierto.</p>
+    <p class="card-desc">Son materiales disponibles en formato digital a los que puedes acceder desde cualquier dispositivo con conexión a internet. Incluyen libros electrónicos (e-books), artículos de revistas científicas, tesis digitales, bases de datos especializadas y recursos de acceso abierto. No necesitas ir físicamente a la biblioteca para consultarlos.</p>
     <div class="g3">
       <div style="padding:12px;background:var(--fondo-principal);border-radius:10px;border:1px solid var(--borde-claro);text-align:center">
         <i class="ti ti-book-2" style="font-size:24px;color:var(--azul-profundo);margin-bottom:6px;display:block"></i>
         <div style="font-size:12px;font-weight:600;color:var(--azul-muy-oscuro);margin-bottom:3px">E-books</div>
-        <div style="font-size:11px;color:var(--azul-grisaceo)">Libros en formato digital</div>
+        <div style="font-size:11px;color:var(--azul-grisaceo)">Libros en formato digital con texto completo</div>
       </div>
       <div style="padding:12px;background:var(--fondo-principal);border-radius:10px;border:1px solid var(--borde-claro);text-align:center">
         <i class="ti ti-file-text" style="font-size:24px;color:var(--verde-agua);margin-bottom:6px;display:block"></i>
         <div style="font-size:12px;font-weight:600;color:var(--azul-muy-oscuro);margin-bottom:3px">Artículos científicos</div>
-        <div style="font-size:11px;color:var(--azul-grisaceo)">Publicaciones indexadas</div>
+        <div style="font-size:11px;color:var(--azul-grisaceo)">Publicaciones de revistas indexadas</div>
       </div>
       <div style="padding:12px;background:var(--fondo-principal);border-radius:10px;border:1px solid var(--borde-claro);text-align:center">
         <i class="ti ti-database" style="font-size:24px;color:var(--azul-claro);margin-bottom:6px;display:block"></i>
         <div style="font-size:12px;font-weight:600;color:var(--azul-muy-oscuro);margin-bottom:3px">Bases de datos</div>
-        <div style="font-size:11px;color:var(--azul-grisaceo)">Colecciones especializadas</div>
+        <div style="font-size:11px;color:var(--azul-grisaceo)">Colecciones especializadas por área</div>
       </div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-click" style="color:var(--azul-profundo)"></i> Acceder desde el catálogo Primo</div>
     <p class="card-desc">Cuando un recurso tiene versión digital, el resultado en Primo muestra un botón de <strong>"Acceso en línea"</strong>. Al hacer clic, el sistema verifica tu autenticación y te lleva directo al texto completo.</p>
-    <div class="ok-box"><i class="ti ti-shield-check"></i> <strong>Importante:</strong> accede siempre a los recursos digitales <em>a través del portal de Primo o de la biblioteca</em>, no directamente por Google. El acceso institucional solo funciona si llegas desde el portal de la biblioteca.</div>
+    <div class="mock">
+      <div style="font-size:12px;font-weight:600;color:var(--azul-muy-oscuro);margin-bottom:12px">LIBRO / ARTÍCULO con acceso digital</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px;padding:10px 14px;background:var(--blanco);border-radius:10px;border:1px solid var(--borde-claro)">
+          <div style="font-size:13px;font-weight:500;color:var(--azul-claro);margin-bottom:4px">Ingeniería de software: un enfoque práctico</div>
+          <div style="font-size:12px;color:var(--azul-grisaceo);margin-bottom:8px">E-book · Roger S. Pressman · 8ª ed.</div>
+          <div style="padding:7px 14px;background:linear-gradient(135deg,var(--azul-profundo),var(--verde-agua));color:#fff;border-radius:8px;font-size:13px;font-weight:500;text-align:center;cursor:pointer"><i class="ti ti-external-link" style="font-size:13px"></i> Acceso en línea</div>
+        </div>
+        <div style="flex:1;min-width:200px;padding:12px 14px;background:var(--fondo-principal);border-radius:10px;border:1px solid var(--borde-claro)">
+          <div style="font-size:12px;font-weight:600;color:var(--azul-profundo);margin-bottom:8px">¿Qué pasa al hacer clic?</div>
+          <div style="font-size:12px;color:var(--azul-grisaceo);line-height:1.65">
+            <div style="margin-bottom:4px">🏛️ <strong>En el campus:</strong> acceso directo automático al PDF o plataforma digital.</div>
+            <div>🏠 <strong>Fuera del campus:</strong> el sistema solicita tu usuario y contraseña institucional (@elpoli.edu.co).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ok-box"><i class="ti ti-shield-check"></i> <strong>Importante:</strong> accede siempre a los recursos digitales <em>a través del portal de Primo o de la biblioteca</em>, no directamente por Google u otras búsquedas externas. El acceso institucional solo funciona si llegas desde el portal de la biblioteca.</div>
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-database" style="color:var(--verde-agua)"></i> Bases de datos suscritas</div>
+    <p class="card-desc">La biblioteca tiene acceso a bases de datos especializadas con millones de artículos científicos. Puedes buscar directamente en ellas desde la sección <strong>"Bases de datos"</strong> del portal, o a través del buscador central de Primo que las incluye automáticamente.</p>
     <div class="db-wrap">
       <span class="db-b db-1"><i class="ti ti-atom"></i> ScienceDirect (Elsevier)</span>
       <span class="db-b db-2"><i class="ti ti-flask"></i> ProQuest</span>
@@ -933,8 +1004,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
       <span class="db-b db-1"><i class="ti ti-school"></i> IEEE Xplore</span>
       <span class="db-b db-2"><i class="ti ti-world"></i> Recursos acceso abierto</span>
     </div>
+    <div class="tip-box"><i class="ti ti-info-circle"></i> Cuando buscas en Primo con el ámbito "Todos los recursos", el sistema consulta simultáneamente el catálogo local y el <strong>Índice Central de Descubrimiento (CDI)</strong>, que incluye millones de artículos de bases de datos suscritas y de acceso abierto. Si obtienes demasiados resultados, filtra por "Disponible en la biblioteca" para ver solo lo que tienes acceso garantizado.</div>
   </div>
-
+  <div class="card">
+    <div class="card-title"><i class="ti ti-download" style="color:var(--azul-profundo)"></i> Descargar y guardar artículos</div>
+    <ul class="slist">
+      <li><strong>Descarga el PDF directamente</strong><span>En la plataforma de la base de datos (ScienceDirect, ProQuest, etc.) busca el botón "Download PDF" o "Texto completo". El archivo se guarda en tu dispositivo.</span></li>
+      <li><strong>Exporta la referencia bibliográfica</strong><span>Desde el resultado en Primo, el ícono de cita te permite generar la referencia en formatos APA, MLA, Chicago, etc. También puedes exportar a gestores como Zotero o Mendeley.</span></li>
+      <li><strong>Guarda el registro en Primo</strong><span>Usa el ícono de marcador (📌) para guardar el registro en tu lista de "Registros guardados" (requiere iniciar sesión). Así puedes volver a él en cualquier momento.</span></li>
+    </ul>
+    <div class="warn-box"><i class="ti ti-alert-triangle"></i> Las bases de datos tienen restricciones de descarga masiva. No uses herramientas automáticas para descargar múltiples artículos al mismo tiempo: esto puede bloquear el acceso institucional para todos los usuarios.</div>
+  </div>
   <div class="nav-row">
     <button class="prev-btn" onclick="goTo(7)"><i class="ti ti-arrow-left"></i> Anterior</button>
     <button class="next-btn" onclick="goTo(9)">Mi cuenta y funciones avanzadas <i class="ti ti-arrow-right"></i></button>
@@ -944,32 +1024,38 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 9 — MI CUENTA ==================== -->
 <div class="panel" id="panel9">
   <div class="section-label"><i class="ti ti-user-circle"></i> Paso 9 — Mi cuenta en Primo</div>
-  
   <div class="page-banner">
     <img src="images/Page9.png?text=Banner+Paso+9" alt="Banner de la página">
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-user-circle" style="color:var(--verde-agua)"></i> El Área de Usuario</div>
-    <p class="card-desc">Al iniciar sesión en Primo, el ícono en la esquina superior derecha muestra tus iniciales. Desde ahí accedes a toda tu actividad en la biblioteca.</p>
+    <p class="card-desc">Al iniciar sesión en Primo, el ícono en la esquina superior derecha muestra tus iniciales. Desde ahí accedes a toda tu actividad en la biblioteca. Explora cada sección con las pestañas:</p>
     <div class="ua-tabs">
       <button class="ua-tab on" onclick="showUA(0,this)">Préstamos</button>
       <button class="ua-tab" onclick="showUA(1,this)">Solicitudes</button>
       <button class="ua-tab" onclick="showUA(2,this)">Multas</button>
-      <button class="ua-tab" onclick="showUA(3,this)">Guardados</button>
-      <button class="ua-tab" onclick="showUA(4,this)">Búsquedas</button>
+      <button class="ua-tab" onclick="showUA(3,this)">Registros guardados</button>
+      <button class="ua-tab" onclick="showUA(4,this)">Búsquedas guardadas</button>
       <button class="ua-tab" onclick="showUA(5,this)">Historial</button>
       <button class="ua-tab" onclick="showUA(6,this)">Configuración</button>
     </div>
-    <div class="ua-panel on" id="ua0"><strong>Préstamos activos e historial</strong><br>Muestra todos tus préstamos actuales y vencidos. Desde aquí puedes <strong>renovar</strong> un préstamo con un clic.</div>
-    <div class="ua-panel" id="ua1"><strong>Solicitudes en curso</strong><br>Muestra tus solicitudes de reserva, préstamo interbibliotecario o adquisición. Puedes <strong>cancelar</strong> una solicitud.</div>
-    <div class="ua-panel" id="ua2"><strong>Multas y cargos pendientes</strong><br>Consulta todas tus multas activas. Desde aquí puedes <strong>pagar cargos pendientes</strong>.</div>
-    <div class="ua-panel" id="ua3"><strong>Registros guardados</strong><br>Guarda cualquier resultado con el ícono de marcador 📌. Crea <strong>etiquetas</strong> para organizar tus materiales.</div>
-    <div class="ua-panel" id="ua4"><strong>Búsquedas guardadas</strong><br>Guarda tus búsquedas y activa <strong>alertas por correo</strong> para recibir novedades semanales.</div>
-    <div class="ua-panel" id="ua5"><strong>Historial de búsquedas</strong><br>Primo guarda las últimas <strong>100 búsquedas</strong>. Puedes re-ejecutarlas o guardarlas.</div>
-    <div class="ua-panel" id="ua6"><strong>Configuración personal</strong><br>Actualiza tu correo electrónico y preferencias de notificaciones.</div>
+    <div class="ua-panel on" id="ua0"><strong>Préstamos activos e historial</strong><br>Muestra todos tus préstamos actuales y vencidos (máx. 10 por página). Desde aquí puedes <strong>renovar</strong> un préstamo con un clic, renovar varios en bloque usando las casillas de selección, y consultar el historial de préstamos anteriores. Ordena por fecha de vencimiento, título o estado.</div>
+    <div class="ua-panel" id="ua1"><strong>Solicitudes en curso</strong><br>Muestra tus solicitudes de reserva, préstamo interbibliotecario o adquisición. Puedes <strong>cancelar</strong> una solicitud, filtrar por tipo (ILL, compra) y ordenar por estado o fecha. Las solicitudes de reserva se activan automáticamente cuando el ejemplar esté disponible.</div>
+    <div class="ua-panel" id="ua2"><strong>Multas y cargos pendientes</strong><br>Consulta todas tus multas activas o historial de multas cerradas. Desde aquí puedes <strong>pagar cargos pendientes</strong> usando el enlace "Pagar multa". Filtra entre multas activas y cerradas, y ordena por fecha o título.</div>
+    <div class="ua-panel" id="ua3"><strong>Guardar y gestionar registros</strong><br>Guarda cualquier resultado con el ícono de marcador 📌 (en la lista o en el detalle del ítem). Los usuarios autenticados conservan sus registros entre sesiones; los usuarios invitados solo los tienen durante la sesión actual.<br><br>En "Registros guardados": busca entre tus guardados, crea <strong>etiquetas</strong> (ej: "Semestre 2025", "Proyecto de grado") para agrupar materiales, y exporta las referencias en tu formato preferido.</div>
+    <div class="ua-panel" id="ua4"><strong>Guardar búsquedas con alertas automáticas</strong><br>Después de ejecutar una búsqueda, haz clic en <strong>"Guardar consulta"</strong> (encima de la lista de resultados). La búsqueda queda guardada y puedes re-ejecutarla con un clic.<br><br><strong>Alertas por correo:</strong> activa la alerta para cada búsqueda guardada. Cada viernes recibirás un correo automático si aparecieron nuevos resultados para esa consulta. Ideal para estar al día con investigaciones en curso. Gestiona las alertas desde "Búsquedas guardadas".</div>
+    <div class="ua-panel" id="ua5"><strong>Historial de búsquedas</strong><br>Primo guarda automáticamente las últimas <strong>100 búsquedas</strong>. Los usuarios autenticados conservan el historial entre sesiones; los invitados lo pierden al cerrar el navegador.<br><br>Desde el historial puedes: re-ejecutar cualquier búsqueda, moverla a "Búsquedas guardadas" para retenerla indefinidamente, o eliminarla.</div>
+    <div class="ua-panel" id="ua6"><strong>Configuración personal</strong><br>Actualiza tu correo electrónico (usado para las alertas de búsqueda), preferencias de idioma y notificaciones. El correo registrado aquí es al que se enviarán los avisos semanales de búsquedas guardadas.</div>
   </div>
-
+  <div class="card">
+    <div class="card-title"><i class="ti ti-bookmark" style="color:var(--azul-profundo)"></i> Guardar un registro: paso a paso</div>
+    <ul class="slist">
+      <li><strong>Busca el material en el catálogo</strong><span>Ejecuta cualquier búsqueda. Verás los resultados en lista.</span></li>
+      <li><strong>Haz clic en el ícono de marcador 📌</strong><span>Está al lado de cada resultado. Al guardarlo, el ícono cambia de color y el ítem aparece en tu lista de Registros guardados.</span></li>
+      <li><strong>Accede a tus registros guardados</strong><span>Menú de usuario (tus iniciales) → Registros guardados. Puedes buscar entre ellos, ordenarlos y exportarlos.</span></li>
+      <li><strong>Crea etiquetas para organizar</strong><span>Haz clic en "Agregar nueva etiqueta" dentro de un registro. Ponle un nombre (ej: "Estadística I") y asígnala a varios registros para agruparlos por curso o proyecto.</span></li>
+    </ul>
+  </div>
   <div class="nav-row">
     <button class="prev-btn" onclick="goTo(8)"><i class="ti ti-arrow-left"></i> Anterior</button>
     <button class="next-btn" onclick="goTo(10)">Buenas prácticas <i class="ti ti-arrow-right"></i></button>
@@ -979,22 +1065,26 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
 <!-- ==================== PANEL 10 — BUENAS PRÁCTICAS ==================== -->
 <div class="panel" id="panel10">
   <div class="section-label"><i class="ti ti-award"></i> Paso 10 — Buenas prácticas y normas de la biblioteca</div>
-  
   <div class="page-banner">
     <img src="images/Page10.png?text=Banner+Paso+10" alt="Banner de la página">
   </div>
-
   <div class="card">
-    <div class="card-title"><i class="ti ti-clipboard-check" style="color:var(--verde-agua)"></i> Comportamientos esperados</div>
+    <div class="card-title"><i class="ti ti-clipboard-check" style="color:var(--verde-agua)"></i> Comportamientos esperados en la biblioteca</div>
+    <p class="card-desc">La biblioteca es un espacio compartido de aprendizaje e investigación. Estas normas garantizan que todos los usuarios puedan estudiar en un ambiente adecuado.</p>
     <div class="gp-grid">
       <div class="gp-card gp-ok">
-        <div class="gp-title"><i class="ti ti-circle-check" style="font-size:18px"></i> Sí se puede</div>
+        <div class="gp-title"><i class="ti ti-circle-check" style="font-size:18px"></i> Sí se puede y recomienda</div>
         <ul class="gp-list">
           <li><i class="ti ti-check"></i> Llevar siempre el carné estudiantil vigente</li>
-          <li><i class="ti ti-check"></i> Hablar en voz baja o susurrar</li>
+          <li><i class="ti ti-check"></i> Hablar en voz baja o susurrar si es necesario</li>
+          <li><i class="ti ti-check"></i> Estudiar, tomar notas y trabajar en las mesas</li>
           <li><i class="ti ti-check"></i> Solicitar ayuda al bibliotecólogo de referencia</li>
+          <li><i class="ti ti-check"></i> Usar los computadores disponibles para investigación</li>
           <li><i class="ti ti-check"></i> Dejar los libros consultados en el carrito de devolución</li>
           <li><i class="ti ti-check"></i> Renovar el préstamo antes de la fecha de vencimiento</li>
+          <li><i class="ti ti-check"></i> Reportar materiales dañados antes de llevarlos en préstamo</li>
+          <li><i class="ti ti-check"></i> Usar señaladores para marcar páginas (no doblar hojas)</li>
+          <li><i class="ti ti-check"></i> Apagar o poner en silencio el celular al ingresar</li>
         </ul>
       </div>
       <div class="gp-card gp-no">
@@ -1002,33 +1092,36 @@ body{font-family:'DM Sans',sans-serif;background:var(--fondo-principal);color:va
         <ul class="gp-list">
           <li><i class="ti ti-x"></i> Consumir alimentos dentro de la sala de lectura</li>
           <li><i class="ti ti-x"></i> Hacer llamadas telefónicas en el interior</li>
-          <li><i class="ti ti-x"></i> Sacar materiales sin registrar el préstamo</li>
-          <li><i class="ti ti-x"></i> Remarcar, subrayar o escribir en los libros</li>
+          <li><i class="ti ti-x"></i> Ingresar con maletines grandes (usar los casilleros)</li>
+          <li><i class="ti ti-x"></i> Sacar materiales sin registrar el préstamo en el mostrador</li>
+          <li><i class="ti ti-x"></i> Remarcar, subrayar o escribir en los libros y revistas</li>
+          <li><i class="ti ti-x"></i> Arrancar hojas o dañar materiales bibliográficos</li>
           <li><i class="ti ti-x"></i> Reubicar libros en los estantes (déjalos en el carrito)</li>
+          <li><i class="ti ti-x"></i> Guardar materiales de la biblioteca como si fueran propios</li>
+          <li><i class="ti ti-x"></i> Generar ruidos que interrumpan a otros usuarios</li>
+          <li><i class="ti ti-x"></i> Usar el acceso a internet para fines ajenos al estudio</li>
         </ul>
       </div>
     </div>
   </div>
-
   <div class="card">
-    <div class="card-title"><i class="ti ti-route" style="color:var(--azul-profundo)"></i> Cuidado de los materiales</div>
+    <div class="card-title"><i class="ti ti-route" style="color:var(--azul-profundo)"></i> Cuidado de los materiales bibliográficos</div>
+    <p class="card-desc">Los libros y revistas son patrimonio compartido de toda la comunidad universitaria. Su cuidado es responsabilidad de todos.</p>
     <ul class="slist">
-      <li><strong>Antes de llevarlo</strong><span>Revisa el estado del libro. Reporta daños previos al mostrador.</span></li>
-      <li><strong>Durante el préstamo</strong><span>Guárdalo en un lugar seguro. No lo prestes a terceras personas.</span></li>
-      <li><strong>Al devolverlo</strong><span>Entrégalo en el mostrador o en los buzones de devolución.</span></li>
-      <li><strong>Vencimiento</strong><span>El préstamo es de 15 días renovables. Pasada la fecha se generan multas.</span></li>
+      <li><strong>Antes de llevarlo</strong><span>Revisa el estado del libro. Si tiene daños previos (páginas sueltas, marcas, rasgaduras), repórtalo al mostrador antes de salir. Así no serás responsabilizado por daños que ya existían.</span></li>
+      <li><strong>Durante el préstamo</strong><span>Guárdalo en un lugar seguro, protegido de la humedad y el sol directo. No lo prestes a terceras personas. El responsable ante la biblioteca eres tú como titular del préstamo.</span></li>
+      <li><strong>Al devolverlo</strong><span>Entrégalo en el mostrador de préstamos o en los buzones de devolución habilitados. No lo dejes en cualquier lugar. El préstamo no se cancela hasta que un bibliotecólogo lo registre.</span></li>
+      <li><strong>Vencimiento del préstamo</strong><span>El préstamo de Colección General es de 15 días renovables (máx. 1 renovación). Pasada la fecha sin devolución se generan multas económicas y se bloquea la cuenta.</span></li>
     </ul>
   </div>
-
   <div class="card">
     <div class="card-title"><i class="ti ti-help-circle" style="color:var(--verde-agua)"></i> El servicio de referencia: tu aliado</div>
-    <p class="card-desc">Los <strong>bibliotecólogos de referencia</strong> pueden ayudarte a planificar tu estrategia de búsqueda, identificar las mejores fuentes y manejar gestores bibliográficos.</p>
+    <p class="card-desc">Los <strong>bibliotecólogos de referencia</strong> son profesionales especializados que pueden ayudarte a planificar tu estrategia de búsqueda, identificar las mejores fuentes para tu tema, manejar gestores bibliográficos (Zotero, Mendeley) y acceder a recursos que no encuentras por tu cuenta. No dudes en acercarte al mostrador o preguntar.</p>
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:1rem">
       <a class="cta-btn" href="https://polijic.primo.exlibrisgroup.com/nde/home?vid=57PJIC_INST:NDE&lang=es" target="_blank"><i class="ti ti-search"></i> Ir al catálogo</a>
       <button class="sec-btn" onclick="goTo(11)"><i class="ti ti-arrow-right"></i> Ver final</button>
     </div>
   </div>
-
   <div class="nav-row">
     <button class="prev-btn" onclick="goTo(9)"><i class="ti ti-arrow-left"></i> Anterior</button>
     <button class="next-btn" onclick="goTo(11)">Final <i class="ti ti-arrow-right"></i></button>
@@ -1073,18 +1166,14 @@ let cur = 0;
 const tot = 12;
 
 function goTo(n) {
-  // Cambiar panel
   document.getElementById('panel' + cur).classList.remove('active');
   document.getElementById('btn' + cur).classList.remove('active');
   cur = n;
   document.getElementById('panel' + cur).classList.add('active');
   document.getElementById('btn' + cur).classList.add('active');
-  
-  // Actualizar progreso
   for (let i = 0; i < tot; i++) {
     document.getElementById('pd' + i).classList.toggle('done', i <= n);
   }
-  
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
