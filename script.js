@@ -57,7 +57,7 @@ const mapData = {
         name: "Biblioteca Medellín",
         floors: {
             1: {
-                img: "images/mapa-medellin-piso-1.png",
+                img: "mapa-medellin-piso-1.png",
                 staticLocations: {
                     "REVISTA": {
                         x: 0.0815, y: 0.8564, width: 0.1046, height: 0.0799,
@@ -126,7 +126,7 @@ const mapData = {
                 ]
             },
             2: {
-                img: "images/mapa-medellin-piso-2.png",
+                img: "mapa-medellin-piso-1.png",
                 staticLocations: {
                     "COLECCION ESTATICA": {
                         x: 0.0, y: 0.0, width: 0.0, height: 0.0,
@@ -142,20 +142,58 @@ const mapData = {
         name: "Biblioteca Centro Regional Oriente",
         floors: {
             1: {
-                img: "https://bibliotecapjic.github.io/images/mapa-oriente-piso-1.png",
+                img: "mapa-oriente.png",
                 staticLocations: {
                     "REVISTA": {
-                        x: 0.2, y: 0.3, width: 0.1, height: 0.1,
-                        message: "Colección de Revistas - Oriente",
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY"
-                    },
-                    "TRABAJO DE GRADO": {
-                        x: 0.4, y: 0.5, width: 0.1, height: 0.1,
-                        message: "Colección de Tesis - Oriente",
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY"
+							x: 0.1319, y: 0.1531, width: 0.0355, height: 0.3369,
+							message: "Colección de Revistas - Hemeroteca.",
+							url3D: ""
+						},
+						"TRABAJO DE GRADO": [
+							{
+								x: 0.1319, y: 0.5712, width: 0.0327, height: 0.3369,
+								message: "La Colección de Trabajos de Grado Físico se encuentra al fondo de la Biblioteca.",
+								url3D: ""
+							},
+							{
+								x: 0.0281, y: 0.6085, width: 0.0337, height: 0.2210,
+								message: "La Colección Trabajos de Grado en CD se encuentra al fondo de la Biblioteca.",
+								url3D: ""
+							}
+						],
+						"MULTIMEDIA": {
+							x: 0.0271, y: 0.3209, width: 0.0327, height: 0.2210,
+							message: "Colección Multimedia - CDs, DVDs.",
+							url3D: ""
                     }
                 },
-                stacks: []
+                stacks: [
+					{ id: "1.1.Izquierdo", start: "000.0", end: "300.0", x: 0.5828, y: 0.5712, height: 0.3342, width: 0.0387, url3D: "" },
+					{ id: "1.1.Derecho", start: "300.01", end: "339.0", x: 0.5482, y: 0.5712, height: 0.3342, width: 0.0387, url3D: "" },
+					
+					{ id: "1.2.Izquierdo", start: "339.01", end: "400.0", x: 0.4771, y: 0.5712, height: 0.3342, width: 0.0387, url3D: "" },
+                    { id: "1.2.Derecho", start: "400.01", end: "519.5", x: 0.4434, y: 0.5712, height: 0.3342, width: 0.0387, url3D: "" },
+					
+					{ id: "1.3.Izquierdo", start: "519.501", end: "547.5", x: 0.3789, y: 0.5712, height: 0.3342, width: 0.0387, url3D: "" },
+					{ id: "1.3.Derecho", start: "574.01", end: "620.1", x: 0.3433, y: 0.5712, height: 0.3342, width: 0.0387, url3D: "" },
+					
+					{ id: "1.4.Izquierdo", start: "620.101", end: "628.1", x: 0.2732, y: 0.5712, height: 0.3342, width: 0.0387, url3D: "" },
+					{ id: "1.4.Derecho", start: "628.101", end: "636.1", x: 0.2385, y: 0.5712, height: 0.3342, width: 0.0387, url3D: "" },
+					
+					{ id: "1.5.Derecho", start: "636.101", end: "657.4", x: 0.2376, y: 0.1534, height: 0.3342, width: 0.0387, url3D: "" },
+					{ id: "1.5.Izquierdo", start: "657.401", end: "658.1", x: 0.2722, y: 0.1534, height: 0.3342, width: 0.0387, url3D: "" },
+					
+					
+					{ id: "1.6.Derecho", start: "658.101", end: "658.4", x: 0.3452, y: 0.1534, height: 0.3342, width: 0.0387, url3D: "" },
+					{ id: "1.6.Izquierdo", start: "657.401", end: "658.5", x: 0.3789, y: 0.1534, height: 0.3342, width: 0.0387, url3D: "" },
+					
+					{ id: "1.7.Derecho", start: "658.501", end: "664.9", x: 0.4425, y: 0.1534, height: 0.3342, width: 0.0387, url3D: "" },
+					{ id: "1.7.Izquierdo", start: "664.901", end: "796.0", x: 0.4752, y: 0.1534, height: 0.3342, width: 0.0387, url3D: "" },
+					
+					{ id: "1.8.Derecho", start: "796.01", end: "809.0", x: 0.5491, y: 0.1534, height: 0.3342, width: 0.0387, url3D: "" },
+					{ id: "1.8.Izquierdo", start: "809.01", end: "999.9", x: 0.5837, y: 0.1534, height: 0.3342, width: 0.0387, url3D: "" }
+					
+					]
             }
         }
     },
@@ -163,15 +201,48 @@ const mapData = {
         name: "Biblioteca Centro Regional Urabá",
         floors: {
             1: {
-                img: "https://bibliotecapjic.github.io/images/mapa-uraba-piso-1.png",
+                img: "mapa-uraba.png",
                 staticLocations: {
                     "REVISTA": {
-                        x: 0.2, y: 0.3, width: 0.1, height: 0.1,
-                        message: "Colección de Revistas - Urabá",
-                        url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY"
+                        x: 0.5776, y: 0.6847, width: 0.222, height: 0.0624,
+                        message: "Colección de Revistas - Hemeroteca.",
+                        url3D: ""
+                    },
+                    "FOLLETO": {
+                        x: 0.4795, y: 0.6863, width: 0.1001, height: 0.0624,
+                        message: "Colección de Folletos.",
+                        url3D: ""
+                    },
+                    "TRABAJO DE GRADO": [
+                        {
+                            x: 0.7988, y: 0.6863, width: 0.1011, height: 0.0624,
+                            message: "La Colección de Trabajos de Grado Físico se encuentra en el estante 3 junto a las revistas.",
+                            url3D: ""
+                        },
+						{
+                            x: 0.4765, y: 0.1029, width: 0.1582, height: 0.0725,
+                            message: "La Colección de Colección Trabajos de Grado en CD se encuentra al lado de los uquipos de consulta.",
+                            url3D: ""
+                        }
+                    ],
+                    "NORMAS": {
+                        x: 0.4795, y: 0.6863, width: 0.1001, height: 0.0624,
+                        message: "Colección de Normas Técnicas.",
+                        url3D: "Colección de normas"
+                    },
+                    "MULTIMEDIA": {
+                        x: 0.6316, y: 0.1029, width: 0.1572, height: 0.0725,
+                        message: "Colección Multimedia - CDs, DVDs.",
+                        url3D: ""
                     }
                 },
-                stacks: []
+                stacks: [
+					{ id: "1.1.Izquierdo", start: "000.0", end: "348.0", x: 0.4775, y: 0.2428, height: 0.0607, width: 0.4214, url3D: "" },
+					{ id: "1.1.Derecho", start: "348.01", end: "612.015", x: 0.4775, y: 0.3035, height: 0.0607, width: 0.4214, url3D: "" },
+					 { id: "1.2.Izquierdo", start: "612.016", end: "658.0", x: 0.4775, y: 0.43, height: 0.0607, width: 0.4214, url3D: "" },
+                    { id: "1.2.Derecho", start: "658.01", end: "796.0", x: 0.4775, y: 0.4958, height: 0.0607, width: 0.4214, url3D: "" },
+					{ id: "1.3.Izquierdo", start: "796.01", end: "999.9", x: 0.4775, y: 0.6239, height: 0.0607, width: 0.4214, url3D: "" }
+					]
             }
         }
     }
@@ -211,7 +282,7 @@ const externalToMapKey = {
     'PAMPHLET': { buttonId: 'folleto', mapKey: 'FOLLETO',          display: 'FOLLETO' },
     // location_code (NORMA y TES tienen prioridad)
     'NORMA':    { buttonId: 'norma',   mapKey: 'NORMAS',           display: 'NORMA' },
-    'TES':    { buttonId: 'tesis',   mapKey: 'TRABAJO DE GRADO', display: 'TRABAJO DE GRADO' }
+    'TES':      { buttonId: 'tesis',  mapKey: 'TRABAJO DE GRADO', display: 'TRABAJO DE GRADO' }
 };
 
 /**
@@ -802,5 +873,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     } else if (libCode) {
         console.warn(`URL: library_code desconocido: ${libCode}`);
-    }
+    }  
+
+
 });
