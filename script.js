@@ -211,6 +211,7 @@ const externalToMapKey = {
     'PAMPHLET': { buttonId: 'folleto', mapKey: 'FOLLETO',          display: 'FOLLETO' },
     // location_code (solo NORMA tiene prioridad)
     'NORMA':    { buttonId: 'norma',   mapKey: 'NORMAS',           display: 'NORMA' }
+    'TES':    { buttonId: 'tesis',   mapKey: 'TRABAJO DE GRADO', display: 'TRABAJO DE GRADO' }
 };
 
 /**
