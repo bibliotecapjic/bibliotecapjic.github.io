@@ -199,7 +199,7 @@ const libraryMap = {
  *   - display:  texto legible para mostrar al usuario.
  * 
  * La prioridad es:
- *   1. Si location_code = NORMA, se usa esta entrada.
+ *   1. Si location_code = NORMA o TES, se usa esta entrada.
  *   2. Si no, se usa material_type (THESIS, BOOK, ISSUE, CDROM, PAMPHLET).
  */
 const externalToMapKey = {
@@ -209,7 +209,7 @@ const externalToMapKey = {
     'ISSUE':    { buttonId: 'revista', mapKey: 'REVISTA',          display: 'REVISTA' },
     'CDROM':    { buttonId: 'cd',      mapKey: 'MULTIMEDIA',       display: 'CD' },
     'PAMPHLET': { buttonId: 'folleto', mapKey: 'FOLLETO',          display: 'FOLLETO' },
-    // location_code (solo NORMA tiene prioridad)
+    // location_code (NORMA y TES tienen prioridad)
     'NORMA':    { buttonId: 'norma',   mapKey: 'NORMAS',           display: 'NORMA' },
     'TES':    { buttonId: 'tesis',   mapKey: 'TRABAJO DE GRADO', display: 'TRABAJO DE GRADO' }
 };
@@ -760,11 +760,12 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`URL: library_code=${libCode} → ${libId}`);
         selectLibrary(libId);
 
-        // 1. Excepción: location_code NORMA tiene prioridad sobre cualquier material_type
-        if (locationCode && locationCode.toUpperCase() === 'NORMA') {
-            const mapping = externalToMapKey['NORMA'];
+        // 1. Excepciones: NORMA y TES tienen prioridad sobre material_type
+        const upperLocationCode = locationCode ? locationCode.toUpperCase() : '';
+        if (upperLocationCode === 'NORMA' || upperLocationCode === 'TES') {
+            const mapping = externalToMapKey[upperLocationCode];
             if (mapping && mapping.buttonId) {
-                console.log(`URL: location_code=NORMA → seleccionar material ${mapping.buttonId}`);
+                console.log(`URL: location_code=${upperLocationCode} → seleccionar material ${mapping.buttonId}`);
                 setTimeout(() => selectMaterial(mapping.buttonId), 200);
             }
         }
