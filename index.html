@@ -5,22 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Mapas de Biblioteca</title>
     <!-- Estilos externos -->
-    <link rel="stylesheet" href="stylesv2.css">
+	<link href="stylesv2.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="container">
-    <!-- ==================== CABECERA ==================== -->
-    <div class="header">
+
+<!-- ==================== CABECERA ==================== -->
+ 
+
+<!--  <div class="header">
         <h1>
             <span aria-hidden="true">🗺️</span>
-            Activa el GPS de la Biblioteca.
+            Activa el GPS de la Biblioteca
         </h1>
         <div class="subtitle">
             Selecciona la Biblioteca de tu interés, ingresa la signatura del libro o elige un material.
             Haz clic en el marcador 📍 para ver la ubicación en 3D.
         </div>
     </div>
+-->
+
+<div class="header">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <h1>
+            <span aria-hidden="true">🗺️</span>
+            Activa el GPS de la Biblioteca
+        </h1>
+        <div class="primo-tabs">
+            <span class="tab-active">Mapa</span>
+            <a href="https://polijic.primo.exlibrisgroup.com/nde/home?vid=57PJIC_INST:NDE&lang=es" class="tab-link">Ir a Primo</a>
+        </div>
+    </div>
+    <div class="subtitle">
+        Selecciona la Biblioteca de tu interés, ingresa la signatura del libro o elige un material.
+        Haz clic en el marcador <span class="marker-1">📍</span> para ver la ubicación en 3D. (Solo Biblioteca Medellín)
+    </div>
+</div>
+
 
     <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
     <div class="main-content">
@@ -35,12 +57,13 @@
                     <button class="library-btn" id="btn-medellin">
                         <span class="library-icon">📚</span> Medellín
                     </button>
-                    <button class="library-btn" id="btn-oriente">
+                     <button class="library-btn" id="btn-oriente">
                         <span class="library-icon">📚</span> Centro Regional Oriente
                     </button>
                     <button class="library-btn" id="btn-uraba">
                         <span class="library-icon">📚</span> Centro Regional Urabá
                     </button>
+					
                 </div>
             </div>
 
@@ -137,7 +160,7 @@
             <div class="legend-panel" id="legend-panel">
                 <div class="legend-color"></div>
                 <div class="legend-text">
-                    Ubicación aproximada del material. Haz clic en el marcador para vista 3D.
+                    Ubicación aproximada del material. Haz clic en el marcador 📍 para vista 3D. ** Disponible solo para Biblioteca Medellín **
                 </div>
             </div>
         </div> <!-- /.map-panel -->
