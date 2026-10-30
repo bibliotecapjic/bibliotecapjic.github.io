@@ -57,7 +57,7 @@ const mapData = {
         name: "Biblioteca Medellín",
         floors: {
             1: {
-                img: "mapa-medellin-piso-1.png",
+                img: "images/mapa-medellin-piso-1.png",
                 staticLocations: {
                     "REVISTA": {
                         x: 0.0815, y: 0.8564, width: 0.1046, height: 0.0799,
