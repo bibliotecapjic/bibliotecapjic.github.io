@@ -523,6 +523,12 @@ h1 {
     stroke-width: 1 !important;
 }
 
+.svg-shelf-destination {
+    fill: #ffc933 !important;
+    stroke: #222 !important;
+    stroke-width: 0.4 !important;
+}
+
 .svg-route {
     stroke: #007f78 !important;
     stroke-width: 1.2 !important;
@@ -537,8 +543,22 @@ h1 {
     fill: transparent;
 }
 
+.svg-marker-pulse {
+    fill: #e83d52;
+    opacity: 0.25;
+    pointer-events: none;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: marker-pulse 1.8s ease-out infinite;
+}
+
+@keyframes marker-pulse {
+    0% { transform: scale(0.65); opacity: 0.4; }
+    100% { transform: scale(1.8); opacity: 0; }
+}
+
 .svg-marker-pin {
-    fill: #ba4900;
+    fill: #e83d52;
     stroke: white;
     stroke-width: 0.8;
 }
@@ -589,7 +609,8 @@ h1 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .svg-walker-figure {
+    .svg-walker-figure,
+    .svg-marker-pulse {
         animation: none;
     }
 }

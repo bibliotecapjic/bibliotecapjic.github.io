@@ -683,20 +683,44 @@ function drawSvgLocation(svg, loc) {
             return;
         }
 
-        target.classList.add('svg-destination');
+        let markerPosition;
+        if (destination.stackInfo) {
+            const sections = Array.from(target.parentElement.querySelectorAll('rect'));
+            const bounds = sections.map(section => {
+                const box = section.getBBox();
+                const matrix = svg.getCTM().inverse().multiply(section.getCTM());
+                return [
+                    new DOMPoint(box.x, box.y).matrixTransform(matrix),
+                    new DOMPoint(box.x + box.width, box.y + box.height).matrixTransform(matrix)
+                ];
+            }).flat();
+            markerPosition = {
+                x: (Math.min(...bounds.map(point => point.x)) + Math.max(...bounds.map(point => point.x))) / 2,
+                y: (Math.min(...bounds.map(point => point.y)) + Math.max(...bounds.map(point => point.y))) / 2 + 8
+            };
+            sections.forEach(section => section.classList.add('svg-shelf-destination'));
+        } else {
+            target.classList.add('svg-destination');
+        }
         route.style.display = 'inline';
         route.classList.add('svg-route');
         const length = route.getTotalLength();
         const end = route.getPointAtLength(length);
+        markerPosition = markerPosition || end;
         const marker = document.createElementNS(ns, 'g');
         marker.classList.add('svg-location-marker');
-        marker.setAttribute('transform', `translate(${end.x} ${end.y})`);
+        marker.setAttribute('transform', `translate(${markerPosition.x} ${markerPosition.y})`);
         marker.setAttribute('role', 'button');
         marker.setAttribute('tabindex', '0');
         marker.setAttribute('aria-label', `Abrir vista 3D: ${destination.message || destination.stackInfo}`);
         const title = document.createElementNS(ns, 'title');
         title.textContent = `Abrir vista 3D: ${destination.message || destination.stackInfo}`;
         marker.appendChild(title);
+        const pulse = document.createElementNS(ns, 'circle');
+        pulse.setAttribute('cy', '-8');
+        pulse.setAttribute('r', '8');
+        pulse.classList.add('svg-marker-pulse');
+        marker.appendChild(pulse);
         const hitArea = document.createElementNS(ns, 'circle');
         hitArea.setAttribute('r', '10');
         hitArea.setAttribute('cy', '-5');
@@ -872,6 +896,7 @@ function clearMapMarkers() {
     document.querySelectorAll('#map-container .map-marker').forEach(m => m.remove());
     document.querySelectorAll('#map-container .svg-location-marker, #map-container .svg-walker').forEach(element => element.remove());
     document.querySelectorAll('#map-container .svg-destination').forEach(element => element.classList.remove('svg-destination'));
+    document.querySelectorAll('#map-container .svg-shelf-destination').forEach(element => element.classList.remove('svg-shelf-destination'));
     document.querySelectorAll('#map-container .svg-route').forEach(route => {
         route.style.display = 'none';
         route.classList.remove('svg-route');
