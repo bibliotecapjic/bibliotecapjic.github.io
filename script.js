@@ -685,20 +685,14 @@ function drawSvgLocation(svg, loc) {
 
         let markerPosition;
         if (destination.stackInfo) {
-            const sections = Array.from(target.parentElement.querySelectorAll('rect'));
-            const bounds = sections.map(section => {
-                const box = section.getBBox();
-                const matrix = svg.getCTM().inverse().multiply(section.getCTM());
-                return [
-                    new DOMPoint(box.x, box.y).matrixTransform(matrix),
-                    new DOMPoint(box.x + box.width, box.y + box.height).matrixTransform(matrix)
-                ];
-            }).flat();
+            const box = target.getBBox();
+            const matrix = svg.getCTM().inverse().multiply(target.getCTM());
+            const center = new DOMPoint(box.x + box.width / 2, box.y + box.height / 2).matrixTransform(matrix);
             markerPosition = {
-                x: (Math.min(...bounds.map(point => point.x)) + Math.max(...bounds.map(point => point.x))) / 2,
-                y: (Math.min(...bounds.map(point => point.y)) + Math.max(...bounds.map(point => point.y))) / 2 + 8
+                x: center.x,
+                y: center.y + 8
             };
-            sections.forEach(section => section.classList.add('svg-shelf-destination'));
+            target.classList.add('svg-shelf-destination');
         } else {
             target.classList.add('svg-destination');
         }
