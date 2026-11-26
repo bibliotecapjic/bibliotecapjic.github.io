@@ -533,6 +533,11 @@ h1 {
     stroke: #007f78 !important;
     stroke-width: 1.2 !important;
     stroke-dasharray: 2.4 1.5 !important;
+    animation: route-forward 0.8s linear infinite;
+}
+
+@keyframes route-forward {
+    to { stroke-dashoffset: -3.9; }
 }
 
 .svg-location-marker {
@@ -610,7 +615,8 @@ h1 {
 
 @media (prefers-reduced-motion: reduce) {
     .svg-walker-figure,
-    .svg-marker-pulse {
+    .svg-marker-pulse,
+    .svg-route {
         animation: none;
     }
 }
