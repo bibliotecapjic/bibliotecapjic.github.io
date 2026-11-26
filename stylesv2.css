@@ -578,24 +578,18 @@ h1 {
 .svg-walker-figure {
     fill: #ba4900 !important;
     pointer-events: none;
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: walking 0.35s ease-in-out infinite alternate;
 }
 
-.svg-walker.walking .svg-walker-leg {
-    transform-origin: 0 0;
-    animation: walking-leg 0.35s ease-in-out infinite alternate;
-}
-
-.svg-walker.walking .svg-walker-leg-right {
-    animation-direction: alternate-reverse;
-}
-
-@keyframes walking-leg {
-    from { transform: rotate(-20deg); }
-    to { transform: rotate(20deg); }
+@keyframes walking {
+    from { transform: rotate(-7deg); }
+    to { transform: rotate(7deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .svg-walker.walking .svg-walker-leg {
+    .svg-walker-figure {
         animation: none;
     }
 }

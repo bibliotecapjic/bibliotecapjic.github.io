@@ -36,7 +36,6 @@ let isMapLoading = false;
 
 let mapLoadId = 0;
 const routeAnimationFrames = new Set();
-let walkerSequence = 0;
 
 // ------------------------------- DATOS DE MAPAS (CON URLs 3D) ----------------
 
@@ -737,49 +736,11 @@ function drawSvgLocation(svg, loc) {
         walker.appendChild(figure);
         svg.appendChild(walker);
         const box = figure.getBBox();
-        figure.remove();
-        const legTop = box.y + box.height * 0.57;
-        const middle = box.x + box.width / 2;
-        const defs = document.createElementNS(ns, 'defs');
-        walker.appendChild(defs);
-        const walkerId = ++walkerSequence;
-        function addFigurePart(name, x, y, width, height, pivotX) {
-            const clip = document.createElementNS(ns, 'clipPath');
-            clip.id = `walker-${walkerId}-${name}`;
-            clip.setAttribute('clipPathUnits', 'userSpaceOnUse');
-            const rectangle = document.createElementNS(ns, 'rect');
-            rectangle.setAttribute('x', x);
-            rectangle.setAttribute('y', y);
-            rectangle.setAttribute('width', width);
-            rectangle.setAttribute('height', height);
-            clip.appendChild(rectangle);
-            defs.appendChild(clip);
-            const part = figure.cloneNode(true);
-            part.setAttribute('clip-path', `url(#${clip.id})`);
-            if (pivotX === undefined) {
-                walker.appendChild(part);
-            } else {
-                const pivot = document.createElementNS(ns, 'g');
-                pivot.setAttribute('transform', `translate(${pivotX} ${legTop})`);
-                const leg = document.createElementNS(ns, 'g');
-                leg.classList.add('svg-walker-leg', `svg-walker-leg-${name}`);
-                const position = document.createElementNS(ns, 'g');
-                position.setAttribute('transform', `translate(${-pivotX} ${-legTop})`);
-                position.appendChild(part);
-                leg.appendChild(position);
-                pivot.appendChild(leg);
-                walker.appendChild(pivot);
-            }
-        }
-        addFigurePart('body', box.x - 1, box.y - 1, box.width + 2, legTop - box.y + 1);
-        addFigurePart('left', box.x - 1, legTop, middle - box.x + 1, box.height, middle - box.width * 0.16);
-        addFigurePart('right', middle, legTop, box.x + box.width - middle + 1, box.height, middle + box.width * 0.16);
         svg.appendChild(marker);
         const anchorX = box.x + box.width / 2;
         const anchorY = box.y + box.height;
         const duration = Math.max(1000, Math.min(8000, length * 20));
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!reducedMotion) walker.classList.add('walking');
         let started;
         function walk(now) {
             if (started === undefined) started = now;
@@ -787,7 +748,7 @@ function drawSvgLocation(svg, loc) {
             const point = route.getPointAtLength(length * progress);
             walker.setAttribute('transform', `translate(${point.x - anchorX} ${point.y - anchorY})`);
             if (progress === 1) {
-                walker.classList.remove('walking');
+                figure.style.animation = 'none';
             } else {
                 const frame = requestAnimationFrame(time => {
                     routeAnimationFrames.delete(frame);
