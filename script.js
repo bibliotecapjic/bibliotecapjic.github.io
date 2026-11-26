@@ -31,14 +31,11 @@ let currentLibraryData = null;
 /** @type {number|null} Timeout para búsqueda mientras el usuario escribe */
 let searchTimeout = null;
 
-/** @type {number|null} Timeout para la carga de la imagen del mapa */
-let currentImageLoadTimeout = null;
-
 /** @type {boolean} Indica si el mapa se está cargando para evitar peticiones simultáneas */
 let isMapLoading = false;
 
-/** @type {object|null} Ubicación calculada que se mostrará cuando termine de cargar el mapa */
-let pendingLocation = null;
+let mapLoadId = 0;
+const routeAnimationFrames = new Set();
 
 // ------------------------------- DATOS DE MAPAS (CON URLs 3D) ----------------
 
@@ -57,36 +54,42 @@ const mapData = {
         name: "Biblioteca Medellín",
         floors: {
             1: {
-                img: "images/mapa-medellin-piso-1.png",
+                img: "images/mapa-medellin.svg",
                 staticLocations: {
                     "REVISTA": {
+                        svgTarget: "rect28", svgRoute: "path17",
                         x: 0.0815, y: 0.8564, width: 0.1046, height: 0.0799,
                         message: "Colección de Revistas - Hemeroteca",
                         url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=232&sr=3.07,-1.17"
                     },
                     "FOLLETO": {
+                        svgTarget: "rect124", svgRoute: "path15",
                         x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
                         message: "Colección de Folletos. Consultar en Circulación y Préstamo",
                         url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=261&sr=-2.89,-1.43"
                     },
                     "TRABAJO DE GRADO": [
                         {
+                            svgTarget: "rect124", svgRoute: "path15",
                             x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
                             message: "Los Trabajos de grado en CDs se encuentran en el primer piso - Circulación y préstamo.",
                             url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=261&sr=-2.89,-1.43"
                         },
                         {
+                            svgTarget: "rect4-82", svgRoute: "path16", svgPerson: "path18",
                             x: 0.8167, y: 0.4356, width: 0.1694, height: 0.2643,
                             message: "Los Trabajos de grado en formato físico se encuentran en el piso 2 de la Biblioteca.",
                             url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=32&sr=-.09,-.08"
                         }
                     ],
                     "NORMAS": {
+                        svgTarget: "rect124", svgRoute: "path15",
                         x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
                         message: "Colección de Normas Técnicas. Consultar en Circulación y Préstamo",
                         url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=261&sr=-2.89,-1.43"
                     },
                     "MULTIMEDIA": {
+                        svgTarget: "rect124", svgRoute: "path15",
                         x: 0.08167, y: 0.2153, width: 0.1046, height: 0.2088,
                         message: "Colección Multimedia - CDs, DVDs. Consultar en Circulación y Préstamo",
                         url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=261&sr=-2.89,-1.43"
@@ -142,7 +145,7 @@ const mapData = {
         name: "Biblioteca Centro Regional Oriente",
         floors: {
             1: {
-                img: "mapa-oriente.png",
+                img: "images/mapa-oriente.png",
                 staticLocations: {
                     "REVISTA": {
 							x: 0.1319, y: 0.1531, width: 0.0355, height: 0.3369,
@@ -201,7 +204,7 @@ const mapData = {
         name: "Biblioteca Centro Regional Urabá",
         floors: {
             1: {
-                img: "mapa-uraba.png",
+                img: "images/mapa-uraba.png",
                 staticLocations: {
                     "REVISTA": {
                         x: 0.5776, y: 0.6847, width: 0.222, height: 0.0624,
@@ -323,9 +326,9 @@ function toggleControls(enabled) {
  */
 function normalizeDewey(callNumber) {
     if (!callNumber) return null;
-    const match = callNumber.toString().trim().match(/^[A-Z]*(\d+(?:\.\d+)?)/);
+    const match = callNumber.toString().trim().match(/^[A-Z]*(\d+(?:[.,]\d+)?)/i);
     if (!match) return null;
-    return { original: callNumber, numericPart: parseFloat(match[1]) };
+    return { original: callNumber, numericPart: parseFloat(match[1].replace(',', '.')) };
 }
 
 /**
@@ -390,6 +393,9 @@ function searchInStaticLocations(libData, mapKey) {
                     height: loc.height,
                     message: loc.message,
                     url3D: loc.url3D,
+                    svgTarget: loc.svgTarget,
+                    svgRoute: loc.svgRoute,
+                    svgPerson: loc.svgPerson,
                     isMultiple: false
                 };
             }
@@ -401,68 +407,63 @@ function searchInStaticLocations(libData, mapKey) {
 // ------------------------------- FUNCIONES DEL MAPA ---------------------------
 
 /**
- * Carga la imagen del mapa de la biblioteca seleccionada y la muestra en el contenedor.
- * Durante la carga, muestra un spinner. Si la imagen ya existe, la reemplaza.
+ * Carga el mapa de la biblioteca seleccionada.
  * @param {string} libraryKey - Clave de la biblioteca en mapData (ej: 'MEDELLÍN').
- * @returns {boolean} true si se inició la carga, false si ya se estaba cargando.
  */
-function loadLibraryMap(libraryKey) {
-    if (isMapLoading) return false;
+async function loadLibraryMap(libraryKey) {
+    const loadId = ++mapLoadId;
     isMapLoading = true;
-    if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
     const libData = mapData[libraryKey];
     if (!libData) {
         showNoMapAvailable("No hay datos");
-        isMapLoading = false;
-        return false;
+        return;
     }
     currentLibraryData = libData;
     const mapContainer = document.getElementById('map-container');
     mapContainer.innerHTML = `<div class="loading-state"><div><div class="loading-spinner"></div><p>Cargando mapa de ${libData.name}...</p></div></div>`;
     const imgPath = libData.floors[1].img;
-    const img = new Image();
-    currentImageLoadTimeout = setTimeout(() => {
-        if (img && !img.complete) {
-            img.onload = null;
-            img.onerror = null;
-            showNoMapAvailable(`Tiempo de espera agotado`);
-        }
-        currentImageLoadTimeout = null;
-        isMapLoading = false;
-    }, 8000);
-    img.onload = () => {
-        if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
-        const imgElement = document.createElement('img');
-        imgElement.id = 'map-image';
-        imgElement.src = imgPath;
-        imgElement.style.width = '100%';
-        imgElement.style.height = '100%';
-        imgElement.style.objectFit = 'contain';
-        mapContainer.innerHTML = '';
-        mapContainer.appendChild(imgElement);
-        clearMapMarkers();
-        imgElement.onload = () => {
-            isMapLoading = false;
-            if (pendingLocation) {
-                drawLocation(pendingLocation);
-                showLocationInfo(pendingLocation.message || (pendingLocation.stackInfo ? `Ubicado en estante ${pendingLocation.stackInfo}` : "Ubicación encontrada. Haz clic en el marcador 📍 para ver en 3D."));
-                pendingLocation = null;
-            } else {
-                const signature = document.getElementById('signature').value.trim();
-                if (signature) findAndDisplayLocation();
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    try {
+        let mapElement;
+        if (libraryKey === 'MEDELLÍN') {
+            const response = await fetch(imgPath, { signal: controller.signal });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const documentSvg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml');
+            if (documentSvg.querySelector('parsererror') || documentSvg.documentElement.localName !== 'svg') {
+                throw new Error('SVG no válido');
             }
-        };
-        imgElement.onerror = () => {
-            showNoMapAvailable(`Error al mostrar mapa`);
-            isMapLoading = false;
-        };
-    };
-    img.onerror = () => {
-        showNoMapAvailable(`No se pudo cargar el mapa`);
+            mapElement = document.importNode(documentSvg.documentElement, true);
+            mapElement.querySelectorAll('#layer4 > path').forEach(path => path.style.display = 'none');
+            mapElement.setAttribute('role', 'group');
+            mapElement.setAttribute('aria-label', 'Mapa de la Biblioteca Medellín, pisos 1 y 2');
+        } else {
+            mapElement = new Image();
+            await new Promise((resolve, reject) => {
+                controller.signal.addEventListener('abort', () => reject(new Error('Tiempo de espera agotado')), { once: true });
+                mapElement.onload = resolve;
+                mapElement.onerror = () => reject(new Error('No se pudo cargar la imagen'));
+                mapElement.src = imgPath;
+            });
+        }
+        if (loadId !== mapLoadId) return;
+        mapElement.id = 'map-image';
+        mapElement.style.width = '100%';
+        mapElement.style.height = '100%';
+        mapElement.style.objectFit = 'contain';
+        mapContainer.innerHTML = '';
+        mapContainer.appendChild(mapElement);
         isMapLoading = false;
-    };
-    img.src = imgPath;
-    return true;
+        if (selectedMaterial) findAndDisplayLocationForMaterial(selectedMaterial);
+        else if (document.getElementById('signature').value.trim()) findAndDisplayLocation();
+    } catch (error) {
+        if (loadId === mapLoadId) {
+            console.error('Error al cargar el mapa:', error);
+            showNoMapAvailable('No se pudo cargar el mapa. Intente de nuevo.');
+        }
+    } finally {
+        clearTimeout(timeout);
+    }
 }
 
 /**
@@ -471,7 +472,6 @@ function loadLibraryMap(libraryKey) {
  */
 function showNoMapAvailable(msg) {
     const mapContainer = document.getElementById('map-container');
-    if (currentImageLoadTimeout) clearTimeout(currentImageLoadTimeout);
     mapContainer.innerHTML = `<div class="no-map-state"><div><span>🚫</span><h3>Mapa no disponible</h3><p>${msg}</p></div></div>`;
     clearMapMarkers();
     document.getElementById('location-info-panel').classList.remove('active');
@@ -486,11 +486,17 @@ function showNoMapAvailable(msg) {
 function findAndDisplayLocation() {
     if (!selectedLibrary) return;
     const signature = document.getElementById('signature').value.trim();
-    if (!signature) return;
+    if (!signature) {
+        clearMapMarkers();
+        document.getElementById('location-info-panel').classList.remove('active');
+        document.getElementById('legend-panel').classList.remove('active');
+        return;
+    }
     const libKey = libraryMap[selectedLibrary];
     const libData = mapData[libKey];
     if (!libData) return;
-    const mapImage = document.getElementById('map-container').querySelector('img#map-image');
+    const mapImage = document.getElementById('map-image');
+    if (isMapLoading) return;
     if (!mapImage && !isMapLoading) {
         document.getElementById('location-info-text').textContent = `Espere a que cargue el mapa...`;
         document.getElementById('location-info-panel').classList.add('active');
@@ -512,8 +518,7 @@ function findAndDisplayLocation() {
         message = `Material disponible en ${libData.name} (Colección General). Consulte al personal.`;
     }
     if (location) {
-        if (mapImage) drawLocation(location);
-        else pendingLocation = { ...location, message };
+        if (!drawLocation(location)) message += ' No se pudo mostrar la ruta en el mapa.';
         showLocationInfo(message);
     } else {
         clearMapMarkers();
@@ -536,8 +541,8 @@ function selectLibrary(libId) {
     selectedLibrary = libId;
     document.getElementById(`btn-${libId}`).classList.add('selected');
     toggleControls(true);
-    isMapLoading = false;
-    pendingLocation = null;
+    clearTimeout(searchTimeout);
+    clearMapMarkers();
     loadLibraryMap(libraryMap[libId]);
     updateUI();
     clearMapMarkers();
@@ -551,6 +556,7 @@ function selectLibrary(libId) {
  */
 function selectMaterial(matId) {
     if (selectedMaterial === matId) return;
+    clearTimeout(searchTimeout);
     if (selectedMaterial) document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
     selectedMaterial = matId;
     document.getElementById(`btn-${matId}`).classList.add('selected');
@@ -568,7 +574,7 @@ function findAndDisplayLocationForMaterial(matId) {
     const libKey = libraryMap[selectedLibrary];
     const libData = mapData[libKey];
     if (!libData) return;
-    const mapImage = document.getElementById('map-container').querySelector('img#map-image');
+    const mapImage = document.getElementById('map-image');
     if (!mapImage) return;
     const mapKey = materialMap[matId];
     if (!mapKey) {
@@ -587,8 +593,12 @@ function findAndDisplayLocationForMaterial(matId) {
     } else {
         message = `Material disponible en ${libData.name} (${materialDisplayNames[matId]}). Consulte al personal.`;
     }
-    if (location) drawLocation(location);
-    else clearMapMarkers();
+    if (location) {
+        if (!drawLocation(location)) message += ' No se pudo mostrar la ruta en el mapa.';
+        if (selectedLibrary === 'medellin' && matId === 'tesis') {
+            message += ' La ruta del piso 2 comienza en las escaleras.';
+        }
+    } else clearMapMarkers();
     showLocationInfo(message);
 }
 
@@ -611,7 +621,9 @@ function open3DMap(url) {
  */
 function drawLocation(loc) {
     clearMapMarkers();
-    if (!loc) return;
+    if (!loc) return false;
+    const svg = document.querySelector('#map-container svg#map-image');
+    if (svg) return drawSvgLocation(svg, loc);
     if (loc.isMultiple && loc.locations) {
         loc.locations.forEach((l, idx) => {
             const marker = createMarker(l.x, l.y, l.width, l.height, idx, l.url3D);
@@ -622,6 +634,102 @@ function drawLocation(loc) {
         document.getElementById('map-container').appendChild(marker);
     }
     requestAnimationFrame(() => adjustMarkersPosition());
+    return true;
+}
+
+/**
+ * Usa las rutas y las secciones de estante incluidas en el SVG de Medellín.
+ * La ruta del segundo piso comienza en las escaleras del propio plano.
+ */
+function drawSvgLocation(svg, loc) {
+    const ink = 'http://www.inkscape.org/namespaces/inkscape';
+    const ns = 'http://www.w3.org/2000/svg';
+    const destinations = loc.isMultiple ? loc.locations : [loc];
+    let complete = true;
+
+    destinations.forEach(destination => {
+        let target;
+        let route;
+        if (destination.stackInfo) {
+            const shelf = destination.stackInfo.split('.')[1];
+            target = Array.from(svg.querySelectorAll('#layer7 rect')).find(
+                element => element.getAttributeNS(ink, 'label') === `ESTANTE ${shelf}`
+            );
+            route = Array.from(svg.querySelectorAll('#layer4 path')).find(
+                element => element.id !== 'path15' && element.getAttributeNS(ink, 'label') === `Ruta estante ${shelf}`
+            );
+        } else {
+            target = svg.querySelector(`#${destination.svgTarget}`);
+            route = svg.querySelector(`#${destination.svgRoute}`);
+        }
+        const person = svg.querySelector(`#${destination.svgPerson || 'path238'}`);
+        if (!target || !route || !person) {
+            console.error('Faltan elementos de la ruta SVG:', destination);
+            complete = false;
+            return;
+        }
+
+        target.classList.add('svg-destination');
+        route.style.display = 'inline';
+        route.classList.add('svg-route');
+        const length = route.getTotalLength();
+        const end = route.getPointAtLength(length);
+        const marker = document.createElementNS(ns, 'g');
+        marker.classList.add('svg-location-marker');
+        marker.setAttribute('transform', `translate(${end.x} ${end.y})`);
+        marker.setAttribute('role', 'button');
+        marker.setAttribute('tabindex', '0');
+        marker.setAttribute('aria-label', `Abrir vista 3D: ${destination.message || destination.stackInfo}`);
+        const pin = document.createElementNS(ns, 'circle');
+        pin.setAttribute('r', '3');
+        marker.appendChild(pin);
+        const text = document.createElementNS(ns, 'text');
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('y', '1.2');
+        text.textContent = '↗';
+        marker.appendChild(text);
+        const open = () => open3DMap(destination.url3D);
+        marker.addEventListener('click', open);
+        marker.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                open();
+            }
+        });
+        const walker = document.createElementNS(ns, 'g');
+        walker.classList.add('svg-walker');
+        walker.setAttribute('aria-hidden', 'true');
+        const figure = person.cloneNode(true);
+        figure.removeAttribute('id');
+        figure.classList.add('svg-walker-figure');
+        figure.style.display = 'inline';
+        walker.appendChild(figure);
+        svg.appendChild(walker);
+        const box = figure.getBBox();
+        svg.appendChild(marker);
+        const anchorX = box.x + box.width / 2;
+        const anchorY = box.y + box.height;
+        const duration = Math.max(1000, Math.min(8000, length * 20));
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let started;
+        function walk(now) {
+            if (started === undefined) started = now;
+            const progress = reducedMotion ? 1 : Math.min((now - started) / duration, 1);
+            const point = route.getPointAtLength(length * progress);
+            walker.setAttribute('transform', `translate(${point.x - anchorX} ${point.y - anchorY})`);
+            if (progress === 1) {
+                figure.style.animation = 'none';
+            } else {
+                const frame = requestAnimationFrame(time => {
+                    routeAnimationFrames.delete(frame);
+                    walk(time);
+                });
+                routeAnimationFrames.add(frame);
+            }
+        }
+        walk(performance.now());
+    });
+    return complete;
 }
 
 /**
@@ -729,7 +837,15 @@ function adjustMarkersPosition() {
  * Elimina todos los marcadores del mapa.
  */
 function clearMapMarkers() {
+    routeAnimationFrames.forEach(cancelAnimationFrame);
+    routeAnimationFrames.clear();
     document.querySelectorAll('#map-container .map-marker').forEach(m => m.remove());
+    document.querySelectorAll('#map-container .svg-location-marker, #map-container .svg-walker').forEach(element => element.remove());
+    document.querySelectorAll('#map-container .svg-destination').forEach(element => element.classList.remove('svg-destination'));
+    document.querySelectorAll('#map-container .svg-route').forEach(route => {
+        route.style.display = 'none';
+        route.classList.remove('svg-route');
+    });
 }
 
 /**
