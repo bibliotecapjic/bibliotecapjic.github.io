@@ -26,3 +26,19 @@ test('conserva la búsqueda por clasificación en las tres sedes', () => {
     ]`, context);
     assert.deepEqual(Array.from(result), ['1.6A2.Izquierdo', '1.2.Derecho', '1.1.Derecho']);
 });
+
+test('cambia la vista del mapa y el estado de los botones de piso', () => {
+    const svg = { setAttribute(name, value) { this[name] = value; } };
+    const buttons = ['1', '2', 'all'].map(floor => ({
+        dataset: { floor },
+        setAttribute(name, value) { this[name] = value; }
+    }));
+    context.document.querySelector = () => svg;
+    context.document.querySelectorAll = () => buttons;
+    context.setSvgFloor('2');
+    assert.equal(svg.viewBox, '332 0 176 215');
+    assert.deepEqual(buttons.map(button => button['aria-pressed']), ['false', 'true', 'false']);
+    context.setSvgFloor('all');
+    assert.equal(svg.viewBox, '0 0 508 285.75');
+    assert.deepEqual(buttons.map(button => button['aria-pressed']), ['false', 'false', 'true']);
+});

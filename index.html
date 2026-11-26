@@ -146,13 +146,14 @@
                     Seleccione una biblioteca e ingrese el número de localización o un material.
                     En Medellín, siga la ruta y haga clic en el marcador para ver la ubicación en 3D.
                 </div>
+                <div class="location-3d-links" id="location-3d-links"></div>
             </div>
 
-            <div class="map-zoom-controls" id="map-zoom-controls" hidden>
-                <button type="button" id="map-zoom-out" aria-label="Reducir mapa">−</button>
-                <span id="map-zoom-level" aria-live="polite">150%</span>
-                <button type="button" id="map-zoom-in" aria-label="Ampliar mapa">+</button>
-                <span>Desplázate dentro del mapa para ver los dos pisos.</span>
+            <div class="map-floor-controls" id="map-floor-controls" role="group" aria-label="Vista del mapa" hidden>
+                <span>Ver:</span>
+                <button type="button" data-floor="1" aria-pressed="true">Piso 1</button>
+                <button type="button" data-floor="2" aria-pressed="false">Piso 2</button>
+                <button type="button" data-floor="all" aria-pressed="false">Ambos pisos</button>
             </div>
 
             <!-- Contenedor del mapa y sus marcadores -->

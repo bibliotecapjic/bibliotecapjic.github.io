@@ -106,7 +106,7 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1800px;
     margin: 0 auto;
 }
 
@@ -142,7 +142,7 @@ h1 {
    ================================================================== */
 .main-content {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
     gap: 25px;
 }
 
@@ -429,7 +429,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-.map-zoom-controls:not([hidden]) {
+.map-floor-controls:not([hidden]) {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -439,33 +439,32 @@ h1 {
     font-size: 14px;
 }
 
-.map-zoom-controls button {
-    min-width: 36px;
+.map-floor-controls button {
     min-height: 36px;
+    padding: 6px 12px;
     border: 1px solid var(--borde-default);
     border-radius: 6px;
     background: var(--fondo-tarjeta);
     color: var(--texto-boton);
-    font-size: 20px;
+    font-size: 14px;
     cursor: pointer;
 }
 
-.map-zoom-controls button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+.map-floor-controls button[aria-pressed="true"] {
+    background: var(--color-primario-oscuro);
+    color: var(--blanco);
 }
 
 .map-container.svg-map {
     flex: none;
-    height: min(65vh, 650px);
-    min-height: 300px;
-    overflow: auto;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .svg-map svg#map-image {
     display: block;
     height: auto;
-    max-width: none;
+    width: 100%;
 }
 
 .initial-state {
@@ -533,23 +532,46 @@ h1 {
     cursor: pointer;
 }
 
-.svg-location-marker circle {
+.svg-marker-hit {
+    fill: transparent;
+}
+
+.svg-marker-pin {
     fill: #ba4900;
     stroke: white;
-    stroke-width: 0.6;
+    stroke-width: 0.8;
 }
 
-.svg-location-marker text {
+.svg-marker-center {
     fill: white;
-    font-size: 4px;
-    font-weight: bold;
-    pointer-events: none;
 }
 
-.svg-location-marker:focus circle,
-.svg-location-marker:hover circle {
+.svg-location-marker:focus .svg-marker-pin,
+.svg-location-marker:hover .svg-marker-pin {
     stroke: #00b4ab;
     stroke-width: 1.4;
+}
+
+.location-3d-links:not(:empty) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.location-3d-link {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: var(--color-primario-oscuro);
+    color: var(--blanco);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.location-3d-link:focus-visible,
+.location-3d-link:hover {
+    background: var(--azul-gradiente-claro);
 }
 
 .svg-walker-figure {

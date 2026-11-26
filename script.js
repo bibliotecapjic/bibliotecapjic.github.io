@@ -36,7 +36,6 @@ let isMapLoading = false;
 
 let mapLoadId = 0;
 const routeAnimationFrames = new Set();
-let svgZoom = 1.5;
 
 // ------------------------------- DATOS DE MAPAS (CON URLs 3D) ----------------
 
@@ -422,7 +421,7 @@ async function loadLibraryMap(libraryKey) {
     }
     currentLibraryData = libData;
     const mapContainer = document.getElementById('map-container');
-    document.getElementById('map-zoom-controls').hidden = true;
+    document.getElementById('map-floor-controls').hidden = true;
     mapContainer.classList.remove('svg-map');
     mapContainer.innerHTML = `<div class="loading-state"><div><div class="loading-spinner"></div><p>Cargando mapa de ${libData.name}...</p></div></div>`;
     const imgPath = libData.floors[1].img;
@@ -438,6 +437,8 @@ async function loadLibraryMap(libraryKey) {
                 throw new Error('SVG no válido');
             }
             mapElement = document.importNode(documentSvg.documentElement, true);
+            mapElement.removeAttribute('width');
+            mapElement.removeAttribute('height');
             mapElement.querySelectorAll('#layer4 > path').forEach(path => path.style.display = 'none');
             mapElement.setAttribute('role', 'group');
             mapElement.setAttribute('aria-label', 'Mapa de la Biblioteca Medellín, pisos 1 y 2');
@@ -453,13 +454,7 @@ async function loadLibraryMap(libraryKey) {
         if (loadId !== mapLoadId) return;
         mapElement.id = 'map-image';
         if (libraryKey === 'MEDELLÍN') {
-            svgZoom = 1.5;
             mapContainer.classList.add('svg-map');
-            document.getElementById('map-zoom-controls').hidden = false;
-            mapElement.style.width = `${svgZoom * 100}%`;
-            document.getElementById('map-zoom-level').textContent = '150%';
-            document.getElementById('map-zoom-out').disabled = false;
-            document.getElementById('map-zoom-in').disabled = false;
         } else {
             mapElement.style.width = '100%';
             mapElement.style.height = '100%';
@@ -467,6 +462,10 @@ async function loadLibraryMap(libraryKey) {
         }
         mapContainer.innerHTML = '';
         mapContainer.appendChild(mapElement);
+        if (libraryKey === 'MEDELLÍN') {
+            document.getElementById('map-floor-controls').hidden = false;
+            setSvgFloor('1');
+        }
         isMapLoading = false;
         if (selectedMaterial) findAndDisplayLocationForMaterial(selectedMaterial);
         else if (document.getElementById('signature').value.trim()) findAndDisplayLocation();
@@ -527,7 +526,7 @@ function findAndDisplayLocation() {
         const parts = location.stackInfo.split('.');
         const estante = parts[1];
         const lado = parts[2];
-        message = `Este material puede encontrarse en el piso ${location.floor} de ${libData.name}, estante ${estante} lado ${lado}. Haz clic en el marcador 📍 para ver la ubicación exacta en 3D.`;
+        message = `Este material puede encontrarse en el piso ${location.floor} de ${libData.name}, estante ${estante} lado ${lado}. Haz clic en el marcador 📍 para ver la ubicación en 3D.`;
     } else {
         message = `Material disponible en ${libData.name} (Colección General). Consulte al personal.`;
     }
@@ -660,6 +659,7 @@ function drawSvgLocation(svg, loc) {
     const ns = 'http://www.w3.org/2000/svg';
     const destinations = loc.isMultiple ? loc.locations : [loc];
     let complete = true;
+    setSvgFloor(destinations.length > 1 ? 'all' : destinations[0].svgPerson === 'path18' ? '2' : '1');
 
     destinations.forEach(destination => {
         let target;
@@ -694,14 +694,23 @@ function drawSvgLocation(svg, loc) {
         marker.setAttribute('role', 'button');
         marker.setAttribute('tabindex', '0');
         marker.setAttribute('aria-label', `Abrir vista 3D: ${destination.message || destination.stackInfo}`);
-        const pin = document.createElementNS(ns, 'circle');
-        pin.setAttribute('r', '3');
+        const title = document.createElementNS(ns, 'title');
+        title.textContent = `Abrir vista 3D: ${destination.message || destination.stackInfo}`;
+        marker.appendChild(title);
+        const hitArea = document.createElementNS(ns, 'circle');
+        hitArea.setAttribute('r', '10');
+        hitArea.setAttribute('cy', '-5');
+        hitArea.classList.add('svg-marker-hit');
+        marker.appendChild(hitArea);
+        const pin = document.createElementNS(ns, 'path');
+        pin.setAttribute('d', 'M 0 0 C -2 -3 -5 -5 -5 -8 A 5 5 0 1 1 5 -8 C 5 -5 2 -3 0 0 Z');
+        pin.classList.add('svg-marker-pin');
         marker.appendChild(pin);
-        const text = document.createElementNS(ns, 'text');
-        text.setAttribute('text-anchor', 'middle');
-        text.setAttribute('y', '1.2');
-        text.textContent = '↗';
-        marker.appendChild(text);
+        const center = document.createElementNS(ns, 'circle');
+        center.setAttribute('cy', '-8');
+        center.setAttribute('r', '1.7');
+        center.classList.add('svg-marker-center');
+        marker.appendChild(center);
         const open = () => open3DMap(destination.url3D);
         marker.addEventListener('click', open);
         marker.addEventListener('keydown', event => {
@@ -710,6 +719,13 @@ function drawSvgLocation(svg, loc) {
                 open();
             }
         });
+        const link = document.createElement('a');
+        link.className = 'location-3d-link';
+        link.href = destination.url3D;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = `📍 Ver en 3D: ${destination.stackInfo ? `estante ${destination.stackInfo.split('.')[1]}` : destination.message}`;
+        document.getElementById('location-3d-links').appendChild(link);
         const walker = document.createElementNS(ns, 'g');
         walker.classList.add('svg-walker');
         walker.setAttribute('aria-hidden', 'true');
@@ -860,6 +876,7 @@ function clearMapMarkers() {
         route.style.display = 'none';
         route.classList.remove('svg-route');
     });
+    document.getElementById('location-3d-links').replaceChildren();
 }
 
 /**
@@ -893,14 +910,18 @@ function showLocationInfo(msg) {
     document.getElementById('legend-panel').classList.add('active');
 }
 
-function zoomSvgMap(change) {
+function setSvgFloor(floor) {
     const svg = document.querySelector('#map-container svg#map-image');
     if (!svg) return;
-    svgZoom = Math.max(1, Math.min(3, svgZoom + change));
-    svg.style.width = `${svgZoom * 100}%`;
-    document.getElementById('map-zoom-level').textContent = `${svgZoom * 100}%`;
-    document.getElementById('map-zoom-out').disabled = svgZoom === 1;
-    document.getElementById('map-zoom-in').disabled = svgZoom === 3;
+    const views = {
+        '1': '0 0 338 285.75',
+        '2': '332 0 176 215',
+        'all': '0 0 508 285.75'
+    };
+    svg.setAttribute('viewBox', views[floor]);
+    document.querySelectorAll('#map-floor-controls button').forEach(button => {
+        button.setAttribute('aria-pressed', String(button.dataset.floor === floor));
+    });
 }
 
 // ------------------------------- EVENTOS E INICIALIZACIÓN ---------------------
@@ -920,8 +941,9 @@ window.addEventListener('resize', () => {
  *   - Lee los parámetros de la URL y actúa en consecuencia.
  */
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('map-zoom-out').addEventListener('click', () => zoomSvgMap(-0.5));
-    document.getElementById('map-zoom-in').addEventListener('click', () => zoomSvgMap(0.5));
+    document.querySelectorAll('#map-floor-controls button').forEach(button => {
+        button.addEventListener('click', () => setSvgFloor(button.dataset.floor));
+    });
     // Botones de bibliotecas
     document.getElementById('btn-medellin').addEventListener('click', () => selectLibrary('medellin'));
     document.getElementById('btn-oriente').addEventListener('click', () => selectLibrary('oriente'));
