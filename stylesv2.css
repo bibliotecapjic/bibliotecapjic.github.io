@@ -106,7 +106,7 @@ body {
 }
 
 .container {
-    max-width: 1800px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -142,7 +142,7 @@ h1 {
    ================================================================== */
 .main-content {
     display: grid;
-    grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+    grid-template-columns: 1fr 2fr;
     gap: 25px;
 }
 
@@ -465,6 +465,7 @@ h1 {
     display: block;
     height: auto;
     width: 100%;
+    max-height: min(65vh, 650px);
 }
 
 .initial-state {
