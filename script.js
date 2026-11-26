@@ -36,6 +36,7 @@ let isMapLoading = false;
 
 let mapLoadId = 0;
 const routeAnimationFrames = new Set();
+let svgZoom = 1.5;
 
 // ------------------------------- DATOS DE MAPAS (CON URLs 3D) ----------------
 
@@ -337,7 +338,8 @@ function normalizeDewey(callNumber) {
  * @returns {boolean} true si es válida.
  */
 function validateSignature(s) {
-    return /^[0-9A-Za-z.,\s-]+$/.test(s) && s.length <= 50;
+    return /^[0-9A-Za-z.,\s-]+$/.test(s) && s.length <= 50 &&
+        /^[A-Za-z]*\d{3,}(?=[.,\sA-Za-z-]|$)/.test(s);
 }
 
 /**
@@ -420,6 +422,8 @@ async function loadLibraryMap(libraryKey) {
     }
     currentLibraryData = libData;
     const mapContainer = document.getElementById('map-container');
+    document.getElementById('map-zoom-controls').hidden = true;
+    mapContainer.classList.remove('svg-map');
     mapContainer.innerHTML = `<div class="loading-state"><div><div class="loading-spinner"></div><p>Cargando mapa de ${libData.name}...</p></div></div>`;
     const imgPath = libData.floors[1].img;
     const controller = new AbortController();
@@ -448,9 +452,19 @@ async function loadLibraryMap(libraryKey) {
         }
         if (loadId !== mapLoadId) return;
         mapElement.id = 'map-image';
-        mapElement.style.width = '100%';
-        mapElement.style.height = '100%';
-        mapElement.style.objectFit = 'contain';
+        if (libraryKey === 'MEDELLÍN') {
+            svgZoom = 1.5;
+            mapContainer.classList.add('svg-map');
+            document.getElementById('map-zoom-controls').hidden = false;
+            mapElement.style.width = `${svgZoom * 100}%`;
+            document.getElementById('map-zoom-level').textContent = '150%';
+            document.getElementById('map-zoom-out').disabled = false;
+            document.getElementById('map-zoom-in').disabled = false;
+        } else {
+            mapElement.style.width = '100%';
+            mapElement.style.height = '100%';
+            mapElement.style.objectFit = 'contain';
+        }
         mapContainer.innerHTML = '';
         mapContainer.appendChild(mapElement);
         isMapLoading = false;
@@ -503,7 +517,7 @@ function findAndDisplayLocation() {
         return;
     }
     if (!validateSignature(signature)) {
-        showLocationInfo("Signatura no válida.");
+        showLocationInfo("Ingrese una signatura válida con al menos tres cifras antes del separador decimal, por ejemplo 005.131 o 541.");
         clearMapMarkers();
         return;
     }
@@ -879,6 +893,16 @@ function showLocationInfo(msg) {
     document.getElementById('legend-panel').classList.add('active');
 }
 
+function zoomSvgMap(change) {
+    const svg = document.querySelector('#map-container svg#map-image');
+    if (!svg) return;
+    svgZoom = Math.max(1, Math.min(3, svgZoom + change));
+    svg.style.width = `${svgZoom * 100}%`;
+    document.getElementById('map-zoom-level').textContent = `${svgZoom * 100}%`;
+    document.getElementById('map-zoom-out').disabled = svgZoom === 1;
+    document.getElementById('map-zoom-in').disabled = svgZoom === 3;
+}
+
 // ------------------------------- EVENTOS E INICIALIZACIÓN ---------------------
 
 let resizeTimer;
@@ -896,6 +920,8 @@ window.addEventListener('resize', () => {
  *   - Lee los parámetros de la URL y actúa en consecuencia.
  */
 document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('map-zoom-out').addEventListener('click', () => zoomSvgMap(-0.5));
+    document.getElementById('map-zoom-in').addEventListener('click', () => zoomSvgMap(0.5));
     // Botones de bibliotecas
     document.getElementById('btn-medellin').addEventListener('click', () => selectLibrary('medellin'));
     document.getElementById('btn-oriente').addEventListener('click', () => selectLibrary('oriente'));
@@ -912,6 +938,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sigInput = document.getElementById('signature');
     toggleControls(false);
     sigInput.addEventListener('input', () => {
+        clearMapMarkers();
         updateUI();
         if (selectedMaterial && sigInput.value.trim() !== '') {
             document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');

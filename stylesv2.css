@@ -340,6 +340,7 @@ h1 {
     box-shadow: 0 4px 12px var(--sombra-suave);
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 /* ---------- 6.1 Información de selección ---------- */
@@ -426,6 +427,45 @@ h1 {
     border: 1px solid var(--borde-muy-claro);
     min-height: 500px;
     margin-bottom: 20px;
+}
+
+.map-zoom-controls:not([hidden]) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    color: var(--texto-secundario);
+    font-size: 14px;
+}
+
+.map-zoom-controls button {
+    min-width: 36px;
+    min-height: 36px;
+    border: 1px solid var(--borde-default);
+    border-radius: 6px;
+    background: var(--fondo-tarjeta);
+    color: var(--texto-boton);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.map-zoom-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.map-container.svg-map {
+    flex: none;
+    height: min(65vh, 650px);
+    min-height: 300px;
+    overflow: auto;
+}
+
+.svg-map svg#map-image {
+    display: block;
+    height: auto;
+    max-width: none;
 }
 
 .initial-state {

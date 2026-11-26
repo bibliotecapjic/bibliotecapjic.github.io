@@ -86,6 +86,7 @@
                            required
                            disabled>
                     <div class="help-text">
+                        Ingrese al menos tres cifras antes del separador decimal.
                         Ejemplos: 658.403, 005.1, 900.2, A412, 312 A123.
                         Las rutas son aproximadas y están disponibles para Medellín.
                         
@@ -145,6 +146,13 @@
                     Seleccione una biblioteca e ingrese el número de localización o un material.
                     En Medellín, siga la ruta y haga clic en el marcador para ver la ubicación en 3D.
                 </div>
+            </div>
+
+            <div class="map-zoom-controls" id="map-zoom-controls" hidden>
+                <button type="button" id="map-zoom-out" aria-label="Reducir mapa">−</button>
+                <span id="map-zoom-level" aria-live="polite">150%</span>
+                <button type="button" id="map-zoom-in" aria-label="Ampliar mapa">+</button>
+                <span>Desplázate dentro del mapa para ver los dos pisos.</span>
             </div>
 
             <!-- Contenedor del mapa y sus marcadores -->
