@@ -544,6 +544,14 @@ h1 {
     cursor: pointer;
 }
 
+.svg-route-play:focus {
+    outline: none;
+}
+
+.svg-route-play:focus-visible {
+    outline: 2px solid #00b4ab;
+}
+
 .svg-route-play circle {
     fill: #165a72;
     stroke: white;
@@ -556,7 +564,7 @@ h1 {
 }
 
 .svg-route-play:hover circle,
-.svg-route-play:focus circle {
+.svg-route-play:focus-visible circle {
     stroke: #00b4ab;
     stroke-width: 1.4;
 }
