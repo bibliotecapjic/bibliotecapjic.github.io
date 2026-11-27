@@ -41,12 +41,12 @@ test('cambia la vista del mapa y el estado de los botones de piso', () => {
     context.document.querySelector = () => svg;
     context.document.querySelectorAll = () => buttons;
     context.setSvgFloor('2');
-    assert.equal(svg.viewBox, '332 0 176 215');
+    assert.equal(svg.viewBox, '334 18 172 198');
     assert.deepEqual(buttons.map(button => button['aria-pressed']), ['false', 'true']);
     assert.equal(floor1.style.display, 'none');
     assert.equal(floor2.style.display, 'inline');
     context.setSvgFloor('1');
-    assert.equal(svg.viewBox, '0 0 338 285.75');
+    assert.equal(svg.viewBox, '4 18 332 261');
     assert.deepEqual(buttons.map(button => button['aria-pressed']), ['true', 'false']);
     assert.equal(floor1.style.display, 'inline');
     assert.equal(floor2.style.display, 'none');

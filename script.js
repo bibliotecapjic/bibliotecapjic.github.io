@@ -1008,8 +1008,8 @@ function setSvgFloor(floor) {
     const svg = document.querySelector('#map-container svg#map-image');
     if (!svg) return;
     const views = {
-        '1': '0 0 338 285.75',
-        '2': '332 0 176 215'
+        '1': '4 18 332 261',
+        '2': '334 18 172 198'
     };
     if (!views[floor]) return;
     const floor1 = svg.querySelector('#layer11');
