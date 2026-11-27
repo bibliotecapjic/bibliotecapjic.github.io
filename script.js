@@ -651,11 +651,12 @@ function drawLocation(loc) {
     return true;
 }
 
-function routeHeading(route, distance, length) {
+function routeFacing(route, distance, length, previousFacing) {
     const start = route.getPointAtLength(Math.min(distance, Math.max(0, length - 0.1)));
     const end = route.getPointAtLength(Math.min(length, distance + 0.1));
-    if (start.x === end.x && start.y === end.y) return 0;
-    return Math.atan2(end.y - start.y, end.x - start.x) * 180 / Math.PI + 90;
+    if (end.x > start.x) return 1;
+    if (end.x < start.x) return -1;
+    return previousFacing;
 }
 
 /**
@@ -779,13 +780,14 @@ function drawSvgLocation(svg, loc) {
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (!reducedMotion) walker.classList.add('walking');
         let started;
+        let facing = 1;
         function walk(now) {
             if (started === undefined) started = now;
             const progress = reducedMotion ? 1 : Math.min((now - started) / duration, 1);
             const distance = length * progress;
             const point = route.getPointAtLength(distance);
-            const heading = routeHeading(route, distance, length);
-            walker.setAttribute('transform', `translate(${point.x} ${point.y}) rotate(${heading}) translate(${-anchorX} ${-anchorY})`);
+            facing = routeFacing(route, distance, length, facing);
+            walker.setAttribute('transform', `translate(${point.x} ${point.y}) scale(${facing} 1) translate(${-anchorX} ${-anchorY})`);
             if (progress === 1) {
                 figure.style.animation = 'none';
                 walker.classList.remove('walking');

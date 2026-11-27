@@ -52,7 +52,7 @@ test('cambia la vista del mapa y el estado de los botones de piso', () => {
     assert.equal(floor2.style.display, 'none');
 });
 
-test('orienta el muñeco hacia el siguiente tramo y conserva la dirección al llegar', () => {
+test('mantiene el muñeco vertical y cambia de lado solo en tramos horizontales', () => {
     const route = {
         getPointAtLength(distance) {
             if (distance <= 10) return { x: distance, y: 0 };
@@ -61,9 +61,9 @@ test('orienta el muñeco hacia el siguiente tramo y conserva la dirección al ll
             return { x: 0, y: 40 - distance };
         }
     };
-    assert.equal(context.routeHeading(route, 0, 40), 90);
-    assert.equal(context.routeHeading(route, 10, 40), 180);
-    assert.equal(context.routeHeading(route, 20, 40), 270);
-    assert.equal(context.routeHeading(route, 30, 40), 0);
-    assert.equal(context.routeHeading(route, 40, 40), 0);
+    assert.equal(context.routeFacing(route, 0, 40, -1), 1);
+    assert.equal(context.routeFacing(route, 10, 40, 1), 1);
+    assert.equal(context.routeFacing(route, 20, 40, 1), -1);
+    assert.equal(context.routeFacing(route, 30, 40, -1), -1);
+    assert.equal(context.routeFacing(route, 40, 40, -1), -1);
 });
