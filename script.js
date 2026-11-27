@@ -979,6 +979,51 @@ function updateUI() {
     } else {
         document.getElementById('selection-info').style.display = 'none';
     }
+    syncShareUrl();
+}
+
+const libraryCodes = { medellin: 'POBLA', oriente: 'RIONE', uraba: 'APART' };
+const materialUrlParams = {
+    tesis: ['material_type', 'THESIS'],
+    cd: ['material_type', 'CDROM'],
+    revista: ['material_type', 'ISSUE'],
+    folleto: ['material_type', 'PAMPHLET'],
+    norma: ['location_code', 'NORMA']
+};
+
+/**
+ * Refleja la selección actual en la URL (mismos parámetros que lee la integración externa)
+ * y regenera el código QR. Sin selección conserva la URL tal como llegó.
+ */
+let urlSyncReady = false;
+function syncShareUrl() {
+    const sig = document.getElementById('signature').value.trim();
+    if (selectedLibrary && urlSyncReady) {
+        const params = new URLSearchParams();
+        params.set('library_code', libraryCodes[selectedLibrary]);
+        const mat = selectedMaterial && materialUrlParams[selectedMaterial];
+        if (mat) {
+            params.set(mat[0], mat[1]);
+        } else if (sig) {
+            params.set('material_type', 'BOOK');
+            params.set('call_number', sig);
+        }
+        history.replaceState(null, '', `${location.pathname}?${params}`);
+    }
+    renderQr();
+}
+
+let lastQrUrl = '';
+function renderQr() {
+    const box = document.getElementById('qr-code');
+    if (!box || typeof qrcode !== 'function') return;
+    const url = window.location.href;
+    if (url === lastQrUrl) return;
+    lastQrUrl = url;
+    const qr = qrcode(0, 'M');
+    qr.addData(url);
+    qr.make();
+    box.innerHTML = qr.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
 }
 
 /**
@@ -1067,6 +1112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedMaterial && sigInput.value.trim() !== '') {
             document.getElementById(`btn-${selectedMaterial}`).classList.remove('selected');
             selectedMaterial = null;
+            syncShareUrl();
         }
         if (selectedLibrary) {
             if (searchTimeout) clearTimeout(searchTimeout);
@@ -1081,6 +1127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     updateUI();
+    renderQr();
 
     // ------------------------------------------------------------------------
     // LECTURA DE PARÁMETROS DE URL (integración externa)
@@ -1140,7 +1187,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     } else if (libCode) {
         console.warn(`URL: library_code desconocido: ${libCode}`);
-    }  
+    }
+
+    // Espera a que termine la carga inicial desde la URL antes de reescribirla
+    setTimeout(() => { urlSyncReady = true; syncShareUrl(); }, 500);
 
 
 });

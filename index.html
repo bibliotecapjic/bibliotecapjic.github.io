@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Mapas de Biblioteca</title>
     <!-- Estilos externos -->
-	<link href="stylesv2.css?v=20261127-7" rel="stylesheet">
+	<link href="stylesv2.css?v=20261127-8" rel="stylesheet">
 </head>
 <body>
 
@@ -175,11 +175,18 @@
                     Ubicación y ruta aproximadas. En Medellín, usa ▶ para repetir el recorrido o haz clic en el marcador para la vista 3D.
                 </div>
             </div>
+
+            <!-- QR de la URL actual -->
+            <div class="qr-panel">
+                <div class="qr-code" id="qr-code" role="img" aria-label="Código QR para abrir este mapa en el celular"></div>
+                <div class="qr-text">Escanea para abrir este mapa en tu celular</div>
+            </div>
         </div> <!-- /.map-panel -->
     </div> <!-- /.main-content -->
 </div> <!-- /.container -->
 
 <!-- JavaScript externo -->
-<script src="script.js?v=20261127-8"></script>
+<script src="qrcode.js"></script>
+<script src="script.js?v=20261127-9"></script>
 </body>
 </html>
