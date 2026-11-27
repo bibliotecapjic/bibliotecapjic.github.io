@@ -659,6 +659,19 @@ function routeFacing(route, distance, length, previousFacing) {
     return previousFacing;
 }
 
+function appendSvgPin(parent) {
+    const ns = 'http://www.w3.org/2000/svg';
+    const pin = document.createElementNS(ns, 'path');
+    pin.setAttribute('d', 'M 0 0 C -2 -3 -5 -5 -5 -8 A 5 5 0 1 1 5 -8 C 5 -5 2 -3 0 0 Z');
+    pin.classList.add('svg-marker-pin');
+    parent.appendChild(pin);
+    const center = document.createElementNS(ns, 'circle');
+    center.setAttribute('cy', '-8');
+    center.setAttribute('r', '1.7');
+    center.classList.add('svg-marker-center');
+    parent.appendChild(center);
+}
+
 /**
  * Usa las rutas y las secciones de estante incluidas en el SVG de Medellín.
  * La ruta del segundo piso comienza en las escaleras del propio plano.
@@ -723,15 +736,7 @@ function drawSvgLocation(svg, loc) {
         hitArea.setAttribute('cy', '-5');
         hitArea.classList.add('svg-marker-hit');
         marker.appendChild(hitArea);
-        const pin = document.createElementNS(ns, 'path');
-        pin.setAttribute('d', 'M 0 0 C -2 -3 -5 -5 -5 -8 A 5 5 0 1 1 5 -8 C 5 -5 2 -3 0 0 Z');
-        pin.classList.add('svg-marker-pin');
-        marker.appendChild(pin);
-        const center = document.createElementNS(ns, 'circle');
-        center.setAttribute('cy', '-8');
-        center.setAttribute('r', '1.7');
-        center.classList.add('svg-marker-center');
-        marker.appendChild(center);
+        appendSvgPin(marker);
         const open = () => open3DMap(destination.url3D);
         marker.addEventListener('click', open);
         marker.addEventListener('keydown', event => {
@@ -740,13 +745,6 @@ function drawSvgLocation(svg, loc) {
                 open();
             }
         });
-        const link = document.createElement('a');
-        link.className = 'location-3d-link';
-        link.href = destination.url3D;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.textContent = `📍 Ver en 3D: ${destination.stackInfo ? `estante ${destination.stackInfo.split('.')[1]}` : destination.message}`;
-        document.getElementById('location-3d-links').appendChild(link);
         const walker = document.createElementNS(ns, 'g');
         walker.classList.add('svg-walker');
         walker.setAttribute('aria-hidden', 'true');
@@ -958,7 +956,6 @@ function clearMapMarkers() {
         route.style.display = 'none';
         route.classList.remove('svg-route');
     });
-    document.getElementById('location-3d-links').replaceChildren();
     document.getElementById('map-floor-controls').hidden = true;
     setSvgFloor('1');
 }
@@ -989,7 +986,20 @@ function updateUI() {
  * @param {string} msg - Mensaje a mostrar.
  */
 function showLocationInfo(msg) {
-    document.getElementById('location-info-text').textContent = msg;
+    const info = document.getElementById('location-info-text');
+    info.replaceChildren();
+    const parts = selectedLibrary === 'medellin' ? msg.split('📍') : [msg];
+    parts.forEach((part, index) => {
+        if (index > 0) {
+            const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            icon.setAttribute('viewBox', '-6 -14 12 15');
+            icon.setAttribute('aria-hidden', 'true');
+            icon.classList.add('inline-map-pin');
+            appendSvgPin(icon);
+            info.appendChild(icon);
+        }
+        info.appendChild(document.createTextNode(part));
+    });
     document.getElementById('location-info-panel').classList.add('active');
     document.getElementById('legend-panel').classList.add('active');
 }
