@@ -608,6 +608,30 @@ h1 {
     animation: walking 0.35s ease-in-out infinite alternate;
 }
 
+.svg-walker-separate .svg-walker-figure {
+    animation: none;
+}
+
+.svg-walker-foot {
+    fill: #ba4900 !important;
+    pointer-events: none;
+    transform-box: fill-box;
+    transform-origin: center top;
+}
+
+.svg-walker-separate.walking .svg-walker-foot {
+    animation: walking-foot 0.35s ease-in-out infinite alternate;
+}
+
+.svg-walker-separate.walking .svg-walker-foot-right {
+    animation-direction: alternate-reverse;
+}
+
+@keyframes walking-foot {
+    from { transform: rotate(-20deg); }
+    to { transform: rotate(20deg); }
+}
+
 @keyframes walking {
     from { transform: rotate(-7deg); }
     to { transform: rotate(7deg); }
@@ -615,6 +639,7 @@ h1 {
 
 @media (prefers-reduced-motion: reduce) {
     .svg-walker-figure,
+    .svg-walker-separate.walking .svg-walker-foot,
     .svg-marker-pulse,
     .svg-route {
         animation: none;

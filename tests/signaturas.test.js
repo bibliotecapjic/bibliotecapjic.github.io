@@ -28,8 +28,13 @@ test('conserva la búsqueda por clasificación en las tres sedes', () => {
 });
 
 test('cambia la vista del mapa y el estado de los botones de piso', () => {
-    const svg = { setAttribute(name, value) { this[name] = value; } };
-    const buttons = ['1', '2', 'all'].map(floor => ({
+    const floor1 = { style: {} };
+    const floor2 = { style: {} };
+    const svg = {
+        setAttribute(name, value) { this[name] = value; },
+        querySelector(selector) { return selector === '#layer11' ? floor1 : floor2; }
+    };
+    const buttons = ['1', '2'].map(floor => ({
         dataset: { floor },
         setAttribute(name, value) { this[name] = value; }
     }));
@@ -37,8 +42,12 @@ test('cambia la vista del mapa y el estado de los botones de piso', () => {
     context.document.querySelectorAll = () => buttons;
     context.setSvgFloor('2');
     assert.equal(svg.viewBox, '332 0 176 215');
-    assert.deepEqual(buttons.map(button => button['aria-pressed']), ['false', 'true', 'false']);
-    context.setSvgFloor('all');
-    assert.equal(svg.viewBox, '0 0 508 285.75');
-    assert.deepEqual(buttons.map(button => button['aria-pressed']), ['false', 'false', 'true']);
+    assert.deepEqual(buttons.map(button => button['aria-pressed']), ['false', 'true']);
+    assert.equal(floor1.style.display, 'none');
+    assert.equal(floor2.style.display, 'inline');
+    context.setSvgFloor('1');
+    assert.equal(svg.viewBox, '0 0 338 285.75');
+    assert.deepEqual(buttons.map(button => button['aria-pressed']), ['true', 'false']);
+    assert.equal(floor1.style.display, 'inline');
+    assert.equal(floor2.style.display, 'none');
 });

@@ -54,7 +54,7 @@ const mapData = {
         name: "Biblioteca Medellín",
         floors: {
             1: {
-                img: "images/mapa-medellin.svg",
+                img: "images/mapa-medellin.svg?v=20261127",
                 staticLocations: {
                     "REVISTA": {
                         svgTarget: "rect28", svgRoute: "path17",
@@ -77,6 +77,7 @@ const mapData = {
                         },
                         {
                             svgTarget: "rect4-82", svgRoute: "path16", svgPerson: "path18",
+                            floor: "2",
                             x: 0.8167, y: 0.4356, width: 0.1694, height: 0.2643,
                             message: "Los Trabajos de grado en formato físico se encuentran en el piso 2 de la Biblioteca.",
                             url3D: "https://my.matterport.com/show/?m=mraFoSrUZfY&ss=32&sr=-.09,-.08"
@@ -440,6 +441,7 @@ async function loadLibraryMap(libraryKey) {
             mapElement.removeAttribute('width');
             mapElement.removeAttribute('height');
             mapElement.querySelectorAll('#layer4 > path').forEach(path => path.style.display = 'none');
+            mapElement.querySelectorAll('#path16, #path18').forEach(path => path.style.display = 'none');
             mapElement.setAttribute('role', 'group');
             mapElement.setAttribute('aria-label', 'Mapa de la Biblioteca Medellín, pisos 1 y 2');
         } else {
@@ -463,7 +465,6 @@ async function loadLibraryMap(libraryKey) {
         mapContainer.innerHTML = '';
         mapContainer.appendChild(mapElement);
         if (libraryKey === 'MEDELLÍN') {
-            document.getElementById('map-floor-controls').hidden = false;
             setSvgFloor('1');
         }
         isMapLoading = false;
@@ -658,10 +659,13 @@ function drawSvgLocation(svg, loc) {
     const ink = 'http://www.inkscape.org/namespaces/inkscape';
     const ns = 'http://www.w3.org/2000/svg';
     const destinations = loc.isMultiple ? loc.locations : [loc];
+    const floors = [...new Set(destinations.map(destination => String(destination.floor || loc.floor)))];
     let complete = true;
-    setSvgFloor(destinations.length > 1 ? 'all' : destinations[0].svgPerson === 'path18' ? '2' : '1');
 
     destinations.forEach(destination => {
+        const floor = String(destination.floor || loc.floor);
+        setSvgFloor(floor);
+        const floorLayer = svg.querySelector(floor === '1' ? '#layer11' : '#layer9');
         let target;
         let route;
         if (destination.stackInfo) {
@@ -676,8 +680,8 @@ function drawSvgLocation(svg, loc) {
             target = svg.querySelector(`#${destination.svgTarget}`);
             route = svg.querySelector(`#${destination.svgRoute}`);
         }
-        const person = svg.querySelector(`#${destination.svgPerson || 'path238'}`);
-        if (!target || !route || !person) {
+        const person = svg.querySelector(`#${destination.svgPerson || 'path19'}`);
+        if (!target || !route || !person || !floorLayer || !floorLayer.contains(target) || !floorLayer.contains(route)) {
             console.error('Faltan elementos de la ruta SVG:', destination);
             complete = false;
             return;
@@ -690,6 +694,7 @@ function drawSvgLocation(svg, loc) {
         target.classList.add(destination.stackInfo ? 'svg-shelf-destination' : 'svg-destination');
         route.style.display = 'inline';
         route.classList.add('svg-route');
+        if (route.parentElement === floorLayer) floorLayer.appendChild(route);
         const length = route.getTotalLength();
         const marker = document.createElementNS(ns, 'g');
         marker.classList.add('svg-location-marker');
@@ -742,13 +747,30 @@ function drawSvgLocation(svg, loc) {
         figure.classList.add('svg-walker-figure');
         figure.style.display = 'inline';
         walker.appendChild(figure);
-        svg.appendChild(walker);
-        const box = figure.getBBox();
-        svg.appendChild(marker);
+        if (floor === '1') {
+            const feet = ['path1-8', 'path20'].map(id => svg.querySelector(`#${id}`));
+            if (feet.some(foot => !foot)) {
+                console.error('Faltan los pies del muñeco del primer piso.');
+                complete = false;
+            } else {
+                walker.classList.add('svg-walker-separate');
+                feet.forEach((foot, index) => {
+                    const leg = foot.cloneNode(true);
+                    leg.removeAttribute('id');
+                    leg.style.display = 'inline';
+                    leg.classList.add('svg-walker-foot', index === 0 ? 'svg-walker-foot-left' : 'svg-walker-foot-right');
+                    walker.appendChild(leg);
+                });
+            }
+        }
+        floorLayer.appendChild(walker);
+        const box = walker.getBBox();
+        floorLayer.appendChild(marker);
         const anchorX = box.x + box.width / 2;
         const anchorY = box.y + box.height;
         const duration = Math.max(1000, Math.min(8000, length * 20));
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!reducedMotion) walker.classList.add('walking');
         let started;
         function walk(now) {
             if (started === undefined) started = now;
@@ -757,6 +779,7 @@ function drawSvgLocation(svg, loc) {
             walker.setAttribute('transform', `translate(${point.x - anchorX} ${point.y - anchorY})`);
             if (progress === 1) {
                 figure.style.animation = 'none';
+                walker.classList.remove('walking');
             } else {
                 const frame = requestAnimationFrame(time => {
                     routeAnimationFrames.delete(frame);
@@ -767,6 +790,8 @@ function drawSvgLocation(svg, loc) {
         }
         walk(performance.now());
     });
+    setSvgFloor(floors[0]);
+    document.getElementById('map-floor-controls').hidden = !complete || floors.length < 2;
     return complete;
 }
 
@@ -886,6 +911,8 @@ function clearMapMarkers() {
         route.classList.remove('svg-route');
     });
     document.getElementById('location-3d-links').replaceChildren();
+    document.getElementById('map-floor-controls').hidden = true;
+    setSvgFloor('1');
 }
 
 /**
@@ -924,9 +951,17 @@ function setSvgFloor(floor) {
     if (!svg) return;
     const views = {
         '1': '0 0 338 285.75',
-        '2': '332 0 176 215',
-        'all': '0 0 508 285.75'
+        '2': '332 0 176 215'
     };
+    if (!views[floor]) return;
+    const floor1 = svg.querySelector('#layer11');
+    const floor2 = svg.querySelector('#layer9');
+    if (!floor1 || !floor2) {
+        console.error('Faltan las capas de los pisos del mapa SVG.');
+        return;
+    }
+    floor1.style.display = floor === '1' ? 'inline' : 'none';
+    floor2.style.display = floor === '2' ? 'inline' : 'none';
     svg.setAttribute('viewBox', views[floor]);
     document.querySelectorAll('#map-floor-controls button').forEach(button => {
         button.setAttribute('aria-pressed', String(button.dataset.floor === floor));
