@@ -51,3 +51,19 @@ test('cambia la vista del mapa y el estado de los botones de piso', () => {
     assert.equal(floor1.style.display, 'inline');
     assert.equal(floor2.style.display, 'none');
 });
+
+test('orienta el muñeco hacia el siguiente tramo y conserva la dirección al llegar', () => {
+    const route = {
+        getPointAtLength(distance) {
+            if (distance <= 10) return { x: distance, y: 0 };
+            if (distance <= 20) return { x: 10, y: distance - 10 };
+            if (distance <= 30) return { x: 30 - distance, y: 10 };
+            return { x: 0, y: 40 - distance };
+        }
+    };
+    assert.equal(context.routeHeading(route, 0, 40), 90);
+    assert.equal(context.routeHeading(route, 10, 40), 180);
+    assert.equal(context.routeHeading(route, 20, 40), 270);
+    assert.equal(context.routeHeading(route, 30, 40), 0);
+    assert.equal(context.routeHeading(route, 40, 40), 0);
+});
