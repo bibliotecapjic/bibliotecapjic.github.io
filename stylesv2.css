@@ -518,16 +518,18 @@ h1 {
     filter: drop-shadow(0 0 8px var(--sombra-marcador)); /* turquesa */
 }
 
-.svg-destination {
+.svg-destination,
+.svg-shelf-destination {
     fill: #ffdb4d !important;
     stroke: #c65d00 !important;
+}
+
+.svg-destination {
     stroke-width: 1 !important;
 }
 
 .svg-shelf-destination {
-    fill: #ffc933 !important;
-    stroke: #222 !important;
-    stroke-width: 0.4 !important;
+    stroke-width: 0.25 !important;
 }
 
 .svg-route {
