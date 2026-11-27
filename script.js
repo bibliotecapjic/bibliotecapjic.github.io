@@ -778,9 +778,9 @@ function drawSvgLocation(svg, loc) {
         const anchorY = box.y + box.height;
         const duration = Math.max(1000, Math.min(8000, length * 20));
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!reducedMotion) walker.classList.add('walking');
         let started;
         let facing = 1;
+        let frameId = null;
         function walk(now) {
             if (started === undefined) started = now;
             const progress = reducedMotion ? 1 : Math.min((now - started) / duration, 1);
@@ -792,14 +792,51 @@ function drawSvgLocation(svg, loc) {
                 figure.style.animation = 'none';
                 walker.classList.remove('walking');
             } else {
-                const frame = requestAnimationFrame(time => {
-                    routeAnimationFrames.delete(frame);
+                frameId = requestAnimationFrame(time => {
+                    routeAnimationFrames.delete(frameId);
+                    frameId = null;
                     walk(time);
                 });
-                routeAnimationFrames.add(frame);
+                routeAnimationFrames.add(frameId);
             }
         }
-        walk(performance.now());
+        function replay() {
+            if (frameId !== null) {
+                cancelAnimationFrame(frameId);
+                routeAnimationFrames.delete(frameId);
+                frameId = null;
+            }
+            started = undefined;
+            facing = 1;
+            figure.style.removeProperty('animation');
+            if (!reducedMotion) walker.classList.add('walking');
+            walk(performance.now());
+        }
+        const start = route.getPointAtLength(0);
+        const play = document.createElementNS(ns, 'g');
+        play.classList.add('svg-route-play');
+        play.setAttribute('transform', `translate(${start.x - 8} ${start.y})`);
+        play.setAttribute('role', 'button');
+        play.setAttribute('tabindex', '0');
+        play.setAttribute('aria-label', `Repetir recorrido del piso ${floor}`);
+        const playTitle = document.createElementNS(ns, 'title');
+        playTitle.textContent = `Repetir recorrido del piso ${floor}`;
+        play.appendChild(playTitle);
+        const playCircle = document.createElementNS(ns, 'circle');
+        playCircle.setAttribute('r', '5');
+        play.appendChild(playCircle);
+        const playTriangle = document.createElementNS(ns, 'path');
+        playTriangle.setAttribute('d', 'M -1.3 -2.4 L 2.7 0 L -1.3 2.4 Z');
+        play.appendChild(playTriangle);
+        play.addEventListener('click', replay);
+        play.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                replay();
+            }
+        });
+        floorLayer.appendChild(play);
+        replay();
     });
     setSvgFloor(floors[0]);
     document.getElementById('map-floor-controls').hidden = !complete || floors.length < 2;
@@ -914,7 +951,7 @@ function clearMapMarkers() {
     routeAnimationFrames.forEach(cancelAnimationFrame);
     routeAnimationFrames.clear();
     document.querySelectorAll('#map-container .map-marker').forEach(m => m.remove());
-    document.querySelectorAll('#map-container .svg-location-marker, #map-container .svg-walker').forEach(element => element.remove());
+    document.querySelectorAll('#map-container .svg-location-marker, #map-container .svg-walker, #map-container .svg-route-play').forEach(element => element.remove());
     document.querySelectorAll('#map-container .svg-destination').forEach(element => element.classList.remove('svg-destination'));
     document.querySelectorAll('#map-container .svg-shelf-destination').forEach(element => element.classList.remove('svg-shelf-destination'));
     document.querySelectorAll('#map-container .svg-route').forEach(route => {
