@@ -102,7 +102,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: var(--fondo-pagina);
     color: var(--texto-principal);
-    padding: 20px;
+    padding: 14px 20px;
 }
 
 .container {
@@ -118,9 +118,9 @@ body {
 .header {
     background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-gradiente-claro));
     color: var(--blanco);
-    padding: 25px;
+    padding: 16px 25px;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
     box-shadow: 0 4px 12px var(--sombra-media);
 }
 
@@ -143,7 +143,7 @@ h1 {
 .main-content {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 25px;
+    gap: 18px 25px;
 }
 
 @media (max-width: 900px) {
@@ -157,21 +157,21 @@ h1 {
    ================================================================== */
 .controls-panel {
     background: var(--fondo-tarjeta);
-    padding: 25px;
+    padding: 18px 25px;
     border-radius: 10px;
     box-shadow: 0 4px 12px var(--sombra-suave);
 }
 
 /* ---------- 5.1 Sección de bibliotecas / libros ---------- */
 .library-section {
-    margin-bottom: 30px;
+    margin-bottom: 12px;
 }
 
 .section-title {
     font-size: 18px;
     color: var(--azul-oscuro);           /* #165a72 */
-    margin-bottom: 15px;
-    padding-bottom: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
     border-bottom: 2px solid var(--borde-claro);
     display: flex;
     align-items: center;
@@ -181,12 +181,12 @@ h1 {
 .library-buttons {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
     margin-top: 10px;
 }
 
 .library-btn {
-    padding: 16px;
+    padding: 10px 16px;
     background: var(--fondo-tarjeta);
     border: 2px solid var(--borde-default);
     border-radius: 8px;
@@ -220,19 +220,19 @@ h1 {
 .divider {
     height: 1px;
     background: var(--borde-muy-claro);
-    margin: 25px 0;
+    margin: 14px 0;
     width: 100%;
 }
 
 /* ---------- 5.2 Sección de signatura ---------- */
 .signature-section {
-    margin-bottom: 30px;
+    margin-bottom: 12px;
 }
 
 .signature-title {
     font-size: 18px;
     color: var(--azul-oscuro);
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -257,7 +257,7 @@ h1 {
 
 .signature-input {
     width: 100%;
-    padding: 16px;
+    padding: 12px 16px;
     border: 2px solid var(--borde-default);
     border-radius: 8px;
     font-size: 16px;
@@ -291,7 +291,7 @@ h1 {
 
 /* ---------- 5.3 Sección de otros materiales ---------- */
 .other-materials-section {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .material-buttons {
@@ -302,7 +302,8 @@ h1 {
 }
 
 .material-btn {
-    padding: 14px 10px;
+    padding: 10px;
+    min-height: 44px;
     background: var(--fondo-tarjeta);
     border: 2px solid var(--borde-default);
     border-radius: 6px;
@@ -335,7 +336,7 @@ h1 {
    ================================================================== */
 .map-panel {
     background: var(--fondo-tarjeta);
-    padding: 25px;
+    padding: 18px 25px;
     border-radius: 10px;
     box-shadow: 0 4px 12px var(--sombra-suave);
     display: flex;
@@ -346,15 +347,15 @@ h1 {
 /* ---------- 6.1 Información de selección ---------- */
 .selection-info {
     background: var(--fondo-seleccion);
-    padding: 15px;
+    padding: 10px 15px;
     border-radius: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     border-left: 4px solid var(--borde-focus);   /* #00B4AB */
 }
 
 .selection-info h3 {
     font-size: 16px;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
     color: var(--azul-oscuro);
     display: flex;
     align-items: center;
@@ -390,9 +391,9 @@ h1 {
 /* ---------- 6.2 Panel de ubicación encontrada ---------- */
 .location-info-panel {
     background: var(--fondo-location);
-    padding: 15px;
+    padding: 10px 15px;
     border-radius: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     display: none;
     border-left: 4px solid var(--borde-location);  /* #00B4AB */
 }
@@ -404,7 +405,7 @@ h1 {
 .location-info-title {
     font-size: 16px;
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
     color: var(--azul-oscuro);
     display: flex;
     align-items: center;
@@ -426,7 +427,7 @@ h1 {
     overflow: hidden;
     border: 1px solid var(--borde-muy-claro);
     min-height: 500px;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .map-floor-controls:not([hidden]) {
@@ -778,11 +779,6 @@ h1 {
 
 
 /* ==================== BOTON TAP PARA REGRESAR A PRIMO  ==================== */
-.header {
-    /* Mantiene el gradiente y padding que ya tenías, pero aseguramos que el contenido interno se distribuya */
-    padding: 25px;
-}
-
 /* Contenedor flexible para el título y las tabs */
 .header > div:first-child {
     display: flex;
