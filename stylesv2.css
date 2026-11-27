@@ -522,13 +522,6 @@ h1 {
 .svg-shelf-destination {
     fill: #ffdb4d !important;
     stroke: #c65d00 !important;
-}
-
-.svg-destination {
-    stroke-width: 1 !important;
-}
-
-.svg-shelf-destination {
     stroke-width: 0.25 !important;
 }
 
